@@ -1,9 +1,7 @@
 <!DOCTYPE html> {% load static %}
 <html lang="zxx">
 
-
 <!-- Mirrored from themehoster.com/tm/emexso/demo/ by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 07 Sep 2020 14:52:28 GMT -->
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -88,10 +86,15 @@
                                 <li class="nav-item">
                                     <!-- <a class="nav-link active" href="#" data-scroll-nav="3">Log in</a> -->
                                     <!-- Button trigger modal -->
+                                    {% if user.is_authenticated %}
+                                    <li>{{user.email}}</li>
+                                    <li><a class="btn btn-sm nav-link active" href="{% url 'logout' %}">Logout</a></li>
+                                    {% else %}
                                     <button type="button" class="btn nav-link active" data-toggle="modal"
                                         data-target="#exampleModalCenter">
                                         Log in
                                     </button>
+                                    {% endif %}
                                 </li>
                             </ul>
 
@@ -237,7 +240,18 @@
         </div>
     </div>
     <!--model end-->
+    <br>
+    <div class="container">
+        <form action="{% url 'register' %}" method="POST">
+            {% csrf_token %}
+            <input type="text" placeholder="fullname" name="fullname">
+            <input type="text" placeholder="email" name="email">
+            <input type="text" placeholder="username" name="username">
+            <input type="text" placeholder="password" name="password">
+            <button type="submit" value="submit" >Submit</button>
+        </form>
 
+    </div>
 
     <!--start testimonial area-->
     <section id="testi-area" data-scroll-index="2">

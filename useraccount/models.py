@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
 class MyAccountManager(BaseUserManager):
-	def create_user(self, email, username, password=None):
+	def create_user(self, email, username, password=None,**kwargs):
 		if not email:
 			raise ValueError('Users must have an email address')
 		if not username:
@@ -11,9 +11,8 @@ class MyAccountManager(BaseUserManager):
 
 		user = self.model(
 			email=self.normalize_email(email),
-			username=username,
+			username=username,**kwargs
 		)
-
 		user.set_password(password)
 		user.save(using=self._db)
 		return user
@@ -30,10 +29,11 @@ class MyAccountManager(BaseUserManager):
 		user.save(using=self._db)
 		return user
 
-
 class Account(AbstractBaseUser):
+	fullname = models.CharField(max_length=50)
 	email 					= models.EmailField(verbose_name="email", max_length=60, unique=True)
 	username 				= models.CharField(max_length=30, unique=True)
+	password 				= models.CharField(max_length=100)
 	date_joined				= models.DateTimeField(verbose_name='date joined', auto_now_add=True)
 	last_login				= models.DateTimeField(verbose_name='last login', auto_now=True)
 	is_admin				= models.BooleanField(default=False)
@@ -42,7 +42,7 @@ class Account(AbstractBaseUser):
 	is_superuser			= models.BooleanField(default=False)
 	is_superadmin 			= models.BooleanField(default=False)
 	is_startup 				= models.BooleanField(default=False)
-	fullname 				= models.CharField(max_length=50)
+
 
 
 	USERNAME_FIELD = 'username'
