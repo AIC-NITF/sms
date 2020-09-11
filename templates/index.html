@@ -209,7 +209,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="POST" action="">{% csrf_token %}
+                <form method="POST" action="{% url 'login' %}">{% csrf_token %}
                     <div class="modal-body">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
@@ -441,7 +441,7 @@
                 <div class="col-lg-9 col-md-7">
                     <div class="contact-form">
                         <form id="ajax-contact" action="http://themehoster.com/tm/emexso/demo/contact.php"
-                            method="post">
+                            method="post">{% csrf_token %}
                             <div class="form-group">
                                 <label for="name">Name*</label>
                                 <input type="text" class="form-control" id="name" name="name" placeholder="Name*"

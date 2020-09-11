@@ -69,6 +69,8 @@ TEMPLATES = [
     },
 ]
 
+AUTH_USER_MODEL = 'useraccount.Account'
+
 WSGI_APPLICATION = 'sms.wsgi.application'
 
 
