@@ -87,7 +87,7 @@
                                     <!-- <a class="nav-link active" href="#" data-scroll-nav="3">Log in</a> -->
                                     <!-- Button trigger modal -->
                                     {% if user.is_authenticated %}
-                                    <li>{{user.email}}</li>
+                                    <li> <a href="#"><i class="fa fa-user-secret fa-lg" style="padding: 10px 20px;"></i></a></li>
                                     <li><a class="btn btn-sm nav-link active" href="{% url 'logout' %}">Logout</a></li>
                                     {% else %}
                                     <button type="button" class="btn nav-link active" data-toggle="modal"
