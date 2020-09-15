@@ -87,7 +87,11 @@
                                     <!-- <a class="nav-link active" href="#" data-scroll-nav="3">Log in</a> -->
                                     <!-- Button trigger modal -->
                                     {% if user.is_authenticated %}
-                                    <li> <a href="#"><i class="fa fa-user-secret fa-lg" style="padding: 10px 20px;"></i></a></li>
+                                        {% if user.is_admin == True %}
+                                            <li> {{user.username}} <a href="{% url 'admin_dashboard' %}"><i class="fa fa-user-secret fa-lg" style="padding: 10px 20px;"></i></a></li>
+                                        {% else %}
+                                            <li> {{user.username}} <a href="{% url 'startup_dashboard' %}"><i class="fa fa-user-secret fa-lg" style="padding: 10px 20px;"></i></a></li>
+                                        {% endif %}
                                     <li><a class="btn btn-sm nav-link active" href="{% url 'logout' %}">Logout</a></li>
                                     {% else %}
                                     <button type="button" class="btn nav-link active" data-toggle="modal"
@@ -115,7 +119,7 @@
                     <div class="row">
                         <div class="col-md-5">
                             <div class="caption-img">
-                                <img src="{% static 'assets/images/new-1.png' %}" class="img-fluid" alt="image">
+                                <img src="{% static 'assets/images/gif-1.gif' %}" class="img-fluid" alt="image">
                             </div>
                         </div>
                         <div class="col-md-7">

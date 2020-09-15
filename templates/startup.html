@@ -1,0 +1,41 @@
+{% extends 'dashboard.html' %}
+
+{% block startup %}
+{% load static %}
+    <section id="team">
+        <div class="container my-3 py-5 text-center">
+            <div class="row mb-5 startup">
+                <div class="col mb-4">
+                    <h1>Start up</h1>
+                </div>
+            </div>
+
+            <div class="row">
+
+                {% for account in accounts %}
+                    {% if account.is_admin == False %}
+                        <div class="col-lg-4 col-md-6 startup-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <img src="{% static 'assets/images/client-1.jpg' %}" alt="#"
+                                        class="img-fluid rounded-circle mb-3">
+                                    <h3>{{account.username}}</h3>
+                                    <h5>lead writert</h5>
+                                    <div class="d-flex flex-row justify-content-center">
+                                        <div class="btn-container">
+                                            <!-- button -->
+                                            <a href="#" class="btn btn-danger" role="button">danger</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                
+
+                
+            </div>
+        </div>
+    </section>
+{% endblock %}
