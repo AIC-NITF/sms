@@ -30,7 +30,7 @@ class MyAccountManager(BaseUserManager):
 		return user
 
 class Account(AbstractBaseUser):
-	fullname = models.CharField(max_length=50)
+	fullname 				= models.CharField(max_length=50)
 	email 					= models.EmailField(verbose_name="email", max_length=60, unique=True)
 	username 				= models.CharField(max_length=30, unique=True)
 	password 				= models.CharField(max_length=100)
@@ -42,6 +42,8 @@ class Account(AbstractBaseUser):
 	is_superuser			= models.BooleanField(default=False)
 	is_superadmin 			= models.BooleanField(default=False)
 	is_startup 				= models.BooleanField(default=False)
+	
+
 
 
 
@@ -63,14 +65,22 @@ class Account(AbstractBaseUser):
 
 
 
-    # fullname = models.CharField(max_length=50)
-    # email = models.EmailField(unique=True, max_length=50)
-    # username = models.CharField(max_length=50, unique=True)
-    # password1 = models.CharField(max_length=100)
-    # password2 = models.CharField(max_length=100, default='')
-    # date_of_joining = models.DateTimeField(verbose_name='date of joining',auto_now_add=True)
-    # is_superadmin = models.BooleanField(default=False)
-    # is_startup =  models.BooleanField(default=False)
-	# is_admin =  models.BooleanField(default=False)
+class Admin(models.Model):
+	account 				= models.ForeignKey(Account, on_delete=models.CASCADE)
+	designation				= models.CharField(max_length=100,null=True,blank=True)
+	employee_id				= models.CharField(max_length=100,null=True,blank=True)
+	contact_no				= models.CharField(max_length=100,null=True,blank=True)
+	identity_proof			= models.CharField(max_length=100,null=True,blank=True)
+
+	
+
+	def __str__(self):
+		return self.designation
+
+class StartUp(models.Model):
+	account 				= models.ForeignKey(Account, on_delete=models.CASCADE,unique=True)
+
+	def __str__(self):
+		return self.account
     
     

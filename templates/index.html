@@ -2,6 +2,7 @@
 <html lang="zxx">
 
 <!-- Mirrored from themehoster.com/tm/emexso/demo/ by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 07 Sep 2020 14:52:28 GMT -->
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -86,19 +87,18 @@
                                 <li class="nav-item">
                                     <!-- <a class="nav-link active" href="#" data-scroll-nav="3">Log in</a> -->
                                     <!-- Button trigger modal -->
-                                    {% if user.is_authenticated %}
-                                        {% if user.is_admin == True %}
-                                            <li> {{user.username}} <a href="{% url 'admin_dashboard' %}"><i class="fa fa-user-secret fa-lg" style="padding: 10px 20px;"></i></a></li>
-                                        {% else %}
-                                            <li> {{user.username}} <a href="{% url 'startup_dashboard' %}"><i class="fa fa-user-secret fa-lg" style="padding: 10px 20px;"></i></a></li>
-                                        {% endif %}
-                                    <li><a class="btn btn-sm nav-link active" href="{% url 'logout' %}">Logout</a></li>
-                                    {% else %}
-                                    <button type="button" class="btn nav-link active" data-toggle="modal"
-                                        data-target="#exampleModalCenter">
-                                        Log in
-                                    </button>
-                                    {% endif %}
+                                {% if user.is_authenticated %}
+
+                                <li> {{user.username}} <a href="{% url 'dashboard' %}"><i
+                                            class="fa fa-user-secret fa-lg" style="padding: 10px 20px;"></i></a></li>
+
+                                <li><a class="btn btn-sm nav-link active" href="{% url 'logout' %}">Logout</a></li>
+                                {% else %}
+                                <button type="button" class="btn nav-link active" data-toggle="modal"
+                                    data-target="#exampleModalCenter">
+                                    Log in
+                                </button>
+                                {% endif %}
                                 </li>
                             </ul>
 
@@ -222,15 +222,15 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
                             </div>
-                            <input type="text" class="form-control" name="username" placeholder="Username" aria-label="Username"
-                                aria-describedby="basic-addon1">
+                            <input type="text" class="form-control" name="username" placeholder="Username"
+                                aria-label="Username" aria-describedby="basic-addon1">
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-lock"></i></span>
                             </div>
-                            <input type="password" class="form-control" name="password" placeholder="Password" aria-label="Password"
-                                aria-describedby="basic-addon1">
+                            <input type="password" class="form-control" name="password" placeholder="Password"
+                                aria-label="Password" aria-describedby="basic-addon1">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -252,7 +252,7 @@
             <input type="text" placeholder="email" name="email">
             <input type="text" placeholder="username" name="username">
             <input type="text" placeholder="password" name="password">
-            <button type="submit" value="submit" >Submit</button>
+            <button type="submit" value="submit">Submit</button>
         </form>
 
     </div>
