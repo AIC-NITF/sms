@@ -62,20 +62,28 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li id="admin" class="nav-item check">
+            <li id="monitor" class="nav-item check">
                 <a class="nav-link" href="{% url 'admin_form' %}" data-target="#collapseTwo" aria-expanded="true"
                     aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-paste"></i>
-                    <span>Create Admin</span>
+                    <span>Monitor Sheet</span>
                 </a>
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
-            <li id="startup" class="nav-item check">
+            <li id="traction" class="nav-item check">
                 <a class="nav-link collapsed" href="{% url 'startup_form' %}" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-sticky-note"></i>
-                    <span>Create Start-Up</span>
+                    <span>Traction Sheet</span>
+                </a>
+            </li>
+
+            <li id="mom" class="nav-item check">
+                <a class="nav-link collapsed" href="{% url 'startup_form' %}" data-target="#collapseUtilities"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-sticky-note"></i>
+                    <span>Minute Of Meeting</span>
                 </a>
             </li>
             <!-- Sidebar Toggler (Sidebar) -->
@@ -381,28 +389,44 @@
                 });
                 value = localStorage.getItem('val');
                 var act = document.getElementById(value);
-                if (value == 'admin'){
+                if (value == 'monitor'){
                     var act1 = document.getElementById("dashboard");
-                    var act2 = document.getElementById("startup");
+                    var act2 = document.getElementById("traction");
+                    var act3 = document.getElementById("mom");
                     act.classList.add("active");
                     act1.classList.remove("active");
                     act2.classList.remove("active");
+                    act3.classList.remove("active");
                     localStorage.clear()
                 }
-                else if(value == 'startup'){
+                else if(value == 'traction'){
                     var act1 = document.getElementById("dashboard");
-                    var act2 = document.getElementById("admin");
+                    var act2 = document.getElementById("monitor");
+                    var act3 = document.getElementById("mom");
                     act.classList.add("active");
                     act1.classList.remove("active");
                     act2.classList.remove("active");
+                    act3.classList.remove("active");
+                    localStorage.clear()
+                }
+                else if(value == 'mom'){
+                    var act1 = document.getElementById("dashboard");
+                    var act2 = document.getElementById("monitor");
+                    var act3 = document.getElementById("traction");
+                    act.classList.add("active");
+                    act1.classList.remove("active");
+                    act2.classList.remove("active");
+                    act3.classList.remove("active");
                     localStorage.clear()
                 }
                 else if(value == 'dashboard'){
-                    var act1 = document.getElementById("admin");
-                    var act2 = document.getElementById("startup");
+                    var act1 = document.getElementById("monitor");
+                    var act2 = document.getElementById("traction");
+                    var act3 = document.getElementById("mom");
                     act.classList.add("active");
                     act1.classList.remove("active");
                     act2.classList.remove("active");
+                    act3.classList.remove("active");
                     localStorage.clear()
                 }
             </script>

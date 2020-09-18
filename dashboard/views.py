@@ -13,3 +13,9 @@ def dashboard(request):
         
 def admin_form(request):
     return render(request,'admin_form.html')
+
+def startup_form(request):
+    return render(request,'startup_form.html')
+
+def startup_details(request,pk):
+    return render(request,'startup_details.html')

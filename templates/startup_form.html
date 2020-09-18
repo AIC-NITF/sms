@@ -1,0 +1,78 @@
+{% extends 'dashboard.html' %}
+{% block startup %}
+
+<form method="POST" action="{% url 'startup_register' %}">{% csrf_token %}
+  <div class="row">
+    <div class="form-group col-md-12">
+      <label for="inputStartUpName4">Name Of Start-Up</label>
+      <input type="text" name="startup_name" class="form-control" id="inputStartUpName4" placeholder="Name Of Start-Up">
+    </div>
+    <div class="form-group col-md-6">
+        <label for="inputTeamHead4">Head Of the Team</label>
+        <input type="text" name="full_name" class="form-control" id="inputTeamHead4" placeholder="team head">
+      </div>
+    <div class="form-group col-md-6">
+      <label for="inputLegalEntity4">Name Of Legal Entity</label>
+      <input type="text" name="legal_entity" class="form-control" id="inputLegalEntity4" placeholder="Name Of Legal Entity">
+    </div>
+
+    <div class="form-group col-md-6">
+      <label for="inputFoundersDesignation4">Name Of Founders and their Designation</label>
+      <input type="text" name="founders_designation" class="form-control" id="inputFoundersDesignation4" placeholder="Founders and their Designation">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputCity4">Belong to Which City</label>
+      <input type="text" name="city" class="form-control" id="inputCity4" placeholder="City">
+    </div>
+    <div class="form-group col-md-6">
+        <label for="inputWebsiteAddress4">Website Address</label>
+        <input type="text" name="website" class="form-control" id="inputWebsiteAddress4" placeholder="website address">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="inputSector4">Sector</label>
+        <input type="text" name="sector" class="form-control" id="inputSector4" placeholder="sector">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="inputDateofJoin4">Date of Join</label>
+        <input type="date" name="joindate" class="form-control" id="inputDateofJoin4" placeholder="joined date">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="inputTeamMembers4">Current Team Members</label>
+        <input type="text" name="team_members" class="form-control" id="inputTeamMembers4" placeholder="team members">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="inputLocation4">Geographical Location They are Working</label>
+        <input type="text" name="location" class="form-control" id="inputLocation4" placeholder="location They are Working">
+      </div>
+
+    
+
+    <div class="form-group col-md-6">
+      <label for="inputEmail4">Email</label>
+      <input type="email" name="email" class="form-control" id="inputEmail4" placeholder="Email">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputUsername4">Username</label>
+      <input type="text" name="username" class="form-control" id="inputUsername4" placeholder="username">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputPassword4">Password</label>
+      <input type="password" name="password1" class="form-control" id="inputPassword4" placeholder="Password">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputPassword41">Confirm Password</label>
+      <input type="password" name="password2" class="form-control" id="inputPassword41" placeholder="Confirm Password">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputContactNo4">Contact No.</label>
+      <input type="text" name="contact" class="form-control" id="inputContactNo4" placeholder="Contact No.">
+    </div>
+
+  </div>
+
+
+
+  <button type="submit" class="btn btn-primary">Create Admin</button>
+</form>
+
+{% endblock %}

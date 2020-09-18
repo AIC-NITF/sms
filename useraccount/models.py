@@ -78,9 +78,18 @@ class Admin(models.Model):
 		return self.designation
 
 class StartUp(models.Model):
-	account 				= models.ForeignKey(Account, on_delete=models.CASCADE,unique=True)
+	account 				= models.ForeignKey(Account, on_delete=models.CASCADE)
+	startup_name			= models.CharField(max_length=100,null=True,blank=True)
+	legal_entity			= models.CharField(max_length=100,null=True,blank=True)
+	founders_designation	= models.CharField(max_length=200,null=True,blank=True)
+	website					= models.CharField(max_length=100,null=True,blank=True)
+	city					= models.CharField(max_length=100,null=True,blank=True)
+	sector					= models.CharField(max_length=100,null=True,blank=True)
+	team_members			= models.CharField(max_length=100,null=True,blank=True)
+	location				= models.CharField(max_length=100,null=True,blank=True)
+	contact_no				= models.CharField(max_length=100,null=True,blank=True)
 
 	def __str__(self):
-		return self.account
+		return self.startup_name
     
     
