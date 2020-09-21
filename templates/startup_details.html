@@ -21,9 +21,11 @@
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:400,400i,600,600i,700" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="{% static 'dashboard/css/sb-admin-2.min.css' %}" rel="stylesheet">
+    {% block css %}{% endblock %}
 
 </head>
 
@@ -47,7 +49,7 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li id="dashboard" class="nav-item active check">
+            <li id="dashboard" class="nav-item check">
                 <a class="nav-link" href="{% url 'dashboard' %}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
@@ -55,11 +57,20 @@
 
             <!-- Divider -->
             <hr class="sidebar-divider">
-
+            <li id="profile" class="nav-item active check">
+                <a class="nav-link" href="{% url 'admin_form' %}" data-target="#collapseTwo" aria-expanded="true"
+                    aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>Profile</span>
+                </a>
+            </li>
+            <!-- Divider -->
+            <hr class="sidebar-divider">
             <!-- Heading -->
             <div class="sidebar-heading">
                 Report
             </div>
+
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li id="monitor" class="nav-item check">
@@ -315,7 +326,7 @@
                     </div>
 
                     <!-- Content Row -->
-                    {% block startup %}{% endblock %}
+                    {% block content %}{% endblock %}
 
 
                     <!-- Footer -->
@@ -376,7 +387,7 @@
             <!-- Page level custom scripts -->
             <script src="{% static 'dashboard/js/demo/chart-area-demo.js' %}"></script>
             <script src="{% static 'dashboard/js/demo/chart-pie-demo.js' %}"></script>
-
+            {% block js %}{% endblock %}
             <script>
                 /* $(document).on('click', 'ul li', function(){
                     $(this).addClass('active').siblings().removeClass('active')
@@ -393,40 +404,60 @@
                     var act1 = document.getElementById("dashboard");
                     var act2 = document.getElementById("traction");
                     var act3 = document.getElementById("mom");
+                    var act4 = document.getElementById("profile");
                     act.classList.add("active");
                     act1.classList.remove("active");
                     act2.classList.remove("active");
                     act3.classList.remove("active");
+                    act4.classList.remove("active");
                     localStorage.clear()
                 }
                 else if(value == 'traction'){
                     var act1 = document.getElementById("dashboard");
                     var act2 = document.getElementById("monitor");
                     var act3 = document.getElementById("mom");
+                    var act4 = document.getElementById("profile");
                     act.classList.add("active");
                     act1.classList.remove("active");
                     act2.classList.remove("active");
                     act3.classList.remove("active");
+                    act4.classList.remove("active");
                     localStorage.clear()
                 }
                 else if(value == 'mom'){
                     var act1 = document.getElementById("dashboard");
                     var act2 = document.getElementById("monitor");
                     var act3 = document.getElementById("traction");
+                    var act4 = document.getElementById("profile");
                     act.classList.add("active");
                     act1.classList.remove("active");
                     act2.classList.remove("active");
                     act3.classList.remove("active");
+                    act4.classList.remove("active");
                     localStorage.clear()
                 }
                 else if(value == 'dashboard'){
                     var act1 = document.getElementById("monitor");
                     var act2 = document.getElementById("traction");
                     var act3 = document.getElementById("mom");
+                    var act4 = document.getElementById("profile");
                     act.classList.add("active");
                     act1.classList.remove("active");
                     act2.classList.remove("active");
                     act3.classList.remove("active");
+                    act4.classList.remove("active");
+                    localStorage.clear()
+                }
+                else if(value== 'profile'){
+                    var act1 = document.getElementById("monitor");
+                    var act2 = document.getElementById("traction");
+                    var act3 = document.getElementById("mom");
+                    var act4 = document.getElementById("dashboard");
+                    act.classList.add("active");
+                    act1.classList.remove("active");
+                    act2.classList.remove("active");
+                    act3.classList.remove("active");
+                    act4.classList.remove("active");
                     localStorage.clear()
                 }
             </script>

@@ -19,12 +19,14 @@
                                 <div class="card-body">
                                     <img src="{% static 'assets/images/client-1.jpg' %}" alt="#"
                                         class="img-fluid rounded-circle mb-3">
-                                    <h3>{{account.username}}</h3>
+                                    {% for val in account.startup_set.all %}    
+                                    <h3>{{val.startup_name}}</h3>
                                     <h5>lead writert</h5>
+                                    {% endfor %}
                                     <div class="d-flex flex-row justify-content-center">
                                         <div class="btn-container">
                                             <!-- button -->
-                                            <a href="{% url 'startup_details' pk=account.pk %}" class="btn btn-danger" role="button">Get Report</a>
+                                            <a href="{% url 'profile' pk=account.pk %}" class="btn btn-danger" role="button">Get Report</a>
                                         </div>
                                     </div>
                                 </div>
