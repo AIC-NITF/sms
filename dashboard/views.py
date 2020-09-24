@@ -1,5 +1,6 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
 from useraccount.models import Account,Admin,StartUp
+from .forms import StartUpForm
 
 
 # Create your views here.
@@ -22,3 +23,19 @@ def profile(request,pk):
     val = details.startup_set.all()
     print(val[0])
     return render(request,'profile.html',{'value':val[0]})
+
+def profile_edit(request,pk):
+    print("hello guyss",pk)
+    content = get_object_or_404(StartUp,pk=pk)
+    print(content)
+    if request.method == 'POST':
+        form = StartUpForm(request.POST,instance=content)
+        print(form) 
+        if form.is_valid():
+            content = form.save(commit=False)
+            content.save()
+            return redirect(dashboard)
+    else:
+        form = StartUpForm(instance=content)
+        print(form," form")
+    return render(request,'startup_edit_form.html',{'form':form})

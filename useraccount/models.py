@@ -3,23 +3,23 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
 class MyAccountManager(BaseUserManager):
-	def create_user(self, email, username, password=None,**kwargs):
-		if not email:
-			raise ValueError('Users must have an email address')
+	def create_user(self, username, password=None,**kwargs):
+		# if not email:
+		# 	raise ValueError('Users must have an email address')
 		if not username:
 			raise ValueError('Users must have a username')
 
 		user = self.model(
-			email=self.normalize_email(email),
+			#email=self.normalize_email(email),
 			username=username,**kwargs
 		)
 		user.set_password(password)
 		user.save(using=self._db)
 		return user
 
-	def create_superuser(self, email, username, password):
+	def create_superuser(self, username, password):
 		user = self.create_user(
-			email=self.normalize_email(email),
+			#email=self.normalize_email(email),
 			password=password,
 			username=username,
 		)
@@ -31,7 +31,6 @@ class MyAccountManager(BaseUserManager):
 
 class Account(AbstractBaseUser):
 	fullname 				= models.CharField(max_length=50)
-	email 					= models.EmailField(verbose_name="email", max_length=60, unique=True)
 	username 				= models.CharField(max_length=30, unique=True)
 	password 				= models.CharField(max_length=100)
 	date_joined				= models.DateTimeField(verbose_name='date joined', auto_now_add=True)
@@ -48,12 +47,11 @@ class Account(AbstractBaseUser):
 
 
 	USERNAME_FIELD = 'username'
-	REQUIRED_FIELDS = ['email']
 
 	objects = MyAccountManager()
 
 	def __str__(self):
-		return self.email +'   ' +self.username
+		return self.username
 
 	# For checking permissions. to keep it simple all admin have ALL permissons
 	def has_perm(self, perm, obj=None):
@@ -67,6 +65,7 @@ class Account(AbstractBaseUser):
 
 class Admin(models.Model):
 	account 				= models.ForeignKey(Account, on_delete=models.CASCADE)
+	email 					= models.EmailField(verbose_name="email", max_length=60,null=True,blank=True)
 	designation				= models.CharField(max_length=100,null=True,blank=True)
 	employee_id				= models.CharField(max_length=100,null=True,blank=True)
 	contact_no				= models.CharField(max_length=100,null=True,blank=True)
@@ -79,6 +78,7 @@ class Admin(models.Model):
 
 class StartUp(models.Model):
 	account 				= models.ForeignKey(Account, on_delete=models.CASCADE)
+	email 					= models.EmailField(verbose_name="email", max_length=60,null=True,blank=True)
 	startup_name			= models.CharField(max_length=100,null=True,blank=True)
 	legal_entity			= models.CharField(max_length=100,null=True,blank=True)
 	founders_designation	= models.CharField(max_length=200,null=True,blank=True)
