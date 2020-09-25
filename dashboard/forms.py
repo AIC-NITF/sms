@@ -1,5 +1,5 @@
 from django import forms
-from useraccount.models import StartUp
+from useraccount.models import StartUp,Admin
 
 class StartUpForm(forms.ModelForm):
 
@@ -21,4 +21,17 @@ class StartUpForm(forms.ModelForm):
             'location'				    : forms.TextInput(attrs={'class':'form-control'}),
             'contact_no'				: forms.TextInput(attrs={'class':'form-control'}),
         }
-        
+
+class EmployeeForm(forms.ModelForm):
+
+            
+    class Meta:
+        model = Admin
+        exclude = ['account','employee_id','identity_proof']
+        fields = ('__all__')
+
+        widgets = {
+            'email'                     : forms.EmailInput(attrs={'class':'form-control'}),
+            'contact_no'				: forms.TextInput(attrs={'class':'form-control'}),
+            'designation'				: forms.TextInput(attrs={'class':'form-control'}),
+        }
