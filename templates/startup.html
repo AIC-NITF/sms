@@ -74,8 +74,8 @@
                             <a data-url="{% url 'employee_profile_edit' pk=evalue.pk %}" class="btn btn-light open-modal"
                                 data-toggle="modal" data-target="#exampleModalCenter"><i
                                     class="fas fa-edit fa-lg"></i></a>
-                            <a href=" " class="btn btn-light" data-toggle="modal" data-target="#deleteModal"><i
-                                    class="fas fa-trash fa-lg"></i></a>
+                            <span id="del{{evalue.pk}}" class="deletepr"><a id="delete{{evalue.pk}}" class="btn btn-light delete_btn" data-toggle="modal" data-target="#deleteModal"><i
+                                    class="fas fa-trash fa-lg"></i></a></span>
                         </div>
                     </td>
                 </tr>
@@ -136,8 +136,9 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST">{% csrf_token %}
+            <form method="POST" action="{% url 'delete_employee' %}">{% csrf_token %}
                 <div class="modal-body">
+                    <input type="hidden" id="foo" name="foo" />
                     <center><label for="inputDelete">Are You Sure You Want To Delete The Details ? ? ?</label><br>
                     <button type="submit"  class="btn btn-danger">Delete</button></center>
                 </div>
@@ -149,10 +150,16 @@
 {% endblock %}
 {% block js %}
 <script>
-$(".open-modal").on("click", function() {
+/* $(".open-modal").on("click", function() {
   $.ajax({
     url: $(this).attr("data-url")
   });
-});
+}); */
+$('.deletepr').on('click', 'a.delete_btn', function(){
+        console.log('clicked');
+        var idstr = this.id.slice(6,);
+        console.log(idstr);
+        $('#foo').val(idstr)
+    });
 </script>
 {% endblock %}

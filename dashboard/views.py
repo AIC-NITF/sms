@@ -57,7 +57,10 @@ def employee_profile_edit(request,pk):
         print("abcd")
     return render(request,'startup.html',{'form':form})
 
-# def delete_employee(request):
-#     details = get_object_or_404(Admin, pk=pk)
-#     details.delete()
-#     return redirect('dashboard')
+def delete_employee(request):
+    if request.method == 'POST':
+        getpk = request.POST['foo']
+        print(getpk)
+        details = get_object_or_404(Admin,pk=int(getpk))
+        details.delete()
+        return redirect('dashboard')
