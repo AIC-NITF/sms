@@ -62,7 +62,7 @@
                 {% if account.is_superadmin == False and account.is_startup == False %}
                 {% for evalue in account.admin_set.all %}
                 <tr>
-                    <th scope="row">1</th>
+                    <th scope="row">{{forloop.counter}}</th>
                     <td><span id="fullname{{account.pk}}" >{{account.fullname}}</span></td>
                     <td><span id="designation{{evalue.pk}}" >{{evalue.designation}}</span></td>
                     <td><span id="employee_id{{evalue.pk}}" >{{evalue.employee_id}}</span></td>
@@ -71,7 +71,7 @@
                     
                     <td>
                         <div class="d-flex justify-content-center">
-                            <a data-url="{% url 'employee_profile_edit' pk=evalue.pk %}" class="btn btn-light open-modal"
+                            <a class="btn btn-light open-modal edit_admin" id="edit{{evalue.pk}}"
                                 data-toggle="modal" data-target="#exampleModalCenter"><i
                                     class="fas fa-edit fa-lg"></i></a>
                             <span id="del{{evalue.pk}}" class="deletepr"><a id="delete{{evalue.pk}}" class="btn btn-light delete_btn" data-toggle="modal" data-target="#deleteModal"><i
@@ -86,40 +86,41 @@
         </table>
     </div>
 </section>
-{{form}}
+
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
 
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Edit Employee Form</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle" style="font-weight:bold;color:tomato;">Edit Employee Form</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST">{% csrf_token %}
+            <form method="POST" action="{% url 'edit_emp_form' %}">{% csrf_token %}
                 <input type="hidden" class="" name="" id="">
                 <div class="modal-body">
-                    <!-- <div class="form-group">
+                <input type="hidden" id="pk_val" name="pk_val" value="">
+                     <div class="form-group">
                         <label for="inputDesignation4">Designation</label>
-                        <input type="text" name="designation" class="form-control" value="" id="inputDesignation4" placeholder="Designation">
+                        <input type="text" name="designation" class="form-control" id="inputDesignation4" placeholder="Designation">
                     </div>
                     <div class="form-group">
                         <label for="inputEmail4">Email</label>
-                        <input type="text" name="employee_id" class="form-control" value="{{form.email}}" id="inputEmp4" placeholder="Employee Id">
+                        <input type="text" name="email" class="form-control"  id="inputEmp4" placeholder="Employee Id">
                     </div>
                     <div class="form-group">
                         <label for="inputContactNo4">Contact No.</label>
-                        <input type="text" name="contact" class="form-control" value="{{form.contact_no}}" id="inputContactNo4" placeholder="Contact No.">
-                    </div> -->
-                    {{form.as_p}}
+                        <input type="text" name="contact" class="form-control"  id="inputContactNo4" placeholder="Contact No.">
+                    </div> 
                 </div>
-            </form>
+            
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Save changes</button>
             </div>
+            </form>
         </div>
 
     </div>
@@ -150,11 +151,6 @@
 {% endblock %}
 {% block js %}
 <script>
-/* $(".open-modal").on("click", function() {
-  $.ajax({
-    url: $(this).attr("data-url")
-  });
-}); */
 $('.deletepr').on('click', 'a.delete_btn', function(){
         console.log('clicked');
         var idstr = this.id.slice(6,);
@@ -162,4 +158,27 @@ $('.deletepr').on('click', 'a.delete_btn', function(){
         $('#foo').val(idstr)
     });
 </script>
+
+<script>
+    $(".edit_admin").on("click",function(){
+        
+        id = this.id;
+        pk = id.slice(4,);
+        des_id = "#designation" + pk;
+        designation = $(des_id).text();
+        $("#inputDesignation4").val(designation);
+        email_id = "#email" + pk;
+        email = $(email_id).text();
+        $("#inputEmp4").val(email);
+        contact_id = "#contact_no" + pk;
+        contact = $(contact_id).text();
+        $("#inputContactNo4").val(contact);
+
+        $("#pk_val").val(pk);
+        
+       
+        
+    });
+</script>
+
 {% endblock %}

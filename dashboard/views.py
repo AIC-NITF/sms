@@ -1,6 +1,6 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from useraccount.models import Account,Admin,StartUp
-from .forms import StartUpForm,EmployeeForm
+from .forms import StartUpForm
 
 
 # Create your views here.
@@ -40,23 +40,6 @@ def startup_profile_edit(request,pk):
         print(form," form")
     return render(request,'startup_edit_form.html',{'form':form})
 
-def employee_profile_edit(request,pk):
-    print("hello guyss",pk)
-    content = get_object_or_404(Admin,pk=pk)
-    print(content)
-    if request.method == 'POST':
-        form = EmployeeForm(request.POST,instance=content)
-        print(form) 
-        if form.is_valid():
-            content = form.save(commit=False)
-            content.save()
-            return redirect(dashboard)
-    else:
-        form = EmployeeForm(instance=content)
-        print(form," form")
-        print("abcd")
-    return render(request,'startup.html',{'form':form})
-
 def delete_employee(request):
     if request.method == 'POST':
         getpk = request.POST['foo']
@@ -64,3 +47,34 @@ def delete_employee(request):
         details = get_object_or_404(Admin,pk=int(getpk))
         details.delete()
         return redirect('dashboard')
+
+
+
+def edit_emp_form(request):
+
+    if request.method == "POST":
+        pk = request.POST['pk_val']
+        designation = request.POST['designation']
+        email = request.POST['email']
+        contact = request.POST['contact']
+
+        account = Admin.objects.get(pk=pk)
+
+        if designation:
+            designation = designation
+        else:
+            designation = ' '
+        
+        if email:
+            email = email
+        else:
+            email = ' '
+
+        if contact:
+            contact = contact
+        else:
+            contact = ' '
+
+        account.update_admin(email = email,designation = designation,contact_no = contact)
+    return redirect('dashboard')
+    

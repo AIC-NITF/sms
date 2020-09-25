@@ -76,6 +76,12 @@ class Admin(models.Model):
 	def __str__(self):
 		return self.designation
 
+	def update_admin(self,email,designation,contact_no):
+		self.email = email
+		self.designation = designation
+		self.contact_no = contact_no
+		self.save()
+
 class StartUp(models.Model):
 	account 				= models.ForeignKey(Account, on_delete=models.CASCADE)
 	email 					= models.EmailField(verbose_name="email", max_length=60,null=True,blank=True)
