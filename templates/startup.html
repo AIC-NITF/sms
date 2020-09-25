@@ -2,46 +2,181 @@
 
 {% block startup %}
 {% load static %}
-    <section id="team">
-        <div class="container my-3 py-5 text-center">
-            <div class="row mb-5 startup">
-                <div class="col mb-4">
-                    <h1>Start up</h1>
-                </div>
-            </div>
-
-            <div class="row">
-
-                {% for account in accounts %}
-                    {% if account.is_admin == False %}
-                        <div class="col-lg-4 col-md-6 startup-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <img src="{% static 'assets/images/client-1.jpg' %}" alt="#"
-                                        class="img-fluid rounded-circle mb-3">
-                                    <h3>{{account.username}}</h3>
-                                    <h5>lead writert</h5>
-                                    <div class="d-flex flex-row justify-content-center">
-                                        <div class="btn-container">
-                                            <!-- button -->
-                                            <a href="{% url 'startup_details' pk=account.pk %}" class="btn btn-danger" role="button">Get Report</a>
-                                        </div>
-                                    </div>
-                                    {% if account.is_startup %}
-                                    {% for stups in account.startup_set.all %}
-                                    <h5>{{stups.startup_name}}</h5>
-                                    <h5>{{stups.team_members}}</h5>
-                                    {% endfor %}
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-                
-
-                
+<section id="team">
+    <div class="container my-3 py-5 text-center">
+        <div class="row mb-5 startup">
+            <div class="col mb-4">
+                <h1>Start up</h1>
             </div>
         </div>
-    </section>
+
+        <div class="row">
+
+            {% for account in accounts %}
+            {% if account.is_admin == False %}
+            <div class="col-lg-4 col-md-6 startup-card">
+                <div class="card">
+                    <div class="card-body">
+                        <img src="{% static 'assets/images/client-1.jpg' %}" alt="#"
+                            class="img-fluid rounded-circle mb-3">
+                        {% for val in account.startup_set.all %}
+                        <h3>{{val.startup_name}}</h3>
+                        <h5>lead writert</h5>
+                        {% endfor %}
+                        <div class="d-flex flex-row justify-content-center">
+                            <div class="btn-container">
+                                <!-- button -->
+                                <a href="{% url 'profile' pk=account.pk %}" class="btn btn-danger" role="button">Get
+                                    Report</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+
+
+
+        </div>
+    </div>
+</section>
+<hr>
+<section>
+    <h1 class="section-head">Our Employee</h1>
+    <div class="table-responsive-lg">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">SLNO.</th>
+                    <th scope="col">NAME</th>
+                    <th scope="col">DESIGNATION</th>
+                    <th scope="col">EMPLOYEE ID</th>
+                    <th scope="col">EMAIL</th>
+                    <th scope="col">CONTACT</th>
+                    <th scope="col">EDIT/DELETE</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for account in accounts %}
+                {% if account.is_superadmin == False and account.is_startup == False %}
+                {% for evalue in account.admin_set.all %}
+                <tr>
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td><span id="fullname{{account.pk}}" >{{account.fullname}}</span></td>
+                    <td><span id="designation{{evalue.pk}}" >{{evalue.designation}}</span></td>
+                    <td><span id="employee_id{{evalue.pk}}" >{{evalue.employee_id}}</span></td>
+                    <td><span id="email{{evalue.pk}}" >{{evalue.email}}</span></td>
+                    <td><span id="contact_no{{evalue.pk}}" >{{evalue.contact_no}}</span></td>
+                    
+                    <td>
+                        <div class="d-flex justify-content-center">
+                            <a data-url="{% url 'employee_profile_edit' pk=evalue.pk %}" class="btn btn-light open-modal edit_admin" id="edit{{evalue.pk}}"
+                                data-toggle="modal" data-target="#exampleModalCenter"><i
+                                    class="fas fa-edit fa-lg"></i></a>
+                            <a href=" " class="btn btn-light" data-toggle="modal" data-target="#deleteModal"><i
+                                    class="fas fa-trash fa-lg"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle" style="font-weight:bold;color:tomato;">Edit Employee Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{% url 'edit_emp_form' %}">{% csrf_token %}
+                <input type="hidden" class="" name="" id="">
+                <div class="modal-body">
+                <input type="hidden" id="pk_val" name="pk_val" value="">
+                     <div class="form-group">
+                        <label for="inputDesignation4">Designation</label>
+                        <input type="text" name="designation" class="form-control" id="inputDesignation4" placeholder="Designation">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail4">Email</label>
+                        <input type="text" name="email" class="form-control"  id="inputEmp4" placeholder="Employee Id">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputContactNo4">Contact No.</label>
+                        <input type="text" name="contact" class="form-control"  id="inputContactNo4" placeholder="Contact No.">
+                    </div> 
+                </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Delete Employee Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST">{% csrf_token %}
+                <div class="modal-body">
+                    <center><label for="inputDelete">Are You Sure You Want To Delete The Details ? ? ?</label><br>
+                    <button type="submit"  class="btn btn-danger">Delete</button></center>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+$(".open-modal").on("click", function() {
+  $.ajax({
+    url: $(this).attr("data-url")
+  });
+});
+</script>
+
+<script>
+    $(".edit_admin").on("click",function(){
+        
+        id = this.id;
+        pk = id.slice(4,);
+        des_id = "#designation" + pk;
+        designation = $(des_id).text();
+        $("#inputDesignation4").val(designation);
+        email_id = "#email" + pk;
+        email = $(email_id).text();
+        $("#inputEmp4").val(email);
+        contact_id = "#contact_no" + pk;
+        contact = $(contact_id).text();
+        $("#inputContactNo4").val(contact);
+
+        $("#pk_val").val(pk);
+        
+       
+        
+    });
+</script>
+
 {% endblock %}

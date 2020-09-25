@@ -63,7 +63,10 @@ h3 {
     background-color: #fff;
     color: #777;
 }
-
+/* employee details(Admin)*/
+#content > div > section:nth-child(4) > .section-head{
+    text-align: center;
+}
 @media only screen and (max-width: 768px) {
 
     /* For mobile phones: */
