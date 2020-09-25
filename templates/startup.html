@@ -27,6 +27,12 @@
                                             <a href="{% url 'startup_details' pk=account.pk %}" class="btn btn-danger" role="button">Get Report</a>
                                         </div>
                                     </div>
+                                    {% if account.is_startup %}
+                                    {% for stups in account.startup_set.all %}
+                                    <h5>{{stups.startup_name}}</h5>
+                                    <h5>{{stups.team_members}}</h5>
+                                    {% endfor %}
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
