@@ -78,3 +78,16 @@ def edit_emp_form(request):
         account.update_admin(email = email,designation = designation,contact_no = contact)
     return redirect('dashboard')
     
+#user profile
+def userprofile(request,pk):
+    details = get_object_or_404(Account,pk=pk)
+    print(details)
+    if details.is_superadmin:
+        return render(request,'user_profile.html',{'value':details})
+    elif details.is_admin:
+        val = details.admin_set.all()
+        print(val)
+        return render(request,'user_profile.html',{'value':val[0]})
+    else:
+        val = details.startup_set.all()
+        return render(request,'profile',{'value':val[0]})

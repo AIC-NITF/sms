@@ -51,8 +51,8 @@ def admin_register(request):
         admin = Admin.objects.create(account=user,designation=designation,email=email,employee_id=employee_id,contact_no=contact_no,identity_proof=identity_proof) 
         admin.save()
 
-        return redirect('index')
-    return redirect('index')
+        return redirect('dashboard')
+    return redirect('dashboard')
 
 def startup_register(request):
     if request.method == 'POST':
@@ -75,8 +75,17 @@ def startup_register(request):
         location = request.POST['location']
         contact_no = request.POST['contact']
 
-        startup = StartUp.objects.create(account=user,startup_name=startup_name,email=email,legal_entity=legal_entity,founders_designation=founders_designation,city=city,website=website,sector=sector,team_members=team_members,location=location,contact_no=contact_no) 
+        comp_identification_no = request.POST['comp_identification_no']
+        inubatee_level = request.POST['inubatee_level']
+        operational_model = request.POST['operational_model']
+        type_of_incubatee = request.POST['type_of_incubatee']
+        women_led_startup = request.POST['women_led_startup']
+        gov_program = request.POST['gov_program']
+        msme_registered = request.POST['msme_registered']
+        dspp_registered = request.POST['dspp_registered']
+
+        startup = StartUp.objects.create(account=user,startup_name=startup_name,email=email,legal_entity=legal_entity,founders_designation=founders_designation,city=city,website=website,sector=sector,team_members=team_members,location=location,contact_no=contact_no,comp_identification_no=comp_identification_no,inubatee_level=inubatee_level,operational_model=operational_model,type_of_incubatee=type_of_incubatee,women_led_startup=women_led_startup,gov_program=gov_program,msme_registered=msme_registered,dspp_registered=dspp_registered) 
         startup.save()
 
-        return redirect('index')
-    return redirect('index') 
+        return redirect('dashboard')
+    return redirect('dashboard') 

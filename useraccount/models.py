@@ -95,7 +95,26 @@ class StartUp(models.Model):
 	location				= models.CharField(max_length=100,null=True,blank=True)
 	contact_no				= models.CharField(max_length=100,null=True,blank=True)
 
+	comp_identification_no  = models.CharField(max_length=100,null=True,blank=True)
+	inubatee_level			= models.CharField(max_length=100,null=True,blank=True)
+	operational_model		= models.CharField(max_length=100,null=True,blank=True)
+	type_of_incubatee      	= models.CharField(max_length=50,null=True,blank=True)
+	women_led_startup 		= models.CharField(max_length=10,null=True,blank=True)
+	gov_program 			= models.CharField(max_length=100,null=True,blank=True)
+	msme_registered			= models.CharField(max_length=10,null=True,blank=True)
+	dspp_registered			= models.CharField(max_length=10,null=True,blank=True)
+
 	def __str__(self):
 		return self.startup_name
     
-    
+
+class Founder(models.Model):
+	startup  				= models.ForeignKey(StartUp, on_delete=models.CASCADE)
+	name 					= models.CharField(max_length=100,null=True,blank=True)
+	gender 					= models.CharField(max_length=10,null=True,blank=True)
+	email 					= models.CharField(max_length=100,null=True,blank=True)
+	contact_no 				= models.CharField(max_length=20,null=True,blank=True)
+
+
+	def __str__(self):
+		return self.name

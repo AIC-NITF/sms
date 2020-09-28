@@ -166,6 +166,7 @@ $('.deletepr').on('click', 'a.delete_btn', function(){
         pk = id.slice(4,);
         des_id = "#designation" + pk;
         designation = $(des_id).text();
+        console.log(designation);
         $("#inputDesignation4").val(designation);
         email_id = "#email" + pk;
         email = $(email_id).text();
