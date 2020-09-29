@@ -131,3 +131,9 @@ class TeamMembers(models.Model):
 
 	def __str__(self):
 		return self.startup.startup_name +" " +self.email
+	
+	def update_team_member(self,email,designation,contact_no):
+		self.email = email
+		self.designation = designation
+		self.contact_no = contact_no
+		self.save()

@@ -95,21 +95,53 @@ def userprofile(request,pk):
 
 def add_new_team_member(request):
     if request.method == 'POST':
-        pk = request.POST['pk_val']
-        print(pk)
         user = request.user
         startup_obj = user.startup_set.all()[0]
-        print(startup_obj)
         name = request.POST['name']
-        print(name)
         gender = request.POST['gender']
-        print(gender)
         email = request.POST['email']
         contact_no = request.POST['contact']
         designation = request.POST['designation']
 
         team_member = TeamMembers.objects.create(startup=startup_obj,name=name,gender=gender,email=email,contact_no=contact_no,designation=designation)
         team_member.save()
-        return redirect('profile',pk=pk)
+        return redirect('profile',pk=user.pk)
         
+
+def delete_team_member(request):
+    if request.method == 'POST':
+        user = request.user
+        getpk = request.POST['foo']
+        print(getpk)
+        details = get_object_or_404(TeamMembers,pk=int(getpk))
+        details.delete()
+        return redirect('profile',pk=user.pk)
+
+def edit_team_member(request):
+
+    if request.method == "POST":
+        user = request.user
+        pk = request.POST['pk_val']
+        designation = request.POST['designation']
+        email = request.POST['email']
+        contact = request.POST['contact']
+        print(pk,"=============================================")
+        account = TeamMembers.objects.get(pk=pk)
+
+        if designation:
+            designation = designation
+        else:
+            designation = ' '
         
+        if email:
+            email = email
+        else:
+            email = ' '
+
+        if contact:
+            contact = contact
+        else:
+            contact = ' '
+
+        account.update_team_member(email = email,designation = designation,contact_no = contact)
+    return redirect('profile',pk=user.pk)

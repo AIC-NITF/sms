@@ -99,17 +99,31 @@
                     <th scope="col">Gender</th>
                     <th scope="col">Email</th>
                     <th scope="col">Contact No.</th>
+                    {% if user.is_startup %}
+                    <th scope="col">Edit/Delete</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
                 {% for member in members %}
                 <tr>
                     <th scope="row">{{ forloop.counter }}</th>
-                    <td>{{member.name}}</td>
-                    <td>{{member.designation}}</td>
-                    <td>{{member.gender}}</td>
-                    <td>{{member.email}}</td>
-                    <td>{{member.contact_no}}</td>
+                    <td id="name{{member.pk}}">{{member.name}}</td>
+                    <td id="designation{{member.pk}}">{{member.designation}}</td>
+                    <td id="gender{{member.pk}}">{{member.gender}}</td>
+                    <td id="email{{member.pk}}">{{member.email}}</td>
+                    <td id="contact_no{{member.pk}}">{{member.contact_no}}</td>
+                    {% if user.is_startup %}
+                    <td>
+                        <div class="d-flex justify-content-center">
+                            <a class="btn edit_team" id="edit{{member.pk}}"
+                                data-toggle="modal" data-target="#editmodel"><i
+                                    class="fas fa-edit fa-lg"></i></a>
+                            <a id="delete{{member.pk}}" class="btn delete_btn" data-toggle="modal" data-target="#deletemodal"><i
+                                    class="fas fa-trash fa-lg"></i></a>
+                        </div>
+                    </td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
             </tbody>
@@ -130,7 +144,6 @@
                 </div>
                 <form method="POST" action="{% url 'add_new_team_member' %}">{% csrf_token %}
                     <div class="modal-body">
-                        <input type="hidden" id="pk_val" name="pk_val" value="">
                         <div class="form-group">
                             <label for="inputName4">Name</label>
                             <input type="text" name="name" class="form-control" id="inputName4" placeholder="Name">
@@ -169,17 +182,96 @@
     </div>
 
 
+    <div class="modal fade" id="editmodel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle" style="font-weight:bold;color:tomato;">Edit Employee Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{% url 'edit_team_member' %}">{% csrf_token %}
+                <input type="hidden" class="" name="" id="">
+                <div class="modal-body">
+                <input type="hidden" id="pk_val" name="pk_val" value="">
+                     <div class="form-group">
+                        <label for="inputDesignation14">Designation</label>
+                        <input type="text" name="designation" class="form-control" id="inputDesignation14" placeholder="Designation">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail14">Email</label>
+                        <input type="text" name="email" class="form-control"  id="inputEmail14" placeholder="Employee Id">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputContactNo14">Contact No.</label>
+                        <input type="text" name="contact" class="form-control"  id="inputContactNo14" placeholder="Contact No.">
+                    </div> 
+                </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Delete Employee Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{% url 'delete_team_member' %}">{% csrf_token %}
+                <div class="modal-body">
+                    <input type="hidden" id="foo" name="foo" />
+                    <center><label for="inputDelete">Are You Sure You Want To Delete The Details ? ? ?</label><br>
+                    <button type="submit"  class="btn btn-danger">Delete</button></center>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
 {% endblock %}
 {% block js %}
     <script src="{% static 'profile/js/main.js' %}"></script>
     <script>
 
-        $(".add_team").on("click", function () {
+        $(".edit_team").on("click",function(){
+        
+        id = this.id;
+        pk = id.slice(4,);
 
-            id = this.id;
-            pk = id.slice(3);
-            $("#pk_val").val(pk);
-        });
+        des_id = "#designation" + pk;
+        designation = $(des_id).text();
+        console.log(designation);
+        $("#inputDesignation14").val(designation);
+        email_id = "#email" + pk;
+        email = $(email_id).text();
+        $("#inputEmail14").val(email);
+        contact_id = "#contact_no" + pk;
+        contact = $(contact_id).text();
+        $("#inputContactNo14").val(contact);
 
+        $("#pk_val").val(pk);
+    });
+    $('.delete_btn').on('click', function(){
+        console.log('clicked');
+        var idstr = this.id.slice(6,);
+        console.log(idstr);
+        $('#foo').val(idstr)
+    });
     </script>
 {% endblock %}
