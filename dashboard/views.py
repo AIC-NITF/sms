@@ -1,5 +1,5 @@
 from django.shortcuts import render,get_object_or_404,redirect
-from useraccount.models import Account,Admin,StartUp
+from useraccount.models import Account,Admin,StartUp,TeamMembers
 from .forms import StartUpForm
 
 
@@ -21,8 +21,10 @@ def startup_form(request):
 def profile(request,pk):
     details = get_object_or_404(Account, pk=pk)
     val = details.startup_set.all()
+    val2 = val[0].teammembers_set.all()
+    print(val2)
     print(val[0])
-    return render(request,'profile.html',{'value':val[0]})
+    return render(request,'profile.html',{'value':val[0],'members':val2})
 
 def startup_profile_edit(request,pk):
     print("hello guyss",pk)
@@ -89,5 +91,25 @@ def userprofile(request,pk):
         print(val)
         return render(request,'user_profile.html',{'value':val[0]})
     else:
-        val = details.startup_set.all()
-        return render(request,'profile',{'value':val[0]})
+        return redirect('profile',pk=pk)
+
+def add_new_team_member(request):
+    if request.method == 'POST':
+        pk = request.POST['pk_val']
+        print(pk)
+        user = request.user
+        startup_obj = user.startup_set.all()[0]
+        print(startup_obj)
+        name = request.POST['name']
+        print(name)
+        gender = request.POST['gender']
+        print(gender)
+        email = request.POST['email']
+        contact_no = request.POST['contact']
+        designation = request.POST['designation']
+
+        team_member = TeamMembers.objects.create(startup=startup_obj,name=name,gender=gender,email=email,contact_no=contact_no,designation=designation)
+        team_member.save()
+        return redirect('profile',pk=pk)
+        
+        

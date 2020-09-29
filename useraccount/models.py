@@ -103,6 +103,7 @@ class StartUp(models.Model):
 	gov_program 			= models.CharField(max_length=100,null=True,blank=True)
 	msme_registered			= models.CharField(max_length=10,null=True,blank=True)
 	dspp_registered			= models.CharField(max_length=10,null=True,blank=True)
+	legal_entity_register   = models.CharField(max_length=100,null=True,blank=True)
 
 	def __str__(self):
 		return self.startup_name
@@ -118,3 +119,15 @@ class Founder(models.Model):
 
 	def __str__(self):
 		return self.name
+
+class TeamMembers(models.Model):
+	startup  				= models.ForeignKey(StartUp, on_delete=models.CASCADE)
+	name 					= models.CharField(max_length=100,null=True,blank=True)
+	gender 					= models.CharField(max_length=10,null=True,blank=True)
+	email 					= models.CharField(max_length=100,null=True,blank=True)
+	contact_no 				= models.CharField(max_length=20,null=True,blank=True)
+	designation				= models.CharField(max_length=20,null=True,blank=True)
+
+
+	def __str__(self):
+		return self.startup.startup_name +" " +self.email

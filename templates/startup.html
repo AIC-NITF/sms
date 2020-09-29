@@ -62,7 +62,7 @@
                 {% if account.is_superadmin == False and account.is_startup == False %}
                 {% for evalue in account.admin_set.all %}
                 <tr>
-                    <th scope="row">{{forloop.counter}}</th>
+                    <th scope="row">{{forloop.parentloop.counter}}</th>
                     <td><span id="fullname{{account.pk}}" >{{account.fullname}}</span></td>
                     <td><span id="designation{{evalue.pk}}" >{{evalue.designation}}</span></td>
                     <td><span id="employee_id{{evalue.pk}}" >{{evalue.employee_id}}</span></td>
