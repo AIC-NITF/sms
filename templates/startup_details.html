@@ -49,16 +49,16 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li id="dashboard" class="nav-item check">
+            <!-- <li id="dashboard" class="nav-item check">
                 <a class="nav-link" href="{% url 'dashboard' %}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
-            </li>
+            </li> -->
 
             <!-- Divider -->
-            <hr class="sidebar-divider">
+            <!-- <hr class="sidebar-divider"> -->
             <li id="profile" class="nav-item active check">
-                <a class="nav-link" href="{% url 'admin_form' %}" data-target="#collapseTwo" aria-expanded="true"
+                <a class="nav-link" href="{% url 'profile' pk=user.pk %}" data-target="#collapseTwo" aria-expanded="true"
                     aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-user"></i>
                     <span>Profile</span>
@@ -74,7 +74,7 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li id="monitor" class="nav-item check">
-                <a class="nav-link" href="{% url 'admin_form' %}" data-target="#collapseTwo" aria-expanded="true"
+                <a class="nav-link" href="{% url 'monitor_sheet' %}" data-target="#collapseTwo" aria-expanded="true"
                     aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-paste"></i>
                     <span>Monitor Sheet</span>
@@ -83,7 +83,7 @@
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li id="traction" class="nav-item check">
-                <a class="nav-link collapsed" href="{% url 'startup_form' %}" data-target="#collapseUtilities"
+                <a class="nav-link collapsed" href="{% url 'traction_sheet' %}" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-sticky-note"></i>
                     <span>Traction Sheet</span>
@@ -91,7 +91,7 @@
             </li>
 
             <li id="mom" class="nav-item check">
-                <a class="nav-link collapsed" href="{% url 'startup_form' %}" data-target="#collapseUtilities"
+                <a class="nav-link collapsed" href="{% url 'minute_of_meeting' %}" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-sticky-note"></i>
                     <span>Minute Of Meeting</span>
@@ -313,8 +313,7 @@
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+                        {% block report_button %}{% endblock %}
                     </div>
 
                     <!-- Content Row -->

@@ -13,4 +13,10 @@ urlpatterns = [
     
     path('delete_team_member',views.delete_team_member,name='delete_team_member'),
     path('edit_team_member',views.edit_team_member,name='edit_team_member'),
+
+    path('monitor_sheet/',views.monitor_sheet,name='monitor_sheet'),
+    path('traction_sheet/',views.traction_sheet,name='traction_sheet'),
+    path('minute_of_meeting/',views.minute_of_meeting,name='minute_of_meeting'),
+
+    path('monitor_form/',views.monitor_form,name='monitor_form'),
 ]
