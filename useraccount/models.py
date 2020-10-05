@@ -87,7 +87,7 @@ class StartUp(models.Model):
 	email 					= models.EmailField(verbose_name="email", max_length=60,null=True,blank=True)
 	startup_name			= models.CharField(max_length=100,null=True,blank=True)
 	legal_entity			= models.CharField(max_length=100,null=True,blank=True)
-	founders_designation	= models.CharField(max_length=200,null=True,blank=True)
+	founders_designation	= models.CharField(max_length=2000,null=True,blank=True)
 	website					= models.CharField(max_length=100,null=True,blank=True)
 	city					= models.CharField(max_length=100,null=True,blank=True)
 	sector					= models.CharField(max_length=100,null=True,blank=True)
@@ -95,7 +95,108 @@ class StartUp(models.Model):
 	location				= models.CharField(max_length=100,null=True,blank=True)
 	contact_no				= models.CharField(max_length=100,null=True,blank=True)
 
+	comp_identification_no  = models.CharField(max_length=100,null=True,blank=True)
+	inubatee_level			= models.CharField(max_length=100,null=True,blank=True)
+	operational_model		= models.CharField(max_length=100,null=True,blank=True)
+	type_of_incubatee      	= models.CharField(max_length=50,null=True,blank=True)
+	women_led_startup 		= models.CharField(max_length=10,null=True,blank=True)
+	gov_program 			= models.CharField(max_length=100,null=True,blank=True)
+	msme_registered			= models.CharField(max_length=10,null=True,blank=True)
+	dspp_registered			= models.CharField(max_length=10,null=True,blank=True)
+	legal_entity_register   = models.CharField(max_length=100,null=True,blank=True)
+
 	def __str__(self):
 		return self.startup_name
     
-    
+
+class Founder(models.Model):
+	startup  				= models.ForeignKey(StartUp, on_delete=models.CASCADE)
+	name 					= models.CharField(max_length=100,null=True,blank=True)
+	gender 					= models.CharField(max_length=10,null=True,blank=True)
+	email 					= models.CharField(max_length=100,null=True,blank=True)
+	contact_no 				= models.CharField(max_length=200,null=True,blank=True)
+
+
+	def __str__(self):
+		return self.name
+
+class TeamMembers(models.Model):
+	startup  				= models.ForeignKey(StartUp, on_delete=models.CASCADE)
+	name 					= models.CharField(max_length=100,null=True,blank=True)
+	gender 					= models.CharField(max_length=10,null=True,blank=True)
+	email 					= models.CharField(max_length=100,null=True,blank=True)
+	contact_no 				= models.CharField(max_length=200,null=True,blank=True)
+	designation				= models.CharField(max_length=200,null=True,blank=True)
+
+
+	def __str__(self):
+		return self.startup.startup_name +" " +self.email
+	
+	def update_team_member(self,email,designation,contact_no):
+		self.email = email
+		self.designation = designation
+		self.contact_no = contact_no
+		self.save()
+
+
+
+
+class MonitorSheet(models.Model):
+	connect_startup			      	= models.ForeignKey(StartUp, on_delete=models.CASCADE)
+	company_name					= models.CharField(max_length=100,null=True,blank=True)
+	lead_entreprenure				= models.CharField(max_length=100,null=True,blank=True)
+	designation 					= models.CharField(max_length=100,null=True,blank=True)
+	address 						= models.CharField(max_length=2000,null=True,blank=True)
+	website 						= models.CharField(max_length=100,null=True,blank=True)
+	email							= models.CharField(max_length=100,null=True,blank=True)
+	contact_no						= models.CharField(max_length=20,null=True,blank=True)
+	product_service					= models.CharField(max_length=200,null=True,blank=True)
+	industry						= models.CharField(max_length=200,null=True,blank=True)
+	competitors						= models.CharField(max_length=200,null=True,blank=True)
+	incubation_period				= models.CharField(max_length=200,null=True,blank=True)
+	chef_monitor					= models.CharField(max_length=200,null=True,blank=True)
+	share_holder_pattern			= models.CharField(max_length=200,null=True,blank=True)
+	authorized_capital_amount		= models.CharField(max_length=200,null=True,blank=True)
+	paid_up_capital_amount			= models.CharField(max_length=200,null=True,blank=True)
+	date_of_filling					= models.CharField(max_length=200,null=True,blank=True)
+	
+	mou								= models.CharField(max_length=200,null=True,blank=True)
+	incubation_fees					= models.CharField(max_length=200,null=True,blank=True)
+	chef_monitor_assign				= models.CharField(max_length=200,null=True,blank=True)
+	ssha_signed						= models.CharField(max_length=20,null=True,blank=True)
+	share_transferred				= models.CharField(max_length=200,null=True,blank=True)
+	share_certificates				= models.CharField(max_length=200,null=True,blank=True)
+	no_of_seats_taken				= models.CharField(max_length=200,null=True,blank=True)
+	rent_of_seats					= models.CharField(max_length=200,null=True,blank=True)
+	capital_invested				= models.CharField(max_length=200,null=True,blank=True)
+	status_of_registration			= models.CharField(max_length=200,null=True,blank=True)
+	current_traction				= models.CharField(max_length=200,null=True,blank=True)
+	status_of_product_service 		= models.CharField(max_length=200,null=True,blank=True)
+	status_of_operations 			= models.CharField(max_length=200,null=True,blank=True)
+	current_team_member 			= models.CharField(max_length=200,null=True,blank=True)
+	
+	ipr_status 						= models.CharField(max_length=200,null=True,blank=True)
+	sales 							= models.CharField(max_length=200,null=True,blank=True)
+	revenue 						= models.CharField(max_length=200,null=True,blank=True)
+	pipeline 						= models.CharField(max_length=200,null=True,blank=True)
+	current_client 					= models.CharField(max_length=200,null=True,blank=True)
+	profit_earned 					= models.CharField(max_length=200,null=True,blank=True)
+	new_team_member 				= models.CharField(max_length=200,null=True,blank=True)
+	no_of_employees 				= models.CharField(max_length=200,null=True,blank=True)
+	problem_faced 					= models.CharField(max_length=200,null=True,blank=True)
+	option 							= models.CharField(max_length=200,null=True,blank=True)
+	marketing 						= models.CharField(max_length=2000,null=True,blank=True)
+	helped 							= models.CharField(max_length=2000,null=True,blank=True)
+	remarks 						= models.CharField(max_length=2000,null=True,blank=True)
+	
+	name_date 						= models.CharField(max_length=200,null=True,blank=True)
+	feture_plan 					= models.CharField(max_length=2000,null=True,blank=True)
+	action 							= models.CharField(max_length=2000,null=True,blank=True)
+	required_help 					= models.CharField(max_length=2000,null=True,blank=True)
+
+
+	def __str__(self):
+		return self.company_name +" " +self.date_of_filling
+
+
+
