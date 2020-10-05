@@ -16,7 +16,7 @@ def dashboard(request):
         print(user)
         print(val)
         print(val2)
-        return render(request,'profile.html',{'value':val[0],'members':val2})
+        return render(request,'startup_info.html',{'value':val[0],'members':val2})
         
 def admin_form(request):
     return render(request,'admin_form.html')
@@ -30,7 +30,8 @@ def profile(request,pk):
     val2 = val[0].teammembers_set.all()
     print(val2)
     print(val[0])
-    return render(request,'profile.html',{'value':val[0],'members':val2})
+    print("=====================================================================")
+    return render(request,'startup_info.html',{'value':val[0],'members':val2})
 
 def startup_profile_edit(request,pk):
     print("hello guyss",pk)
