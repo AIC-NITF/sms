@@ -11,11 +11,12 @@
 
     <title>Dashboard</title>
     <!-- <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}"> -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'dashboard/css/startup.css' %}">
     <link rel="stylesheet" href="{% static 'profile/css/style.css' %}" />
     <link rel="shortcut icon" type="image/png" href="{% static 'assets/images/favicon.png' %}">
-    <link rel="stylesheet" href="{% static 'monitor/css/cardstyle.css' %}"/>
+    <link rel="stylesheet" href="{% static 'monitor/css/cardstyle.css' %}" />
 
     <!-- Custom fonts for this template-->
     <link href="{% static 'dashboard/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
@@ -48,27 +49,54 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            
+
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item check">
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="true"><i class="fas fa-fw fa-tachometer-alt"></i> Profile</a>
+                    <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+                        role="tab" aria-controls="v-pills-profile" aria-selected="true"><i
+                            class="fas fa-fw fa-tachometer-alt"></i> Profile</a>
                     <hr class="sidebar-divider">
                     <div class="sidebar-heading">
                         Report
                     </div>
-                    <a class="nav-link" id="v-pills-monitor-tab" data-toggle="pill" href="#v-pills-monitor" role="tab" aria-controls="v-pills-monitor" aria-selected="false"><i class="fas fa-fw fa-paste"></i> Monitor Sheet</a>
-                    <a class="nav-link" id="v-pills-traction-tab" data-toggle="pill" href="#v-pills-traction" role="tab" aria-controls="v-pills-traction" aria-selected="false"><i class="fas fa-fw fa-sticky-note"></i> Traction Sheet</a>
-                    <a class="nav-link" id="v-pills-minute-tab" data-toggle="pill" href="#v-pills-minute" role="tab" aria-controls="v-pills-minute" aria-selected="false"><i class="fas fa-fw fa-sticky-note"></i> Minute Of Meeting</a>
-                  </div>
+
+                    <!-- <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-fw fa-wrench"></i>
+                        <span>Monotor Report</span>
+                      </a>
+                      
+                      <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                          <h6 class="collapse-header">Custom Utilities:</h6>
+                          <a class="collapse-item nav" id="v-pills-monitor-tab" data-toggle="pill" href="#v-pills-monitor" role="tab"
+                          aria-controls="v-pills-monitor" aria-selected="false"><i class="fas fa-fw fa-paste"></i> Monitor
+                          Sheet</a>
+                          <a class="collapse-item nav" id="v-pills-monitor-form-tab" data-toggle="pill" href="#v-pills-monitor-form" role="tab"
+                          aria-controls="v-pills-monitor-form" aria-selected="false"><i class="fas fa-fw fa-paste"></i> Monitor
+                          Form</a>
+                        </div>
+                      </div> -->
+
+
+                    <a class="nav-link" id="v-pills-monitor-tab" data-toggle="pill" href="#v-pills-monitor" role="tab"
+                        aria-controls="v-pills-monitor" aria-selected="false"><i class="fas fa-fw fa-paste"></i> Monitor
+                        Sheet</a>
+                    <a class="nav-link" id="v-pills-traction-tab" data-toggle="pill" href="#v-pills-traction" role="tab"
+                        aria-controls="v-pills-traction" aria-selected="false"><i class="fas fa-fw fa-sticky-note"></i>
+                        Traction Sheet</a>
+                    <a class="nav-link" id="v-pills-minute-tab" data-toggle="pill" href="#v-pills-minute" role="tab"
+                        aria-controls="v-pills-minute" aria-selected="false"><i class="fas fa-fw fa-sticky-note"></i>
+                        Minute Of Meeting</a>
+                </div>
             </li>
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
         </ul>
-        
+
         <!-- End of Sidebar -->
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -272,13 +300,15 @@
                 <!-- End of Topbar -->
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+
                     <div class="tab-content" id="v-pills-tabContent">
-                        <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                        <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel"
+                            aria-labelledby="v-pills-profile-tab">
 
                             <div id="preloder">
                                 <div class="loader"></div>
                             </div>
-    
+
                             <div class="home-five-style">
                                 <!-- Header section start -->
                                 <header class="header-section">
@@ -298,14 +328,15 @@
                                             {% elif user.is_startup %}
                                             <div class="col-md-5 offset-md-2">
                                                 <a class="float-right add_team" id="add{{user.pk}}" data-toggle="modal"
-                                                    data-target="#addnewteam" href=""><i class="fas fa-edit fa-lg"></i></a>
+                                                    data-target="#addnewteam" href=""><i
+                                                        class="fas fa-edit fa-lg"></i></a>
                                             </div>
                                             {% endif %}
                                         </div>
                                     </div>
                                 </header>
                                 <!-- Header section end -->
-    
+
                                 <!-- Hero section start -->
                                 <section class="hero-section">
                                     <div class="container-fluid text-center">
@@ -316,7 +347,7 @@
                                     </div>
                                 </section>
                                 <!-- Hero section end -->
-    
+
                                 <!-- Resume section start -->
                                 <section class="resume-section with-bg spad">
                                     <div class="container-fluid">
@@ -324,26 +355,29 @@
                                             <h2 style="margin-bottom: 50px;">General Info</h2>
                                         </center>
                                         <div class="row">
-    
+
                                             <div class="col-md-5">
-    
+
                                                 <div class="hero-info">
                                                     <ul>
-                                                        <li><span>Name of Legal Entity : </span>{{value.legal_entity}}</li>
+                                                        <li><span>Name of Legal Entity : </span>{{value.legal_entity}}
+                                                        </li>
                                                         <li><span>Founders & Designation :
                                                             </span>{{value.founders_designation}}</li>
                                                         <li><span>Company Identification Number (CIN) :
                                                             </span>{{value.comp_identification_no}}</li>
-                                                        <li><span>Operational Model :</span>{{value.operational_model}}</li>
+                                                        <li><span>Operational Model :</span>{{value.operational_model}}
+                                                        </li>
                                                         <li><span>Women Led Startup : </span>{{value.women_led_startup}}
                                                         </li>
-                                                        <li><span>MSME registered : </span>{{value.msme_registered}}</li>
+                                                        <li><span>MSME registered : </span>{{value.msme_registered}}
+                                                        </li>
                                                         <li><span>E-mail : </span>{{value.email}}</li>
                                                         <li><span>Phone : </span>{{value.contact_no}}</li>
                                                         <li><span>Web Address : </span>{{value.website}}</li>
                                                     </ul>
                                                 </div>
-    
+
                                             </div>
                                             <div class="col-md-5 offset-sm-2">
                                                 <div class="hero-info">
@@ -357,63 +391,70 @@
                                                         </li>
                                                         <li><span>Type of Incubatee : </span>{{value.type_of_incubatee}}
                                                         </li>
-                                                        <li><span>Team Members & roles : </span>{{value.team_members}}</li>
-                                                        <li><span>DSPP registered : </span>{{value.dspp_registered}}</li>
+                                                        <li><span>Team Members & roles : </span>{{value.team_members}}
+                                                        </li>
+                                                        <li><span>DSPP registered : </span>{{value.dspp_registered}}
+                                                        </li>
                                                         <li><span>Startup working towards any of the flagship government
                                                                 programmes :</span>{{value.gov_program}}</li>
                                                         <li><span>City : </span>{{value.city}}</li>
-                                                        <li><span>Current Location(working) : </span>{{value.location}}</li>
+                                                        <li><span>Current Location(working) : </span>{{value.location}}
+                                                        </li>
                                                     </ul>
                                                 </div>
-    
+
                                             </div>
-                                            <div style="width: 100%; border-bottom: 3px solid black; margin: 10px 0;"></div>
+                                            <div style="width: 100%; border-bottom: 3px solid black; margin: 10px 0;">
+                                            </div>
                                         </div>
                                         <div>
                                             <h3>Our Team Members</h3>
                                         </div>
-                                        <table class="table">
-                                            <thead class="thead-dark">
-                                                <tr>
-                                                    <th scope="col">SLNO</th>
-                                                    <th scope="col">Name</th>
-                                                    <th scope="col">Designation</th>
-                                                    <th scope="col">Gender</th>
-                                                    <th scope="col">Email</th>
-                                                    <th scope="col">Contact No.</th>
-                                                    {% if user.is_startup %}
-                                                    <th scope="col">Edit/Delete</th>
-                                                    {% endif %}
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% for member in members %}
-                                                <tr>
-                                                    <th scope="row">{{ forloop.counter }}</th>
-                                                    <td id="name{{member.pk}}">{{member.name}}</td>
-                                                    <td id="designation{{member.pk}}">{{member.designation}}</td>
-                                                    <td id="gender{{member.pk}}">{{member.gender}}</td>
-                                                    <td id="email{{member.pk}}">{{member.email}}</td>
-                                                    <td id="contact_no{{member.pk}}">{{member.contact_no}}</td>
-                                                    {% if user.is_startup %}
-                                                    <td>
-                                                        <div class="d-flex justify-content-center">
-                                                            <a class="btn edit_team" id="edit{{member.pk}}"
-                                                                data-toggle="modal" data-target="#editmodel"><i
-                                                                    class="fas fa-edit fa-lg"></i></a>
-                                                            <a id="delete{{member.pk}}" class="btn delete_btn"
-                                                                data-toggle="modal" data-target="#deletemodal"><i
-                                                                    class="fas fa-trash fa-lg"></i></a>
-                                                        </div>
-                                                    </td>
-                                                    {% endif %}
-                                                </tr>
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
+                                        <div class="table-responsive-lg">
+                                            <table class="table">
+                                                <thead class="thead-dark">
+                                                    <tr>
+                                                        <th scope="col">SLNO</th>
+                                                        <th scope="col">Name</th>
+                                                        <th scope="col">Designation</th>
+                                                        <th scope="col">Gender</th>
+                                                        <th scope="col">Email</th>
+                                                        <th scope="col">Contact No.</th>
+                                                        {% if user.is_startup %}
+                                                        <th scope="col">Edit/Delete</th>
+                                                        {% endif %}
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for member in members %}
+                                                    <tr>
+                                                        <th scope="row">{{ forloop.counter }}</th>
+                                                        <td id="name{{member.pk}}">{{member.name}}</td>
+                                                        <td id="designation{{member.pk}}">{{member.designation}}</td>
+                                                        <td id="gender{{member.pk}}">{{member.gender}}</td>
+                                                        <td id="email{{member.pk}}">{{member.email}}</td>
+                                                        <td id="contact_no{{member.pk}}">{{member.contact_no}}</td>
+                                                        {% if user.is_startup %}
+                                                        <td>
+                                                            <div class="d-flex justify-content-center">
+                                                                <a class="btn edit_team" id="edit{{member.pk}}"
+                                                                    data-toggle="modal" data-target="#editmodel"><i
+                                                                        class="fas fa-edit fa-lg"></i></a>
+                                                                <a id="delete{{member.pk}}" class="btn delete_btn"
+                                                                    data-toggle="modal" data-target="#deletemodal"><i
+                                                                        class="fas fa-trash fa-lg"></i></a>
+                                                            </div>
+                                                        </td>
+                                                        {% endif %}
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+
                                     </div>
                                 </section>
-    
+
                                 <div class="modal fade" id="addnewteam" tabindex="-1" role="dialog"
                                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -422,16 +463,18 @@
                                                 <h5 class="modal-title" id="exampleModalCenterTitle"
                                                     style="font-weight:bold;color:tomato;">Add New
                                                     Team Member</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form method="POST" action="{% url 'add_new_team_member' %}">{% csrf_token %}
+                                            <form method="POST" action="{% url 'add_new_team_member' %}">
+                                                {% csrf_token %}
                                                 <div class="modal-body">
                                                     <div class="form-group">
                                                         <label for="inputName4">Name</label>
-                                                        <input type="text" name="name" class="form-control" id="inputName4"
-                                                            placeholder="Name">
+                                                        <input type="text" name="name" class="form-control"
+                                                            id="inputName4" placeholder="Name">
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="inputDesignation4">Designation/Post</label>
@@ -442,7 +485,8 @@
                                                         <label for="inputDIPPRegistration4"
                                                             style="margin-right: 5%;">Gender</label><br>
                                                         <select name="gender" class="custom-select col-md-12">
-                                                            <option selected="selected" disabled>Choose From below:</option>
+                                                            <option selected="selected" disabled>Choose From below:
+                                                            </option>
                                                             <option value="Male">Male</option>
                                                             <option value="Female">Female</option>
                                                             <option value="Others">Others</option>
@@ -468,17 +512,18 @@
                                         </div>
                                     </div>
                                 </div>
-    
-    
+
+
                                 <div class="modal fade" id="editmodel" tabindex="-1" role="dialog"
                                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
-    
+
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="exampleModalLongTitle"
                                                     style="font-weight:bold;color:tomato;">Edit Employee Form</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
@@ -502,7 +547,7 @@
                                                             id="inputContactNo14" placeholder="Contact No.">
                                                     </div>
                                                 </div>
-    
+
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
                                                         data-dismiss="modal">Close</button>
@@ -510,19 +555,21 @@
                                                 </div>
                                             </form>
                                         </div>
-    
+
                                     </div>
                                 </div>
-    
+
                                 <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog"
                                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
-    
+
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLongTitle">Delete Employee Details
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Delete Employee
+                                                    Details
                                                 </h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
@@ -536,95 +583,140 @@
                                                 </div>
                                             </form>
                                         </div>
-    
+
                                     </div>
                                 </div>
                             </div>
 
 
                         </div>
-                        <div class="tab-pane fade" id="v-pills-monitor" role="tabpanel" aria-labelledby="v-pills-monitor-tab">
-
-                            <h3>Monitor Sheet</h3>
+                        <!--monitor sheet -->
+                        <div class="tab-pane fade" id="v-pills-monitor" role="tabpanel"
+                            aria-labelledby="v-pills-monitor-tab">
+                            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                <h3>Monitor sheet</h3>
+                                {% if user.is_startup %}
+                                <a href="{% url 'monitor_form' %}"
+                                    class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                        class="fas fa-download fa-sm text-white-50"></i> Generate Monitor Report</a>
+                                {% endif %}
+                            </div>
+                            {% for value in values %}
+                            <div class="courses-container">
+                                <div class="course">
+                                    <div class="course-preview">
+                                        <h6>Course</h6>
+                                        <h2>Month {{ forloop.counter }}</h2>
+                                        <a href=" # ">View all chapters <i class="fas fa-chevron-right"></i></a>
+                                    </div>
+                                    <div class="course-info">
+                                        <h6>Chapter 4</h6>
+                                        <h2>Monitor Sheet{{ forloop.counter }}</h2>
+                                        <a href="{% url 'monitor_report' pk=value.pk %}" class="btn1">View Report</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
                         </div>
-                        <div class="tab-pane fade" id="v-pills-traction" role="tabpanel" aria-labelledby="v-pills-traction-tab"><h1>Traction Sheet</h1> Culpa dolor voluptate do laboris laboris irure reprehenderit id incididunt duis pariatur mollit aute magna pariatur consectetur. Eu veniam duis non ut dolor deserunt commodo et minim in quis laboris ipsum velit id veniam. Quis ut consectetur adipisicing officia excepteur non sit. Ut et elit aliquip labore Lorem enim eu. Ullamco mollit occaecat dolore ipsum id officia mollit qui esse anim eiusmod do sint minim consectetur qui.</div>
-                        <div class="tab-pane fade" id="v-pills-minute" role="tabpanel" aria-labelledby="v-pills-minute-tab"><h1>Minute Of Meeting</h1> Culpa dolor voluptate do laboris laboris irure reprehenderit id incididunt duis pariatur mollit aute magna pariatur consectetur. Eu veniam duis non ut dolor deserunt commodo et minim in quis laboris ipsum velit id veniam. Quis ut consectetur adipisicing officia excepteur non sit. Ut et elit aliquip labore Lorem enim eu. Ullamco mollit occaecat dolore ipsum id officia mollit qui esse anim eiusmod do sint minim consectetur qui.</div>
-                      </div>
-                </div>
-                    <!-- End of Content Wrapper -->
-                </div>
-                <!-- End of Page Wrapper -->
-
-                <!-- Scroll to Top Button-->
-                <a class="scroll-to-top rounded" href="#page-top">
-                    <i class="fas fa-angle-up"></i>
-                </a>
-                <!-- Logout Modal-->
-                <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">×</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">Select "Logout" below if you are ready to end your current session.
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
-                            </div>
+                        <!-- Monitor Sheet End -->
+                        <!-- TRACTION REPORT -->
+                        <div class="tab-pane fade" id="v-pills-traction" role="tabpanel"
+                            aria-labelledby="v-pills-traction-tab">
+                            <h1>Traction Sheet</h1> Culpa dolor voluptate do laboris laboris irure reprehenderit id
+                            incididunt duis pariatur mollit aute magna pariatur consectetur. Eu veniam duis non ut dolor
+                            deserunt commodo et minim in quis laboris ipsum velit id veniam. Quis ut consectetur
+                            adipisicing officia excepteur non sit. Ut et elit aliquip labore Lorem enim eu. Ullamco
+                            mollit occaecat dolore ipsum id officia mollit qui esse anim eiusmod do sint minim
+                            consectetur qui.
+                        </div>
+                        <div class="tab-pane fade" id="v-pills-minute" role="tabpanel"
+                            aria-labelledby="v-pills-minute-tab">
+                            <h1>Minute Of Meeting</h1> Culpa dolor voluptate do laboris laboris irure reprehenderit id
+                            incididunt duis pariatur mollit aute magna pariatur consectetur. Eu veniam duis non ut dolor
+                            deserunt commodo et minim in quis laboris ipsum velit id veniam. Quis ut consectetur
+                            adipisicing officia excepteur non sit. Ut et elit aliquip labore Lorem enim eu. Ullamco
+                            mollit occaecat dolore ipsum id officia mollit qui esse anim eiusmod do sint minim
+                            consectetur qui.
                         </div>
                     </div>
                 </div>
+                <!-- End of Content Wrapper -->
+            </div>
+            <!-- End of Page Wrapper -->
 
-                <!-- Bootstrap core JavaScript-->
-                <!-- <script src="{% static 'dashboard/vendor/jquery/jquery.min.js' %}"></script> -->
-                <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-                <!-- <script src="{% static 'assets/js/bootstrap/js/bootstrap.min.js' %}"></script> -->
-                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-                <script src="{% static 'dashboard/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-                
+            <!-- Scroll to Top Button-->
+            <a class="scroll-to-top rounded" href="#page-top">
+                <i class="fas fa-angle-up"></i>
+            </a>
+            <!-- Logout Modal-->
+            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">Select "Logout" below if you are ready to end your current session.
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                            <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                <!-- Core plugin JavaScript-->
-                <script src="{% static 'dashboard/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+            <!-- Bootstrap core JavaScript-->
+            <!-- <script src="{% static 'dashboard/vendor/jquery/jquery.min.js' %}"></script> -->
+            <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+                integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+            <!-- <script src="{% static 'assets/js/bootstrap/js/bootstrap.min.js' %}"></script> -->
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+                integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+                crossorigin="anonymous"></script>
+            <script src="{% static 'dashboard/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
-                <!-- Custom scripts for all pages-->
-                <script src="{% static 'dashboard/js/sb-admin-2.min.js' %}"></script>
-                
 
-                <script src="{% static 'profile/js/main.js' %}"></script>
-                <script>
+            <!-- Core plugin JavaScript-->
+            <script src="{% static 'dashboard/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
 
-                    $(".edit_team").on("click", function () {
+            <!-- Custom scripts for all pages-->
+            <script src="{% static 'dashboard/js/sb-admin-2.min.js' %}"></script>
 
-                        id = this.id;
-                        pk = id.slice(4,);
 
-                        des_id = "#designation" + pk;
-                        designation = $(des_id).text();
-                        console.log(designation);
-                        $("#inputDesignation14").val(designation);
-                        email_id = "#email" + pk;
-                        email = $(email_id).text();
-                        $("#inputEmail14").val(email);
-                        contact_id = "#contact_no" + pk;
-                        contact = $(contact_id).text();
-                        $("#inputContactNo14").val(contact);
+            <script src="{% static 'profile/js/main.js' %}"></script>
+            <script>
 
-                        $("#pk_val").val(pk);
-                    });
-                    $('.delete_btn').on('click', function () {
-                        console.log('clicked');
-                        var idstr = this.id.slice(6,);
-                        console.log(idstr);
-                        $('#foo').val(idstr)
-                    });
-                </script>
+                $(".edit_team").on("click", function () {
 
-                
+                    id = this.id;
+                    pk = id.slice(4,);
+
+                    des_id = "#designation" + pk;
+                    designation = $(des_id).text();
+                    console.log(designation);
+                    $("#inputDesignation14").val(designation);
+                    email_id = "#email" + pk;
+                    email = $(email_id).text();
+                    $("#inputEmail14").val(email);
+                    contact_id = "#contact_no" + pk;
+                    contact = $(contact_id).text();
+                    $("#inputContactNo14").val(contact);
+
+                    $("#pk_val").val(pk);
+                });
+                $('.delete_btn').on('click', function () {
+                    console.log('clicked');
+                    var idstr = this.id.slice(6,);
+                    console.log(idstr);
+                    $('#foo').val(idstr)
+                });
+            </script>
+
+
 </body>
 
 </html>

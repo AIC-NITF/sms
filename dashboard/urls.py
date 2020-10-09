@@ -22,4 +22,5 @@ urlpatterns = [
     path('minute_of_meeting/',views.minute_of_meeting,name='minute_of_meeting'),
 
     path('monitor_form/',views.monitor_form,name='monitor_form'),
+    path('monitor_report/<int:pk>/',views.monitor_report,name='monitor_report'),
 ]

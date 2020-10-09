@@ -7,16 +7,20 @@ from .forms import StartUpForm
 def dashboard(request):
     accounts = Account.objects.all()
     user = request.user
+    admins = Admin.objects.all()
     if user.is_admin:
-        return render(request,'dashboard.html',{'accounts':accounts})
+        return render(request,'startup.html',{'accounts':accounts})
     else:
         user = request.user
-        val = user.startup_set.all()
-        val2 = val[0].teammembers_set.all()
+        startup_obj = user.startup_set.all()[0]
+        val2 = startup_obj.teammembers_set.all()
+        values = startup_obj.monitorsheet_set.all()
         print(user)
-        print(val)
+        print(user.pk)
+        print(startup_obj)
         print(val2)
-        return render(request,'startup_info.html',{'value':val[0],'members':val2})
+        print(values)
+        return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values})
         
 def admin_form(request):
     return render(request,'admin_form.html')
@@ -26,12 +30,12 @@ def startup_form(request):
 
 def profile(request,pk): 
     details = get_object_or_404(Account, pk=pk)
-    val = details.startup_set.all()
-    val2 = val[0].teammembers_set.all()
-    print(val2)
-    print(val[0])
+    startup_obj = details.startup_set.all()[0]
+    val2 = startup_obj.teammembers_set.all()
+    values = startup_obj.monitorsheet_set.all()
+    
     print("=====================================================================")
-    return render(request,'demo_startup_page.html',{'value':val[0],'members':val2})
+    return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values})
 
 def startup_profile_edit(request,pk):
     print("hello guyss",pk)
@@ -54,7 +58,9 @@ def delete_employee(request):
         getpk = request.POST['foo']
         print(getpk)
         details = get_object_or_404(Admin,pk=int(getpk))
-        details.delete()
+        main_account = details.account
+        print(main_account)
+        main_account.delete()
         return redirect('dashboard')
 
 
@@ -153,6 +159,15 @@ def edit_team_member(request):
         account.update_team_member(email = email,designation = designation,contact_no = contact)
     return redirect('profile',pk=user.pk)
 
+def monitor_report(request,pk):
+    monitor_sheet_obj = MonitorSheet.objects.get(pk=pk)
+    print(monitor_sheet_obj,"+++++++++++++++++++++++++++++++++++++")
+    return render(request,'monitor_report.html',{'monitor_report':monitor_sheet_obj})
+
+
+
+
+
 
 
 def monitor_sheet(request):
@@ -196,9 +211,12 @@ def monitor_form(request):
         date_of_filling = request.POST['date_of_filling']
         
         mou = request.POST['mou']
+        print(mou,"-------------------------------------------------")
+        mou_date = request.POST['mou_date']
         incubation_fees = request.POST['incubation_fees']
         chef_monitor_assign = request.POST['chef_monitor_assign']
         ssha_signed = request.POST['ssha_signed']
+        ssha_date = request.POST['ssha_date']
         share_transferred = request.POST['share_transferred']
         share_certificates = request.POST['share_certificates']
         no_of_seats_taken = request.POST['no_of_seats_taken']
@@ -230,11 +248,10 @@ def monitor_form(request):
         required_help = request.POST['required_help']
 
         monitor_report = MonitorSheet.objects.create(connect_startup=startup_obj,company_name=company_name,lead_entreprenure=lead_entreprenure,designation=designation,website=website,email=email,contact_no=contact_no,address=address,product_service=product_service,industry=industry,competitors=competitors,incubation_period=incubation_period,chef_monitor=chef_monitor,share_holder_pattern=share_holder_pattern,authorized_capital_amount=authorized_capital_amount,paid_up_capital_amount=paid_up_capital_amount,date_of_filling=date_of_filling,
-                                                      mou=mou,incubation_fees=incubation_fees,chef_monitor_assign=chef_monitor_assign,ssha_signed=ssha_signed,share_transferred=share_transferred,share_certificates=share_certificates,no_of_seats_taken=no_of_seats_taken,rent_of_seats=rent_of_seats,capital_invested=capital_invested,status_of_registration=status_of_registration,current_traction=current_traction,status_of_product_service=status_of_product_service,status_of_operations=status_of_operations,current_team_member=current_team_member,
+                                                      mou=mou,mou_date=mou_date,incubation_fees=incubation_fees,chef_monitor_assign=chef_monitor_assign,ssha_signed=ssha_signed,ssha_date=ssha_date,share_transferred=share_transferred,share_certificates=share_certificates,no_of_seats_taken=no_of_seats_taken,rent_of_seats=rent_of_seats,capital_invested=capital_invested,status_of_registration=status_of_registration,current_traction=current_traction,status_of_product_service=status_of_product_service,status_of_operations=status_of_operations,current_team_member=current_team_member,
                                                       ipr_status=ipr_status,sales=sales,revenue=revenue,pipeline=pipeline,current_client=current_client,profit_earned=profit_earned,new_team_member=new_team_member,no_of_employees=no_of_employees,problem_faced=problem_faced,option=option,marketing=marketing,helped=helped,remarks=remarks,
                                                        name_date=name_date,feture_plan=feture_plan,action=action,required_help=required_help)
         monitor_report.save()
-        return redirect('monitor_sheet')
-
+        return redirect('dashboard')
     else:
         return render(request,'monitor_form.html')

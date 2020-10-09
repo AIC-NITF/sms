@@ -70,6 +70,7 @@ class Admin(models.Model):
 	employee_id				= models.CharField(max_length=100,null=True,blank=True)
 	contact_no				= models.CharField(max_length=100,null=True,blank=True)
 	identity_proof			= models.CharField(max_length=100,null=True,blank=True)
+	admin_img				= models.ImageField(upload_to='images/',null=True,blank=True)
 
 	
 
@@ -104,6 +105,7 @@ class StartUp(models.Model):
 	msme_registered			= models.CharField(max_length=10,null=True,blank=True)
 	dspp_registered			= models.CharField(max_length=10,null=True,blank=True)
 	legal_entity_register   = models.CharField(max_length=100,null=True,blank=True)
+	startup_img				= models.ImageField(upload_to='images/',null=True,blank=True)
 
 	def __str__(self):
 		return self.startup_name
@@ -174,6 +176,8 @@ class MonitorSheet(models.Model):
 	status_of_product_service 		= models.CharField(max_length=200,null=True,blank=True)
 	status_of_operations 			= models.CharField(max_length=200,null=True,blank=True)
 	current_team_member 			= models.CharField(max_length=200,null=True,blank=True)
+	mou_date 						= models.CharField(max_length=50,null=True,blank=True)
+	ssha_date 						= models.CharField(max_length=50,null=True,blank=True)
 	
 	ipr_status 						= models.CharField(max_length=200,null=True,blank=True)
 	sales 							= models.CharField(max_length=200,null=True,blank=True)
@@ -197,6 +201,4 @@ class MonitorSheet(models.Model):
 
 	def __str__(self):
 		return self.company_name +" " +self.date_of_filling
-
-
 

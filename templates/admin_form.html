@@ -1,8 +1,8 @@
 {% extends 'dashboard.html' %}
 
-{% block startup %}
+{% block content %}
 
-<form method="POST" action="{% url 'admin_register' %}">{% csrf_token %}
+<form method="POST" action="{% url 'admin_register' %}" enctype="multipart/form-data">{% csrf_token %}
   <div class="row">
     <div class="form-group col-md-12">
       <label for="inputFullName4">Full Name</label>
@@ -45,6 +45,12 @@
     <div class="form-group col-md-6">
       <label for="inputIdentity4">Adhar Card/Pan Card No.</label>
       <input type="text" name="identity" class="form-control" id="inputIdentity4" placeholder="Adhar Card/Pan Card No.">
+    </div>
+
+
+    <div class="form-group col-md-6">
+      <label for="exampleFormControlFile1">Choose Image file</label>
+      <input type="file" name="admin_img" class="form-control-file" id="exampleFormControlFile1">
     </div>
 
 

@@ -1,11 +1,15 @@
 {% extends 'dashboard.html' %}
-{% block startup %}
+{% block content %}
 
-<form method="POST" action="{% url 'startup_register' %}">{% csrf_token %}
+<form method="POST" action="{% url 'startup_register' %}" enctype="multipart/form-data">{% csrf_token %}
   <div class="row">
     <div class="form-group col-md-12">
       <label for="inputStartUpName4">Name Of Start-Up :</label>
       <input type="text" name="startup_name" class="form-control" id="inputStartUpName4" placeholder="Name Of Start-Up">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="exampleFormControlFile1">Choose Image For startup</label>
+      <input type="file" name="startup_img" class="form-control-file" id="exampleFormControlFile1">
     </div>
     <div class="form-group col-md-6">
       <label for="inputTeamHead4">Head Of the Team/Founder :</label>

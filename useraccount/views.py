@@ -32,7 +32,7 @@ def logout(request):
 
 
 def admin_register(request):
-    if request.method == 'POST':
+    if request.method == 'POST' and request.FILES['admin_img']:
         full_name = request.POST['full_name']
         
         username = request.POST['username']
@@ -48,7 +48,10 @@ def admin_register(request):
         contact_no = request.POST['contact']
         identity_proof = request.POST['identity']
 
-        admin = Admin.objects.create(account=user,designation=designation,email=email,employee_id=employee_id,contact_no=contact_no,identity_proof=identity_proof) 
+        admin_img = request.FILES['admin_img']
+        print(admin_img,"====================================================")
+
+        admin = Admin.objects.create(account=user,designation=designation,email=email,employee_id=employee_id,contact_no=contact_no,identity_proof=identity_proof,admin_img=admin_img) 
         admin.save()
 
         return redirect('dashboard')
