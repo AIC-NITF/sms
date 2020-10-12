@@ -23,4 +23,7 @@ urlpatterns = [
 
     path('monitor_form/',views.monitor_form,name='monitor_form'),
     path('monitor_report/<int:pk>/',views.monitor_report,name='monitor_report'),
+    
+    path('allowedit/<int:pk>',views.allowedit,name='allowedit'),
+    path('monitor_sheet_edit/<int:pk>',views.monitor_sheet_edit,name='monitor_sheet_edit'),
 ]

@@ -21,6 +21,10 @@
             font-size: 17px;
             color: #fff;
         }
+
+        .bold_type {
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -307,19 +311,25 @@
                 </div>
                 <div class="form-group col-md-12">
                     <label for="inputAction">Course of action for next month</label>
-                    <textarea class="form-control" disabled value="{{monitor_report.action}}" name="action"
-                        id="inputAction" rows="3" placeholder="Course of action for next month"></textarea>
+                    <textarea disabled value="{{monitor_report.action}}" class="form-control" name="action"
+                        id="inputAction" rows="3"></textarea>
                 </div>
-                <div class="form-group col-md-12">
+                <div class="form-group overflow-auto col-md-12">
                     <label for="inputRequiredHelp">Help required from the Incubator for next month (Connects / Resources
                         etc.)</label>
-                    <input type="text" disabled value="{{monitor_report.required_help}}" class="form-control"
-                        name="required_help" id="inputRequiredHelp" rows="3">
+                    <input type="text" class="form-control input-lg" disabled value="{{monitor_report.required_help}}" >
 
                 </div>
             </div>
         </div>
         <button type="submit" onclick="printDiv('priantableArea')" class="btn btn-primary">Print</button>
+        {% if monitor_report.allow_edit == False and user.is_superadmin %}
+        <a href="{% url 'allowedit' pk=monitor_report.pk %}" class="btn btn-primary">Allow Edit</a>
+        {% endif %}
+
+        {% if monitor_report.allow_edit == True and user.is_startup %}
+        <a href="{% url 'monitor_sheet_edit' pk=monitor_report.pk %}" class="btn btn-primary">Edit</a>
+        {% endif %}
 
 
         <div class="container" style="display: none;" id="priantableArea">
@@ -327,279 +337,285 @@
             <div class="heading">
                 <p class="font-weight-bold">Monitor sheet</p>
             </div>
-
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="inputComp">Name of Company:</label>
+                    <label class="bold_type" for="inputComp">Name of Company:</label>
 
                 </div>
                 <div class="form-group col-md-6">{{monitor_report.company_name}}</div>
                 <div class="form-group col-md-6">
-                    <label for="inputentrepreneur">Name of Lead Entrepreneur:</label>
+                    <label class="bold_type" for="inputentrepreneur">Name of Lead Entrepreneur:</label>
 
                 </div>
                 <div class="form-group col-md-6">{{monitor_report.lead_entreprenure}}</div>
                 <div class="form-group col-md-6">
-                    <label for="inputDesignation">Designation:</label>
+                    <label class="bold_type" for="inputDesignation">Designation:</label>
                 </div>
                 <div class="form-group col-md-6">{{monitor_report.designation}}</div>
                 <div class="form-group col-md-6">
-                    <label for="inputurl">Website address:</label>
+                    <label class="bold_type" for="inputurl">Website address:</label>
 
                 </div>
                 <div class="form-group col-md-6">{{monitor_report.website}}</div>
                 <div class="form-group col-md-6">
-                    <label for="inputEmail4">Email:</label>
+                    <label class="bold_type" for="inputEmail4">Email:</label>
 
                 </div>
                 <div class="form-group col-md-6">{{monitor_report.email}}</div>
                 <div class="form-group col-md-6">
-                    <label for="inputphoneno">Phone nos.:</label>
+                    <label class="bold_type" for="inputphoneno">Phone nos.:</label>
 
                 </div>
                 <div class="form-group col-md-6">{{monitor_report.contact_no}}</div>
 
                 <div class="form-group col-md-6">
-                    <label for="inputAddress">Address(Write both if registered and communication addresses are
-                        different):</label>
+                    <label class="bold_type" for="inputAddress">Address(Write both if registered and communication
+                        addresses are different):</label>
 
                 </div>
                 <div class="form-group col-md-6">{{monitor_report.address}}</div>
                 <div class="form-group col-md-6">
-                    <label for="inputprod">Product / Service offering:</label>
+                    <label class="bold_type" for="inputprod">Product / Service offering:</label>
                 </div>
                 <div class="form-group col-md-6">{{monitor_report.product_service}}</div>
                 <div class="form-group col-md-6">
-                    <label for="inputIndustry">Industry:</label>
+                    <label class="bold_type" for="inputIndustry">Industry:</label>
 
                 </div>
                 <div class="form-group col-md-6">{{monitor_report.industry}}</div>
                 <div class="form-group col-md-6">
-                    <label for="inputCompetitors">Competitors:</label>
+                    <label class="bold_type" for="inputCompetitors">Competitors:</label>
 
                 </div>
                 <div class="form-group col-md-6">{{monitor_report.competitors}}</div>
                 <div class="form-group col-md-6">
-                    <label for="inputIncubationPeriod">Incubation Period (no. of months, starting date):</label>
+                    <label class="bold_type" for="inputIncubationPeriod">Incubation Period (no. of months, starting
+                        date):</label>
 
                 </div>
                 <div class="form-group col-md-6">{{monitor_report.incubation_period}}</div>
                 <div class="form-group col-md-6">
-                    <label for="inputChiefMentor">Chief Mentor:</label>
+                    <label class="bold_type" for="inputChiefMentor">Chief Mentor:</label>
 
                 </div>
                 <div class="form-group col-md-6">{{monitor_report.chef_monitor}}</div>
                 <div class="form-group col-md-6">
-                    <label for="inputShareHolderPattern">Share-holding pattern:</label>
+                    <label class="bold_type" for="inputShareHolderPattern">Share-holding pattern:</label>
 
                 </div>
                 <div class="form-group col-md-6">{{monitor_report.share_holder_pattern}}</div>
                 <div class="form-group col-md-6">
-                    <label for="inputAuthorisedCapitalAmount">Authorised capital amount:</label>
+                    <label class="bold_type" for="inputAuthorisedCapitalAmount">Authorised capital amount:</label>
 
                 </div>
                 <div class="form-group col-md-6">{{monitor_report.authorized_capital_amount}}</div>
                 <div class="form-group col-md-6">
-                    <label for="inputCapitalAmount">Paid-up capital amount:</label>
+                    <label class="bold_type" for="inputCapitalAmount">Paid-up capital amount:</label>
 
                 </div>
                 <div class="form-group col-md-6">{{monitor_report.paid_up_capital_amount}}</div>
                 <div class="form-group col-md-6">
-                    <label for="inputFillingDate">Date of filling this information:</label>
+                    <label class="bold_type" for="inputFillingDate">Date of filling this information:</label>
 
                 </div>
                 <div class="form-group col-md-6">{{monitor_report.date_of_filling}}</div>
-                </div>
-
-                <div class="heading">
-                    <p class="font-weight-bold">General INFO</p>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputMOU">MoU with AIC Nalanda signed:</label>
-
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.mou}}</div>
-                    <div class="form-group col-md-6">
-                        <label for="inputMouDate">MOU Submitted Date:</label>
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.mou_date}}</div>
-                    <div class="form-group col-md-6">
-                        <label for="inputIncubationFees">Incubation Fees paid Rs. (from date to date):</label>
-
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.incubation_fees}}</div>
-                    <div class="form-group col-md-6">
-                        <label for="inputChiefMentorAssign">Chief Mentor assigned:</label>
-
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.chef_monitor_assign}}</div>
-                    <div class="form-group col-md-6">
-                        <label for="inputSSHA">SSHA Signed:</label>
-
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.ssha_signed}}</div>
-                    <div class="form-group col-md-6">
-                        <label for="inputMouDate">SSHA Signed Date:</label>
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.ssha_date}}</div>
-                    <div class="form-group col-md-6">
-                        <label for="inputSharesTransferred">Shares transferred to Incubator:</label>
-
-                    </div>
-
-                    <div class="form-group col-md-6">{{monitor_report.share_transferred}}</div>
-                    <div class="form-group col-md-6">
-                        <label for="inputShareCertificate">Share certificates received by Incubator:</label>
-
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.share_certificates}}</div>
-                    <div class="form-group col-md-6">
-                        <label for="inputNoSeats">No. of seats taken at the Incubator (Current month):</label>
-
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.no_of_seats_taken}}</div>
-                    <div class="form-group col-md-6">
-                        <label for="inputRentForSeats">Rent for seats paid Rs. (from date to date) if
-                            any:</label>
-
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.rent_of_seats}}</div>
-
-                    <div class="form-group col-md-6">
-                        <label for="inputCapitalInvested">Capital invested so far:</label>
-
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.capital_invested}}</div>
-
-                    <div class="form-group col-md-6">
-                        <label for="inputRegistrationCompany">Status of Registration of the Company:</label>
-
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.status_of_registration}}</div>
-
-                    <div class="form-group col-md-6">
-                        <label for="inputStatusOfCurrentTraction">Status of Current traction at the time of
-                            joining Incubation:</label>
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.current_traction}}</div>
-                    <div class="form-group col-md-6">
-                        <label for="inputStatusOfProduct">Status of Product / Service at the time of joining
-                            Incubation:</label>
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.status_of_product_service}}</div>
-                    <div class="form-group col-md-6">
-                        <label for="inputStatusOfOperations">Status of operations:</label>
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.status_of_operations}}</div>
-                    <div class="form-group col-md-6">
-                        <label for="inputCurrentTeam">Current team members and roles:</label>
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.current_team_member}}</div>
-                </div>
-
-
-
-                <div class="heading">
-                    <p class="font-weight-bold">Specific Information month by month:</p>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputIPRStatus">IPR Status:</label>
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.ipr_status}}</div>
-                    <div class="form-group col-md-6">
-
-                        <label for="inputSales">Sales (units):</label>
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.sales}}</div>
-                    <div class="form-group col-md-6">
-                        <label for="inputRevenue">Revenue (Rs.): </label>
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.revenue}}</div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPipeline">Pipeline Deals / Other potential clients:</label>
-
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.pipeline}}</div>
-                    <div class="form-group col-md-6">
-                        <label for="inputCurrentClients">Current clients:</label>
-
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.current_client}}</div>
-                    <div class="form-group col-md-6">
-                        <label for="inputProfitLoss">Profit earned / Loss:</label>
-
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.profit_earned}}</div>
-                    <div class="form-group col-md-6">
-                        <label for="inputNewTeamMember">New Team members (Hiring, consultants, interns,
-                            contractual employees, if any):</label>
-
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.new_team_member}}</div>
-                    <div class="form-group col-md-6">
-                        <label for="inputNoOfEmployees">No. of employees (Including part time, consultants,
-                            etc):</label>
-
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.no_of_employees}}</div>
-                    <div class="form-group col-md-6">
-                        <label for="inputProblemsFaced">Problems faced (Describe any opportunity you may
-                            have missed):</label>
-
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.problem_faced}}</div>
-                    <div class="form-group col-md-6">
-                        <label for="inputOptions">Special gains / Opportunities gained / New connects
-                            made:</label>
-
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.option}}</div>
-                    <div class="form-group col-md-6">
-                        <label for="inputMarketing">Special / New Marketing efforts made (including
-                            exhibitions / events):</label>
-
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.marketing}}</div>
-                    <div class="form-group col-md-6">
-                        <label for="inputHelpped">How the incubator has helped?:</label>
-
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.helped}}</div>
-                    <div class="form-group col-md-6">
-                        <label for="inputRemarks">Any other Remarks by the Incubator team:</label>
-
-                    </div>
-                    <div class="form-group col-md-6">{{monitor_report.remarks}}</div>
-                </div>
-            
+            </div>
 
             <div class="heading">
-                <p class="font-weight-bold">Mentor Meetings</p>
+                <p class="font-weight-bold">General INFO</p>
             </div>
 
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="inputNameDate">Name and Date of last mentor meeting:</label>
+                    <label class="bold_type" for="inputMOU">MoU with AIC Nalanda signed:</label>
+
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.mou}}</div>
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputMouDate">MOU Submitted Date:</label>
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.mou_date}}</div>
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputIncubationFees">Incubation Fees paid Rs. (from date
+                        to date):</label>
+
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.incubation_fees}}</div>
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputChiefMentorAssign">Chief Mentor assigned:</label>
+
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.chef_monitor_assign}}</div>
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputSSHA">SSHA Signed:</label>
+
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.ssha_signed}}</div>
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputMouDate">SSHA Signed Date:</label>
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.ssha_date}}</div>
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputSharesTransferred">Shares transferred to
+                        Incubator:</label>
+
+                </div>
+
+                <div class="form-group col-md-6">{{monitor_report.share_transferred}}</div>
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputShareCertificate">Share certificates received by
+                        Incubator:</label>
+
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.share_certificates}}</div>
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputNoSeats">No. of seats taken at the Incubator (Current
+                        month):</label>
+
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.no_of_seats_taken}}</div>
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputRentForSeats">Rent for seats paid Rs. (from date to
+                        date) if any:</label>
+
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.rent_of_seats}}</div>
+
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputCapitalInvested">Capital invested so far:</label>
+
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.capital_invested}}</div>
+
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputRegistrationCompany">Status of Registration of the
+                        Company:</label>
+
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.status_of_registration}}</div>
+
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputStatusOfCurrentTraction">Status of Current traction
+                        at the time of joining Incubation:</label>
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.current_traction}}</div>
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputStatusOfProduct">Status of Product / Service at the
+                        time of joining Incubation:</label>
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.status_of_product_service}}</div>
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputStatusOfOperations">Status of operations:</label>
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.status_of_operations}}</div>
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputCurrentTeam">Current team members and roles:</label>
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.current_team_member}}</div>
+            </div>
+
+
+
+            <div class="heading">
+                <p class="font-weight-bold">Specific Information month by month:</p>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputIPRStatus">IPR Status:</label>
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.ipr_status}}</div>
+                <div class="form-group col-md-6">
+
+                    <label class="bold_type" for="inputSales">Sales (units):</label>
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.sales}}</div>
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputRevenue">Revenue (Rs.): </label>
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.revenue}}</div>
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputPipeline">Pipeline Deals / Other potential
+                        clients:</label>
+
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.pipeline}}</div>
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputCurrentClients">Current clients:</label>
+
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.current_client}}</div>
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputProfitLoss">Profit earned / Loss:</label>
+
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.profit_earned}}</div>
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputNewTeamMember">New Team members (Hiring,
+                        consultants, interns, contractual employees, if any):</label>
+
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.new_team_member}}</div>
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputNoOfEmployees">No. of employees (Including part
+                        time, consultants, etc):</label>
+
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.no_of_employees}}</div>
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputProblemsFaced">Problems faced (Describe any
+                        opportunity you may have missed):</label>
+
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.problem_faced}}</div>
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputOptions">Special gains / Opportunities gained /
+                        New connects made:</label>
+
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.option}}</div>
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputMarketing">Special / New Marketing efforts made
+                        (including exhibitions / events):</label>
+
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.marketing}}</div>
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputHelpped">How the incubator has helped?:</label>
+
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.helped}}</div>
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputRemarks">Any other Remarks by the Incubator
+                        team:</label>
+
+                </div>
+                <div class="form-group col-md-6">{{monitor_report.remarks}}</div>
+            </div>
+
+            <div class="heading">
+                <p class="font-weight-bold">Mentor Meetings</p>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label class="bold_type" for="inputNameDate">Name and Date of last mentor
+                        meeting:</label>
 
                 </div>
                 <div class="form-group col-md-6">{{monitor_report.name_date}}</div>
                 <div class="form-group col-md-6">
-                    <label for="inputFuturePlan">Future plan:</label>
+                    <label class="bold_type" for="inputFuturePlan">Future plan:</label>
 
                 </div>
                 <div class="form-group col-md-6">{{monitor_report.feture_plan}}</div>
                 <div class="form-group col-md-6">
-                    <label for="inputAction">Course of action for next month:</label>
+                    <label class="bold_type" for="inputAction">Course of action for next
+                        month:</label>
 
                 </div>
                 <div class="form-group col-md-6">{{monitor_report.action}}</div>
                 <div class="form-group col-md-6">
-                    <label for="inputRequiredHelp">Help required from the Incubator for next month
-                        (Connects / Resources etc.):</label>
+                    <label class="bold_type" for="inputRequiredHelp">Help required from the
+                        Incubator for next month (Connects / Resources etc.):</label>
 
                 </div>
                 <div class="form-group col-md-6">{{monitor_report.required_help}}</div>
@@ -608,16 +624,16 @@
         </div>
 
 
-<script>
-    function printDiv(divName){
-        var printContent = document.getElementById(divName).innerHTML;
-        var originalcontent = document.body.innerHTML;
+        <script>
+            function printDiv(divName) {
+                var printContent = document.getElementById(divName).innerHTML;
+                var originalcontent = document.body.innerHTML;
 
-        document.body.innerHTML=printContent;
-        window.print();
-        document.body.innerHTML=originalcontent;
-    }
-</script>
+                document.body.innerHTML = printContent;
+                window.print();
+                document.body.innerHTML = originalcontent;
+            }
+        </script>
 </body>
 
 </html>

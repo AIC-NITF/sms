@@ -1,6 +1,6 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet
-from .forms import StartUpForm
+from .forms import StartUpForm,MonitorSheetEditForm
 
 
 # Create your views here.
@@ -164,6 +164,30 @@ def monitor_report(request,pk):
     print(monitor_sheet_obj,"+++++++++++++++++++++++++++++++++++++")
     return render(request,'monitor_report.html',{'monitor_report':monitor_sheet_obj})
 
+def allowedit(request,pk):
+    monitor_report_obj = MonitorSheet.objects.get(pk=pk)
+    print(monitor_report_obj.allow_edit)
+    monitor_report_obj.allow_edit_option()
+    print(monitor_report_obj.allow_edit)
+    return redirect(monitor_report,pk=pk)
+
+
+
+def monitor_sheet_edit(request,pk):
+    content = get_object_or_404(MonitorSheet,pk=pk)
+    print(content)
+    if request.method == 'POST':
+        form = MonitorSheetEditForm(request.POST,instance=content)
+        print(form) 
+        if form.is_valid():
+            content = form.save(commit=False)
+            content.save()
+            content.not_allow_edit_option()
+            return redirect(dashboard)
+    else:
+        form = MonitorSheetEditForm(instance=content)
+        print(form," form")
+    return render(request,'edit_monitor_sheet.html',{'form':form})
 
 
 

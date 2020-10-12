@@ -198,7 +198,17 @@ class MonitorSheet(models.Model):
 	action 							= models.CharField(max_length=2000,null=True,blank=True)
 	required_help 					= models.CharField(max_length=2000,null=True,blank=True)
 
+	allow_edit 						= models.BooleanField(default=False)
+
 
 	def __str__(self):
 		return self.company_name +" " +self.date_of_filling
+
+	def allow_edit_option(self):
+		self.allow_edit = True
+		self.save()
+	
+	def not_allow_edit_option(self):
+		self.allow_edit = False
+		self.save()
 

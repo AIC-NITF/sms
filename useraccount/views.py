@@ -16,13 +16,19 @@ def login(request):
             print(user)
             print('valid username and password')
             auth.login(request,user)
-            return redirect("login")
+            return redirect("dashboard")
         else:
             print(user)
             print("invalid password or user name")
             return redirect('login')
     else:
-        return render(request,'index.html')
+        values = Account.objects.filter(is_admin=True)
+        print(values[1:],"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        imp_values = []
+        required_val = values[1:]
+        for i in required_val:
+            imp_values.append(i.admin_set.all()[0])
+        return render(request,'index.html',{'values':imp_values})
 
 
 def logout(request):
