@@ -64,7 +64,7 @@ def admin_register(request):
     return redirect('dashboard')
 
 def startup_register(request):
-    if request.method == 'POST':
+    if request.method == 'POST' and request.FILES['startup_img']:
         full_name = request.POST['full_name']
         username = request.POST['username']
         password = request.POST['password1']
@@ -92,7 +92,9 @@ def startup_register(request):
         gov_program = request.POST['gov_program']
         msme_registered = request.POST['msme_registered']
         dspp_registered = request.POST['dspp_registered']
-        legal_entity_register = request.POST['registrationdate']            
+        legal_entity_register = request.POST['registrationdate']          
+
+        startup_img = request.FILES['startup_img']  
 
         startup = StartUp.objects.create(account=user,startup_name=startup_name,email=email,legal_entity=legal_entity,founders_designation=founders_designation,city=city,website=website,sector=sector,team_members=team_members,location=location,contact_no=contact_no,comp_identification_no=comp_identification_no,inubatee_level=inubatee_level,operational_model=operational_model,type_of_incubatee=type_of_incubatee,women_led_startup=women_led_startup,gov_program=gov_program,msme_registered=msme_registered,dspp_registered=dspp_registered,legal_entity_register=legal_entity_register) 
         startup.save()

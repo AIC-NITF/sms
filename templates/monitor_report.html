@@ -29,7 +29,7 @@
 </head>
 
 <body>
-    <h1>Monitor Report</h1>
+    <h1>Monitor Sheet Report</h1>
     <div class="container-fluid container">
         <div class="heading">
             <p class="font-weight-bold">Monitor sheet</p>
@@ -69,8 +69,8 @@
             <div class="form-group col-md-12">
                 <label for="inputAddress">Address(Write both if registered and communication addresses are
                     different)</label>
-                <textarea class="form-control" disabled value="{{monitor_report.address}}" name="address"
-                    id="inputAddress" rows="3" placeholder="1234 Main St"></textarea>
+                <textarea class="form-control" disabled name="address"
+                    id="inputAddress" rows="3" placeholder="1234 Main St">{{monitor_report.address}}</textarea>
             </div>
             <div class="form-group col-md-6">
                 <label for="inputprod">Product / Service offering</label>
@@ -286,13 +286,13 @@
                 </div>
                 <div class="form-group col-md-12">
                     <label for="inputHelpped">How the incubator has helped?</label>
-                    <textarea class="form-control" disabled value="{{monitor_report.helped}}" name="helped"
-                        id="inputHelpped" rows="3" placeholder="How the incubator has helped?"></textarea>
+                    <textarea class="form-control" disabled name="helped"
+                        id="inputHelpped" rows="3" placeholder="How the incubator has helped?">{{monitor_report.helped}}</textarea>
                 </div>
                 <div class="form-group col-md-12">
                     <label for="inputRemarks">Any other Remarks by the Incubator team</label>
-                    <textarea class="form-control" disabled value="{{monitor_report.remarks}}" name="remarks"
-                        id="inputRemarks" rows="3" placeholder="Any other Remarks by the Incubator team"></textarea>
+                    <textarea class="form-control" disabled name="remarks"
+                        id="inputRemarks" rows="3" placeholder="Any other Remarks by the Incubator team">{{monitor_report.remarks}}</textarea>
                 </div>
             </div>
             <div class="heading">
@@ -306,18 +306,19 @@
                 </div>
                 <div class="form-group col-md-12">
                     <label for="inputFuturePlan">Future plan</label>
-                    <textarea class="form-control" disabled value="{{monitor_report.feture_plan}}" name="feture_plan"
-                        id="inputFuturePlan" rows="3" placeholder="How the incubator has helped?"></textarea>
+                    <textarea class="form-control" disabled name="feture_plan"
+                        id="inputFuturePlan" rows="3" placeholder="How the incubator has helped?">{{monitor_report.feture_plan}}</textarea>
                 </div>
                 <div class="form-group col-md-12">
                     <label for="inputAction">Course of action for next month</label>
-                    <textarea disabled value="{{monitor_report.action}}" class="form-control" name="action"
-                        id="inputAction" rows="3"></textarea>
+                    <textarea disabled class="form-control" name="action"
+                        id="inputAction" rows="3">{{monitor_report.action}}</textarea>
                 </div>
                 <div class="form-group overflow-auto col-md-12">
                     <label for="inputRequiredHelp">Help required from the Incubator for next month (Connects / Resources
                         etc.)</label>
-                    <input type="text" class="form-control input-lg" disabled value="{{monitor_report.required_help}}" >
+                        <textarea disabled class="form-control" id="inputAction" rows="3">{{monitor_report.required_help}}</textarea>
+                    
 
                 </div>
             </div>

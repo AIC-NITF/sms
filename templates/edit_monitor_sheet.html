@@ -105,6 +105,10 @@
                     {{ form.paid_up_capital_amount }}
                    
                 </div>
+                <div class="form-group col-md-6">
+                    <label for="inputFillingDate">Date of filling this information</label>
+                    {{ form.date_of_filling }}
+                </div>
                
         
         
@@ -114,7 +118,14 @@
         
                 <div class="form-row">
                     
-                   
+                    <div class="form-group col-md-3">
+                        <label for="inputMOU">MoU with AIC Nalanda signed</label>
+                        {{ form.mou }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="inputFillingDate">MOU Date</label>
+                        {{ form.mou_date }}
+                    </div>
                     <div class="form-group col-md-6">
                         <label for="inputIncubationFees">Incubation Fees paid Rs. (from date to date)</label> 
                         {{ form.incubation_fees }}
@@ -125,7 +136,22 @@
                         {{ form.chef_monitor_assign }}
                        
                     </div>
-                   
+                    <div class="form-group col-md-3">
+                        <label for="inputSSHA">SSHA Signed</label>
+                        {{ form.ssha_signed }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="inputFillingDate">SSHA Date</label>
+                        {{ form.ssha_date }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputSharesTransferred">Shares transferred to Incubator</label>
+                        {{ form.share_transferred }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputShareCertificate">Share certificates received by Incubator</label>
+                        {{ form.share_certificates }}
+                    </div>
                     <div class="form-group col-md-6">
                         <label for="inputNoSeats">No. of seats taken at the Incubator (Current month)</label> 
                         {{ form.no_of_seats_taken }}
