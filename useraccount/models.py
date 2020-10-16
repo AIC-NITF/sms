@@ -41,6 +41,7 @@ class Account(AbstractBaseUser):
 	is_superuser			= models.BooleanField(default=False)
 	is_superadmin 			= models.BooleanField(default=False)
 	is_startup 				= models.BooleanField(default=False)
+	is_adminstrator			= models.BooleanField(default=False)
 	
 
 
@@ -212,3 +213,19 @@ class MonitorSheet(models.Model):
 		self.allow_edit = False
 		self.save()
 
+
+
+class WorkGenerator(models.Model):
+	from_user					 = models.CharField(max_length=100,null=True,blank=True)
+	to                           = models.ForeignKey(Admin, on_delete=models.CASCADE)
+	date_of_creation			 = models.DateTimeField(verbose_name='date of creation', auto_now_add=True)	
+	title   					 = models.CharField(max_length=1000,null=True,blank=True)
+	work_description			 = models.CharField(max_length=2000,null=True,blank=True)
+	suggestions					 = models.CharField(max_length=1500,null=True,blank=True)
+	remarks						 = models.CharField(max_length=2000,null=True,blank=True)
+	closed						 = models.BooleanField(default=False)
+	pending 					 = models.BooleanField(default=False)
+
+
+	def __str__(self):
+		return self.title

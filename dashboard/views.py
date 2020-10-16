@@ -1,5 +1,5 @@
 from django.shortcuts import render,get_object_or_404,redirect
-from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet
+from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator
 from .forms import StartUpForm,MonitorSheetEditForm
 
 
@@ -8,8 +8,13 @@ def dashboard(request):
     accounts = Account.objects.all()
     user = request.user
     admins = Admin.objects.all()
-    if user.is_admin:
+    if user.is_superadmin:
         return render(request,'startup.html',{'accounts':accounts})
+    elif user.is_admin:
+        value = user.admin_set.all()[0]
+        print(value)
+        return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts})
+        
     else:
         user = request.user
         startup_obj = user.startup_set.all()[0]
@@ -21,7 +26,17 @@ def dashboard(request):
         print(val2)
         print(values)
         return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values})
-        
+
+def visit_startup(request):
+    accounts = Account.objects.all()
+    return render(request,'startup.html',{'accounts':accounts})
+
+def visit_employee(request,pk):
+    value = Admin.objects.get(pk=pk)
+    print(pk,"-------------------")
+    return render(request,'emp_dashboard.html',{'value':value})
+    
+
 def admin_form(request):
     return render(request,'admin_form.html')
 
@@ -279,3 +294,24 @@ def monitor_form(request):
         return redirect('dashboard')
     else:
         return render(request,'monitor_form.html')
+
+
+
+
+
+
+def generate_work(request):
+    if request.method == 'POST':
+        from_user = request.POST['from']
+        to = request.POST['to']
+        title = request.POST['title']
+        work_description = request.POST['work_description']
+        suggestions = request.POST['suggestions']
+        remarks = request.POST['remarks']
+        print(to)
+        obj = Admin.objects.get(pk=int(to))
+        print(obj,"=====================")
+        work = WorkGenerator.objects.create(from_user=from_user,to=obj,title=title,work_description=work_description,suggestions=suggestions,remarks=remarks)
+        work.save()
+        return redirect('dashboard')
+

@@ -26,4 +26,8 @@ urlpatterns = [
     
     path('allowedit/<int:pk>',views.allowedit,name='allowedit'),
     path('monitor_sheet_edit/<int:pk>',views.monitor_sheet_edit,name='monitor_sheet_edit'),
+
+    path('visit_startup/',views.visit_startup,name='visit_startup'),
+    path('generate_work/',views.generate_work,name='generate_work'),
+    path('visit_employee/<int:pk>/',views.visit_employee,name='visit_employee'),
 ]
