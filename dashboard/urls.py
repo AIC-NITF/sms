@@ -1,4 +1,8 @@
 from django.urls import path,include
+# from django.conf.urls import url
+# from django.conf import settings
+# from django.conf.urls.static import static
+# from django.views.static import serve
 from . import views
 urlpatterns = [
     path('',views.dashboard,name='dashboard'),
@@ -29,5 +33,12 @@ urlpatterns = [
 
     path('visit_startup/',views.visit_startup,name='visit_startup'),
     path('generate_work/',views.generate_work,name='generate_work'),
+    path('edit_work/',views.edit_work,name='edit_work'),
     path('visit_employee/<int:pk>/',views.visit_employee,name='visit_employee'),
+
+    path('start/<int:pk>/',views.start,name='start'),
+    path('completed/<int:pk>/',views.completed,name='completed'),
+
+    path('forward_work/',views.forward_work,name='forward_work'),
+    #url(r'^download/(?P<path>.*)$', serve, {'document root': settings.MEDIA_ROOT}),
 ]

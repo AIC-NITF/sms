@@ -398,32 +398,29 @@
                                                     <th scope="col">slno</th>
                                                     <th scope="col">Work Title</th>
                                                     <th scope="col">From</th>
+                                                    <th scope="col">To</th>
                                                     <th scope="col">Date</th>
                                                     <th scope="col">Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                {% for work in works %}
                                                 <tr>
-                                                    <th scope="row">1</th>
-                                                    <td>Mark</td>
-                                                    <td>Otto</td>
-                                                    <td>@mdo</td>
-                                                    <td>@mdo</td>
+                                                    <th scope="row">{{forloop.counter}}</th>
+                                                    <td><a class="work_link" id="work1{{work.pk}}" href="" data-toggle="modal"
+                                                            data-target="#DisplayModel{{work.pk}}"
+                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{work.title}}</a>
+                                                    </td>
+                                                    {% if user.is_adminstrator %}
+                                                    <td>{{user.fullname}}</td>
+                                                    {% else %}
+                                                    <td>{{work.from_user}}</td>
+                                                    {% endif %}
+                                                    <td>{{work.to.account.fullname}} ({{work.to}})</td>
+                                                    <td>{{work.date_of_creation}}</td>
+                                                    <td>{{work.status}} <br> {{work.date_of_complition}} </td>
                                                 </tr>
-                                                <tr>
-                                                    <th scope="row">2</th>
-                                                    <td>Jacob</td>
-                                                    <td>Thornton</td>
-                                                    <td>@fat</td>
-                                                    <td>@mdo</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">3</th>
-                                                    <td>Larry</td>
-                                                    <td>the Bird</td>
-                                                    <td>@mdo</td>
-                                                    <td>@twitter</td>
-                                                </tr>
+                                                {% endfor %}
                                             </tbody>
                                         </table>
                                     </div>
@@ -554,32 +551,22 @@
                                                     <th scope="col">slno</th>
                                                     <th scope="col">Work Title</th>
                                                     <th scope="col">From</th>
-                                                    <th scope="col">Date</th>
+                                                    <th scope="col">To</th>
                                                     <th scope="col">Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                {% for forward_msg in forwardwork %}
                                                 <tr>
-                                                    <th scope="row">1</th>
-                                                    <td>Mark</td>
-                                                    <td>Otto</td>
-                                                    <td>@mdo</td>
-                                                    <td>@mdo</td>
+                                                    <th scope="row">{{forloop.counter}}</th>
+                                                    <td><a class="work_link" id="work2{{forward_msg.forward_work.pk}}" href="" data-toggle="modal"
+                                                        data-target="#DisplayMode1{{forward_msg.forward_work.pk}}"
+                                                        style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{forward_msg.forward_work.title}}</a></td>
+                                                    <td>{{forward_msg.from_user}}</td>
+                                                    <td>{{forward_msg.to.account.fullname}}</td>
+                                                    <td>{{forward_msg.forward_work.status}}</td>
                                                 </tr>
-                                                <tr>
-                                                    <th scope="row">2</th>
-                                                    <td>Jacob</td>
-                                                    <td>Thornton</td>
-                                                    <td>@fat</td>
-                                                    <td>@mdo</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">3</th>
-                                                    <td>Larry</td>
-                                                    <td>the Bird</td>
-                                                    <td>@mdo</td>
-                                                    <td>@twitter</td>
-                                                </tr>
+                                                {% endfor %}
                                             </tbody>
                                         </table>
                                     </div>
@@ -614,13 +601,13 @@
                     </button>
                 </div>
 
-                <form method="POST" action="{% url 'generate_work' %}">{% csrf_token %}
+                <form method="POST" action="{% url 'generate_work' %}" enctype="multipart/form-data">{% csrf_token %}
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="inputFrom">From</label>
                             <select id="inputFrom" name="from" class="form-control">
                                 <option selected>Choose...</option>
-                                <option value="{{user.pk}}">Me</option>
+                                <option value="{{user.pk}}">{{user.fullname}}</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -630,7 +617,9 @@
                                 {% for account in accounts %}
                                 {% if account.is_superadmin == False and account.pk != user.pk %}
                                 {% for val in account.admin_set.all %}
-                                <option value="{{val.pk}}"><pre>{{account.fullname}} ({{val.designation}})</pre></option>
+                                <option value="{{val.pk}}">
+                                    <pre>{{account.fullname}} ({{val.designation}})</pre>
+                                </option>
                                 {% endfor %}
                                 {% endif %}
                                 {% endfor %}
@@ -656,6 +645,10 @@
                             <input type="text" name="remarks" class="form-control" id="inputRemarks"
                                 placeholder="Remarks/Comments">
                         </div>
+                        <div class="form-group">
+                            <label for="exampleFormDocument">Choose File To Upload</label>
+                            <input type="file" name="document" class="form-control-file" id="exampleFormDocument">
+                        </div>
                     </div>
 
                     <div class="modal-footer">
@@ -667,9 +660,228 @@
         </div>
     </div>
 
+    {% for work in works %}
+    <!-- Display Modal -->
+    <div class="modal fade" id="DisplayModel{{work.pk}}" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="display: inline-block; padding-bottom: 0; ">
+                    <h5 style="margin-bottom: 0;" id="staticBackdropLabel">Modal title{{work.pk}}</h5>
+                    {% if work.forwarded %}
+                    <h6 style="color: rgb(146, 146, 146);">forwarded from {{work.forwarded_from}} to {{work.forwarded_to}} </h6>
+                    {% else %}
+                    <h6 style="color: rgb(146, 146, 146);"> generated by {{work.from_user}} </h6>
+                    {% endif %}
+                    <button type="button" style="position: absolute; top: 15px; right: 15px;" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button> 
+                </div>
+               
+                <div class="modal-body">
+                    {% if user.is_adminstrator %}
+                    {% if work.status != "pending..." and work.status != "completed"  %}
+                    <div class="col-md-5 float-right">
+                        <a href="#" class="float-right work_edit" data-toggle="modal" data-target="#EditModel"
+                            id="work{{work.pk}}"><i class="fas fa-edit fa-lg"></i></a>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                    <div class="form-group">
+                        <label for="inputTitle4">Work Title</label>
+                        <label hidden id="workingtitle{{work.pk}}">{{work.title}}</label>
+                        <input type="text" name="title" disabled value="{{work.title}}" class="form-control"
+                            placeholder="Work title">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputWorkDescription">Work Description</label>
+                        <textarea class="form-control" name="work_description" disabled id="WorkDescription{{work.pk}}"
+                            rows="3" placeholder="Work Description">{{work.work_description}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputSuggestions">Suggestions</label>
+                        <textarea class="form-control" disabled name="suggestions" value="" id="Suggestions{{work.pk}}"
+                            rows="3" placeholder="suggestions">{{work.suggestions}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputRemarks">Remarks/Comments</label>
+                        <label hidden id="Remarks{{work.pk}}">{{work.remarks}}</label>
+                        <input type="text" name="remarks" disabled value="{{work.remarks}}" class="form-control"
+                            placeholder="Remarks/Comments">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormDocument">{{work.document}}</label><br>
+                        <a href="{{work.document}}" class="btn btn-primary" download="{{work.document}}">download</a>
+                    </div>
+                    {% if user.is_superadmin == False and user.is_adminstrator == False %}
+                    {% if work.status != "completed" and work.forwarded != True %}
+                    {% if work.status != "pending..." %}
+                    <a href="{% url 'start' pk=work.pk %}" class="btn btn-primary">Start</a>
+                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#reply">Return</a>
+                    <a href="" class="btn btn-warning" data-toggle="modal" data-target="#forward">Forward</a>
+                    {% endif %}
+                    <a href="{% url 'completed' pk=work.pk %}" class="btn btn-success">Completed</a>
+                    {% endif %}
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+    <!--edit model-->
+    <div class="modal fade" id="EditModel" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel" style="font-weight:bold;color:tomato;">
+                        Update Work/Job</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
 
+                <form method="POST" action="{% url 'edit_work' %}" enctype="multipart/form-data">{% csrf_token %}
+                    <div class="modal-body">
+                        <input type="hidden" id="pk_val" name="pk_val" value="">
+                        <div class="form-group">
+                            <label for="inputTitle4">Work Title</label>
+                            <input type="text" name="title" class="form-control" id="updateTitle1"
+                                placeholder="Work title">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputWorkDescription">Work Description</label>
+                            <textarea class="form-control" name="work_description" id="updateWorkDescription1" rows="3"
+                                placeholder="Work Description"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputSuggestions">Suggestions</label>
+                            <textarea class="form-control" name="suggestions" id="updateSuggestions1" rows="3"
+                                placeholder="suggestions"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputRemarks">Remarks/Comments</label>
+                            <input type="text" name="remarks" class="form-control" id="updateRemarks1"
+                                placeholder="Remarks/Comments">
+                        </div>
+                        <!-- <div class="form-group">
+                            <label for="exampleFormDocument">Choose File To Upload</label>
+                            <input type="file" name="document" class="form-control-file" id="exampleFormDocument">
+                        </div> -->
+                    </div>
 
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
+    <!--Forward Modal -->
+    <div class="modal fade" id="forward" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Forward</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'forward_work' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" id="pk_val1" name="pk_val" value="">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="inputFrom2">From</label>
+                                <select id="inputFrom2" name="from" class="form-control">
+                                    <option selected>Choose...</option>
+                                    <option value="{{user.pk}}">{{user.fullname}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputTo2">To</label>
+                                <select id="inputTo2" name="to" class="form-control">
+                                    <option selected>Choose...</option>
+                                    {% for account in accounts %}
+                                    {% if account.is_superadmin == False and account.pk != user.pk and account.is_adminstrator == False %}
+                                    {% for val in account.admin_set.all %}
+                                    <option value="{{val.pk}}">
+                                        <pre>{{account.fullname}} ({{val.designation}})</pre>
+                                    </option>
+                                    {% endfor %}
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputsuggestions2">Remarks/suggations</label>
+                                <textarea class="form-control" name="suggestions" id="inputsuggestions2"
+                                    rows="3" placeholder="Work Description"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Retuen Modal -->
+    <div class="modal fade" id="reply" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Return</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'generate_work' %}" enctype="multipart/form-data">{% csrf_token %}
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="inputFrom">From</label>
+                                <select id="inputFrom" name="from" class="form-control">
+                                    <option selected>Choose...</option>
+                                    <option value="{{user.pk}}">{{user.fullname}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputTo">To</label>
+                                <select id="inputTo" name="to" class="form-control">
+                                    <option selected>Choose...</option>
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputSuggestions">Suggestions</label>
+                                <textarea class="form-control" name="suggestions" id="inputSuggestions" rows="3"
+                                    placeholder="suggestions"></textarea>
+                            </div>
+                        </div>
+    
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -713,30 +925,47 @@
     <script src="{% static 'profile/js/main.js' %}"></script>
     <script>
 
-        $(".edit_team").on("click", function () {
+        $(".work_edit").on("click", function () {
 
             id = this.id;
             pk = id.slice(4,);
 
-            des_id = "#designation" + pk;
-            designation = $(des_id).text();
-            console.log(designation);
-            $("#inputDesignation14").val(designation);
-            email_id = "#email" + pk;
-            email = $(email_id).text();
-            $("#inputEmail14").val(email);
-            contact_id = "#contact_no" + pk;
-            contact = $(contact_id).text();
-            $("#inputContactNo14").val(contact);
+            title_id = "#workingtitle" + pk;
+            console.log(title_id);
+            updateTitle = $(title_id).text();
+            console.log(updateTitle);
+            $("#updateTitle1").val(updateTitle);
+
+            description_id = "#WorkDescription" + pk;
+            updateWorkDescription = $(description_id).text();
+            console.log(updateWorkDescription);
+            $("#updateWorkDescription1").val(updateWorkDescription);
+
+            suggestion_id = "#Suggestions" + pk;
+            updateSuggestions = $(suggestion_id).text();
+            $("#updateSuggestions1").val(updateSuggestions);
+
+            remarks_id = "#Remarks" + pk;
+            updateRemarks = $(remarks_id).text();
+            $("#updateRemarks1").val(updateRemarks);
 
             $("#pk_val").val(pk);
         });
-        $('.delete_btn').on('click', function () {
+
+
+        $(".work_link").on("click", function () {
+
+        id = this.id;
+        pk = id.slice(5,);
+        console.log(pk);
+        $("#pk_val1").val(pk);
+        });
+        /* $('.delete_btn').on('click', function () {
             console.log('clicked');
             var idstr = this.id.slice(6,);
             console.log(idstr);
             $('#foo').val(idstr)
-        });
+        }); */
     </script>
 
 

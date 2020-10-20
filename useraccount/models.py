@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.utils import timezone
 
 
 class MyAccountManager(BaseUserManager):
@@ -112,17 +113,6 @@ class StartUp(models.Model):
 		return self.startup_name
     
 
-class Founder(models.Model):
-	startup  				= models.ForeignKey(StartUp, on_delete=models.CASCADE)
-	name 					= models.CharField(max_length=100,null=True,blank=True)
-	gender 					= models.CharField(max_length=10,null=True,blank=True)
-	email 					= models.CharField(max_length=100,null=True,blank=True)
-	contact_no 				= models.CharField(max_length=200,null=True,blank=True)
-
-
-	def __str__(self):
-		return self.name
-
 class TeamMembers(models.Model):
 	startup  				= models.ForeignKey(StartUp, on_delete=models.CASCADE)
 	name 					= models.CharField(max_length=100,null=True,blank=True)
@@ -223,9 +213,52 @@ class WorkGenerator(models.Model):
 	work_description			 = models.CharField(max_length=2000,null=True,blank=True)
 	suggestions					 = models.CharField(max_length=1500,null=True,blank=True)
 	remarks						 = models.CharField(max_length=2000,null=True,blank=True)
-	closed						 = models.BooleanField(default=False)
-	pending 					 = models.BooleanField(default=False)
+	status 					 	 = models.CharField(max_length=20,null=True,blank=True)
+	document                     = models.FileField(upload_to='files',null=True,blank=True)
+	forwarded					 = models.BooleanField(default=False)
+	forwarded_from 				 = models.CharField(max_length=200,null=True,blank=True)
+	forwarded_to				 = models.CharField(max_length=200,null=True,blank=True)
+	date_of_complition			 = models.DateTimeField(blank=True, null=True)	
+	
 
 
 	def __str__(self):
 		return self.title
+
+	def update_work(self,title,work_description,suggestions,remarks):
+		self.title = title
+		self.work_description = work_description
+		self.suggestions = suggestions
+		self.remarks = remarks
+		self.save()
+
+	def change_status(self,status):
+		self.status = status
+		self.save()
+	def update_date(self):
+		self.date_of_complition = timezone.now()
+		self.save()
+	
+	def forward(self,from_user,to):
+		self.forwarded = True
+		self.forwarded_from = from_user
+		self.forwarded_to = to
+		self.save()
+
+class Forward(models.Model):
+	from_user				= models.CharField(max_length=100,null=True,blank=True)
+	to  					= models.ForeignKey(Admin, on_delete=models.CASCADE)
+	forward_work  			= models.ForeignKey(WorkGenerator,default="", on_delete=models.CASCADE)
+	suggestions				= models.CharField(max_length=200,null=True,blank=True)
+
+
+	def __str__(self):
+		return self.from_user +" " +self.to.account.fullname
+
+class Reply(models.Model):
+	from_user				= models.CharField(max_length=100,null=True,blank=True)
+	to  					= models.ForeignKey(WorkGenerator, on_delete=models.CASCADE)
+	messaage				= models.CharField(max_length=500,null=True,blank=True)
+
+	def __str__(self):
+		return self.from_user 
