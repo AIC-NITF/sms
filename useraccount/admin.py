@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Reply
+from .models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Return
 # Register your models here.
 admin.site.register(Account)
 admin.site.register(Admin)
@@ -8,4 +8,4 @@ admin.site.register(TeamMembers)
 admin.site.register(MonitorSheet)
 admin.site.register(WorkGenerator)
 admin.site.register(Forward)
-admin.site.register(Reply)
+admin.site.register(Return)

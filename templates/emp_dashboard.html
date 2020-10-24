@@ -202,7 +202,7 @@
                                 </h6>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="https://source.unsplash.com/fn_BT9fwg_E/60x60"
+                                        <img class="rounded-circle" src=""
                                             alt="">
                                         <div class="status-indicator bg-success"></div>
                                     </div>
@@ -214,7 +214,7 @@
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="https://source.unsplash.com/AU4VPcFN4LE/60x60"
+                                        <img class="rounded-circle" src=""
                                             alt="">
                                         <div class="status-indicator"></div>
                                     </div>
@@ -226,7 +226,7 @@
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="https://source.unsplash.com/CS2uCrpNzJY/60x60"
+                                        <img class="rounded-circle" src=""
                                             alt="">
                                         <div class="status-indicator bg-warning"></div>
                                     </div>
@@ -238,7 +238,7 @@
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
+                                        <img class="rounded-circle" src=""
                                             alt="">
                                         <div class="status-indicator bg-success"></div>
                                     </div>
@@ -349,6 +349,7 @@
                                         </div>
                                     </div>
                                 </section>
+                                <!-- Resume section start -->
                             </div>
                         </div>
                         <!--monitor sheet -->
@@ -367,25 +368,41 @@
                             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link active" id="pills-all-tab" data-toggle="pill" href="#pills-all"
-                                        role="tab" aria-controls="pills-all" aria-selected="true">ALL</a>
+                                        role="tab" aria-controls="pills-all" aria-selected="true">
+                                        {% if user.is_adminstrator %}Generated Work{% else %} My Work {% endif %} </a>
                                 </li>
+
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" id="pills-assigned-tab" data-toggle="pill"
+                                        href="#pills-assigned" role="tab" aria-controls="pills-assigned"
+                                        aria-selected="false">Assigned</a>
+                                </li>
+
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" id="pills-forwarded-tab" data-toggle="pill"
+                                        href="#pills-forwarded" role="tab" aria-controls="pills-forwarded"
+                                        aria-selected="false">Forwarded</a>
+                                </li>
+
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link" id="pills-pending-tab" data-toggle="pill" href="#pills-pending"
                                         role="tab" aria-controls="pills-pending" aria-selected="false">pending</a>
                                 </li>
+                                {% if user.is_adminstrator or value.account.is_adminstrator %}
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link" id="pills-closed-tab" data-toggle="pill" href="#pills-closed"
-                                        role="tab" aria-controls="pills-closed" aria-selected="false">closed</a>
+                                    <a class="nav-link" id="pills-forwarded_status-tab" data-toggle="pill"
+                                        href="#pills-forwarded_status" role="tab" aria-controls="pills-forwarded_status"
+                                        aria-selected="false">forwarded</a>
                                 </li>
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link" id="pills-returned-tab" data-toggle="pill"
                                         href="#pills-returned" role="tab" aria-controls="pills-returned"
                                         aria-selected="false">returned</a>
                                 </li>
+                                {% endif %}
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link" id="pills-forwarded-tab" data-toggle="pill"
-                                        href="#pills-forwarded" role="tab" aria-controls="pills-forwarded"
-                                        aria-selected="false">forwarded</a>
+                                    <a class="nav-link" id="pills-closed-tab" data-toggle="pill" href="#pills-closed"
+                                        role="tab" aria-controls="pills-closed" aria-selected="false">Completed</a>
                                 </li>
                             </ul>
                             <div class="tab-content" id="pills-tabContent">
@@ -407,8 +424,8 @@
                                                 {% for work in works %}
                                                 <tr>
                                                     <th scope="row">{{forloop.counter}}</th>
-                                                    <td><a class="work_link" id="work1{{work.pk}}" href="" data-toggle="modal"
-                                                            data-target="#DisplayModel{{work.pk}}"
+                                                    <td><a class="work_link" id="work1{{work.pk}}" href=""
+                                                            data-toggle="modal" data-target="#DisplayModel{{work.pk}}"
                                                             style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{work.title}}</a>
                                                     </td>
                                                     {% if user.is_adminstrator %}
@@ -418,7 +435,11 @@
                                                     {% endif %}
                                                     <td>{{work.to.account.fullname}} ({{work.to}})</td>
                                                     <td>{{work.date_of_creation}}</td>
-                                                    <td>{{work.status}} <br> {{work.date_of_complition}} </td>
+                                                    <td>{{work.status}} <br>
+                                                        {% if work.date_of_complition %}
+                                                        {{work.date_of_complition}}
+                                                        {% endif %}
+                                                    </td>
                                                 </tr>
                                                 {% endfor %}
                                             </tbody>
@@ -428,38 +449,73 @@
                                 <div class="tab-pane fade" id="pills-pending" role="tabpanel"
                                     aria-labelledby="pills-pending-tab">
                                     <div class="table-responsive-lg">
+                                        <h3>My Work Status</h3>
                                         <table class="table">
                                             <thead class="thead-dark">
                                                 <tr>
                                                     <th scope="col">slno</th>
                                                     <th scope="col">Work Title</th>
                                                     <th scope="col">From</th>
+                                                    <th scope="col">To</th>
                                                     <th scope="col">Date</th>
                                                     <th scope="col">Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                {% for pending in pending_status %}
                                                 <tr>
-                                                    <th scope="row">1</th>
-                                                    <td>Mark</td>
-                                                    <td>Otto</td>
-                                                    <td>@mdo</td>
-                                                    <td>@mdo</td>
+                                                    <th scope="row">{{forloop.counter}}</th>
+                                                    <td>
+                                                        <a class="pending_link" id="work4{{pending.pk}}" href=""
+                                                            data-toggle="modal"
+                                                            data-target="#DisplayModel4{{pending.pk}}"
+                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{pending.title}}</a>
+                                                    </td>
+                                                    <td>{{pending.from_user}}</td>
+                                                    <td>{{pending.to.account.fullname}}</td>
+                                                    <td>{{pending.date_of_creation}}</td>
+                                                    <td>{{pending.status}} <br>
+                                                        {% if pending.date_of_complition %}
+                                                        {{pending.date_of_complition}}
+                                                        {% endif %}
+                                                    </td>
                                                 </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <div class="table-responsive-lg">
+                                        <h3>Assigned Work Status</h3>
+                                        <table class="table">
+                                            <thead class="thead-dark">
                                                 <tr>
-                                                    <th scope="row">2</th>
-                                                    <td>Jacob</td>
-                                                    <td>Thornton</td>
-                                                    <td>@fat</td>
-                                                    <td>@mdo</td>
+                                                    <th scope="col">slno</th>
+                                                    <th scope="col">Work Title</th>
+                                                    <th scope="col">From</th>
+                                                    <th scope="col">To</th>
+                                                    <th scope="col">Receved Date</th>
+                                                    <th scope="col">Status</th>
                                                 </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for pending in assign_pending_status %}
                                                 <tr>
-                                                    <th scope="row">3</th>
-                                                    <td>Larry</td>
-                                                    <td>the Bird</td>
-                                                    <td>@mdo</td>
-                                                    <td>@twitter</td>
+                                                    <th scope="row">{{forloop.counter}}</th>
+                                                    <td>
+                                                        <a class="pending_link" id="work5{{pending.forward_work.pk}}" href=""
+                                                            data-toggle="modal"
+                                                            data-target="#DisplayModel5{{pending.forward_work.pk}}"
+                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{pending.forward_work.title}}</a>
+                                                    </td>
+                                                    <td>{{pending.from_user}}</td>
+                                                    <td>{{pending.to.account.fullname}}</td>
+                                                    <td>{{pending.date_of_forward}}</td>
+                                                    <td>{{pending.forward_work.status}}
+                                                    </td>
                                                 </tr>
+                                                {% endfor %}
                                             </tbody>
                                         </table>
                                     </div>
@@ -467,41 +523,81 @@
                                 <div class="tab-pane fade" id="pills-closed" role="tabpanel"
                                     aria-labelledby="pills-closed-tab">
                                     <div class="table-responsive-lg">
+                                        <h3>My Work Status</h3>
                                         <table class="table">
                                             <thead class="thead-dark">
                                                 <tr>
                                                     <th scope="col">slno</th>
                                                     <th scope="col">Work Title</th>
                                                     <th scope="col">From</th>
+                                                    <th scope="col">To</th>
                                                     <th scope="col">Date</th>
                                                     <th scope="col">Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                {% for completed in completed_status %}
                                                 <tr>
-                                                    <th scope="row">1</th>
-                                                    <td>Mark</td>
-                                                    <td>Otto</td>
-                                                    <td>@mdo</td>
-                                                    <td>@mdo</td>
+                                                    <th scope="row">{{forloop.counter}}</th>
+                                                    <td>
+                                                        <a class="pending_link" id="work6{{completed.pk}}" href=""
+                                                            data-toggle="modal"
+                                                            data-target="#DisplayModel6{{completed.pk}}"
+                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{completed.title}}</a>
+                                                    </td>
+                                                    <td>{{completed.from_user}}</td>
+                                                    <td>{{completed.to.account.fullname}}</td>
+                                                    <td>{{completed.date_of_creation}}</td>
+                                                    <td>{{completed.status}} <br>
+                                                        {% if completed.date_of_complition %}
+                                                        {{completed.date_of_complition}}
+                                                        {% endif %}
+                                                    </td>
                                                 </tr>
-                                                <tr>
-                                                    <th scope="row">2</th>
-                                                    <td>Jacob</td>
-                                                    <td>Thornton</td>
-                                                    <td>@fat</td>
-                                                    <td>@mdo</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">3</th>
-                                                    <td>Larry</td>
-                                                    <td>the Bird</td>
-                                                    <td>@mdo</td>
-                                                    <td>@twitter</td>
-                                                </tr>
+                                                {% endfor %}
                                             </tbody>
                                         </table>
                                     </div>
+                                    <br>
+                                    <br>
+                                    <div class="table-responsive-lg">
+                                        <h3>Assigned Work Status</h3>
+                                        <table class="table">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th scope="col">slno</th>
+                                                    <th scope="col">Work Title</th>
+                                                    <th scope="col">From</th>
+                                                    <th scope="col">To</th>
+                                                    <th scope="col">Assigned Date</th>
+                                                    <th scope="col">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for completed in assign_completed_status %}
+                                                <tr>
+                                                    <th scope="row">{{forloop.counter}}</th>
+                                                    <td>
+                                                        <a class="pending_link" id="work7{{completed.forward_work.pk}}" href=""
+                                                            data-toggle="modal"
+                                                            data-target="#DisplayModel7{{completed.forward_work.pk}}"
+                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{completed.forward_work.title}}</a>
+                                                    </td>
+                                                    <td>{{completed.from_user}}</td>
+                                                    <td>{{completed.to.account.fullname}}</td>
+                                                    <td>{{completed.date_of_forward}}</td>
+                                                    <td>{{completed.forward_work.status}} <br>
+                                                        {% if completed.forward_work.date_of_complition %}
+                                                        {{completed.forward_work.date_of_complition}}
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
                                 </div>
                                 <div class="tab-pane fade" id="pills-returned" role="tabpanel"
                                     aria-labelledby="pills-returned-tab">
@@ -542,6 +638,83 @@
                                         </table>
                                     </div>
                                 </div>
+
+                                <div class="tab-pane fade" id="pills-forwarded_status" role="tabpanel"
+                                    aria-labelledby="pills-forwarded_status-tab">
+                                    <div class="table-responsive-lg">
+                                        <table class="table">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th scope="col">slno</th>
+                                                    <th scope="col">Work Title</th>
+                                                    <th scope="col">From</th>
+                                                    <th scope="col">To</th>
+                                                    <th scope="col">Date</th>
+                                                    <th scope="col">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for val in ford_status %}
+                                                <tr>
+                                                    <th scope="row">{{forloop.counter}}</th>
+                                                    <td><a class="ford_work_link"
+                                                            id="work2{{assigned_msg.forward_work.pk}}" href=""
+                                                            data-toggle="modal"
+                                                            data-target="#DisplayMode2{{assigned_msg.forward_work.pk}}"
+                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{val.title}}</a>
+                                                    </td>
+                                                    <td>{{val.from_user}}</td>
+                                                    <td>{{val.to.account.fullname}}</td>
+                                                    <td>{{val.date_of_creation}}</td>
+                                                    <td>{{val.status}} <br>
+                                                        {% if val.date_of_complition %}
+                                                        {{val.date_of_complition}}
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="pills-assigned" role="tabpanel"
+                                    aria-labelledby="pills-assigned-tab">
+                                    <div class="table-responsive-lg">
+                                        <table class="table">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th scope="col">slno</th>
+                                                    <th scope="col">Work Title</th>
+                                                    <th scope="col">From</th>
+                                                    <th scope="col">To</th>
+                                                    <th scope="col">Receved Date</th>
+                                                    <th scope="col">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for assigned_msg in assigned_work %}
+                                                <tr>
+                                                    <th scope="row">{{forloop.counter}}</th>
+                                                    <td><a class="ford_work_link"
+                                                            id="work2{{assigned_msg.forward_work.pk}}" href=""
+                                                            data-toggle="modal"
+                                                            data-target="#DisplayMode2{{assigned_msg.forward_work.pk}}"
+                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{assigned_msg.forward_work.title}}</a>
+                                                    </td>
+                                                    <td>{{assigned_msg.from_user}}</td>
+                                                    <td>{{assigned_msg.to.account.fullname}}</td>
+                                                    <td>{{assigned_msg.date_of_forward}}</td>
+                                                    <td>{{assigned_msg.forward_work.status}} <br>
+                                                        {% if assigned_msg.forward_work.date_of_complition %}
+                                                        {{assigned_msg.forward_work.date_of_complition}}
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                                 <div class="tab-pane fade" id="pills-forwarded" role="tabpanel"
                                     aria-labelledby="pills-forwarded-tab">
                                     <div class="table-responsive-lg">
@@ -552,19 +725,28 @@
                                                     <th scope="col">Work Title</th>
                                                     <th scope="col">From</th>
                                                     <th scope="col">To</th>
+                                                    <th scope="col">Forwarded Date</th>
                                                     <th scope="col">Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {% for forward_msg in forwardwork %}
+                                                {% for from_work in from_works %}
                                                 <tr>
                                                     <th scope="row">{{forloop.counter}}</th>
-                                                    <td><a class="work_link" id="work2{{forward_msg.forward_work.pk}}" href="" data-toggle="modal"
-                                                        data-target="#DisplayMode1{{forward_msg.forward_work.pk}}"
-                                                        style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{forward_msg.forward_work.title}}</a></td>
-                                                    <td>{{forward_msg.from_user}}</td>
-                                                    <td>{{forward_msg.to.account.fullname}}</td>
-                                                    <td>{{forward_msg.forward_work.status}}</td>
+                                                    <td><a class="send_work_link"
+                                                            id="work3{{from_work.forward_work.pk}}" href=""
+                                                            data-toggle="modal"
+                                                            data-target="#DisplayMode3{{from_work.forward_work.pk}}"
+                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{from_work.forward_work.title}}</a>
+                                                    </td>
+                                                    <td>{{from_work.from_user}}</td>
+                                                    <td>{{from_work.to.account.fullname}}</td>
+                                                    <td>{{from_work.date_of_forward}}</td>
+                                                    <td>{{from_work.forward_work.status}} <br>
+                                                        {% if from_work.forward_work.date_of_complition %}
+                                                        {{from_work.forward_work.date_of_complition}}
+                                                        {% endif %}
+                                                    </td>
                                                 </tr>
                                                 {% endfor %}
                                             </tbody>
@@ -573,8 +755,9 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Monitor Sheet End -->
                     </div>
-                    <!-- Monitor Sheet End -->
+                    
                 </div>
             </div>
         </div>
@@ -606,8 +789,7 @@
                         <div class="form-group">
                             <label for="inputFrom">From</label>
                             <select id="inputFrom" name="from" class="form-control">
-                                <option selected>Choose...</option>
-                                <option value="{{user.pk}}">{{user.fullname}}</option>
+                                <option selected value="{{user.pk}}">{{user.fullname}}</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -660,8 +842,8 @@
         </div>
     </div>
 
+    <!-- Display all Modal -->
     {% for work in works %}
-    <!-- Display Modal -->
     <div class="modal fade" id="DisplayModel{{work.pk}}" data-backdrop="static" data-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -669,15 +851,17 @@
                 <div class="modal-header" style="display: inline-block; padding-bottom: 0; ">
                     <h5 style="margin-bottom: 0;" id="staticBackdropLabel">Modal title{{work.pk}}</h5>
                     {% if work.forwarded %}
-                    <h6 style="color: rgb(146, 146, 146);">forwarded from {{work.forwarded_from}} to {{work.forwarded_to}} </h6>
+                    <h6 style="color: rgb(146, 146, 146);">forwarded from {{work.forwarded_from}} to
+                        {{work.forwarded_to}} </h6>
                     {% else %}
                     <h6 style="color: rgb(146, 146, 146);"> generated by {{work.from_user}} </h6>
                     {% endif %}
-                    <button type="button" style="position: absolute; top: 15px; right: 15px;" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" style="position: absolute; top: 15px; right: 15px;" class="close"
+                        data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
-                    </button> 
+                    </button>
                 </div>
-               
+
                 <div class="modal-body">
                     {% if user.is_adminstrator %}
                     {% if work.status != "pending..." and work.status != "completed"  %}
@@ -717,7 +901,7 @@
                     {% if work.status != "completed" and work.forwarded != True %}
                     {% if work.status != "pending..." %}
                     <a href="{% url 'start' pk=work.pk %}" class="btn btn-primary">Start</a>
-                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#reply">Return</a>
+                    <a href="" class="btn btn-danger" id="{{work.from_user}}" data-toggle="modal" data-target="#reply">Return</a>
                     <a href="" class="btn btn-warning" data-toggle="modal" data-target="#forward">Forward</a>
                     {% endif %}
                     <a href="{% url 'completed' pk=work.pk %}" class="btn btn-success">Completed</a>
@@ -731,7 +915,454 @@
         </div>
     </div>
     {% endfor %}
+    <!--end of Display all Modal -->
+
+
+    <!-- assigned work display Modal -->
+    {% for assigned_msg in assigned_work %}
+    <div class="modal fade" id="DisplayMode2{{assigned_msg.forward_work.pk}}" data-backdrop="static"
+        data-keyboard="false" tabindex="-2" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="display: inline-block; padding-bottom: 0; ">
+                    <h5 style="margin-bottom: 0;" id="staticBackdropLabel">Modal title{{assigned_msg.forward_work.pk}}
+                    </h5>
+                    {% if assigned_msg.forward_work.forwarded %}
+                    <h6 style="color: rgb(146, 146, 146);">forwarded from {{assigned_msg.from_user}} to
+                        {{assigned_msg.to.account.fullname}} </h6>
+                    {% else %}
+                    <h6 style="color: rgb(146, 146, 146);"> generated by {{assigned_msg.forward_work.from_user}} </h6>
+                    {% endif %}
+                    <button type="button" style="position: absolute; top: 15px; right: 15px;" class="close"
+                        data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="inputTitle4">Work Title</label>
+                        <label hidden
+                            id="workingtitle{{assigned_msg.forward_work.pk}}">{{assigned_msg.forward_work.title}}</label>
+                        <input type="text" name="title" disabled value="{{assigned_msg.forward_work.title}}"
+                            class="form-control" placeholder="Work title">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputWorkDescription">Work Description</label>
+                        <textarea class="form-control" name="work_description" disabled
+                            id="WorkDescription{{assigned_msg.forward_work.pk}}" rows="3"
+                            placeholder="Work Description">{{assigned_msg.forward_work.work_description}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputSuggestions">Suggestions</label>
+                        <textarea class="form-control" disabled name="suggestions" value=""
+                            id="Suggestions{{assigned_msg.forward_work.pk}}" rows="3"
+                            placeholder="suggestions">{{assigned_msg.forward_work.suggestions}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputRemarks">Remarks/Comments</label>
+                        <label hidden
+                            id="Remarks{{assigned_msg.forward_work.pk}}">{{assigned_msg.forward_work.remarks}}</label>
+                        <input type="text" name="remarks" disabled value="{{assigned_msg.forward_work.remarks}}"
+                            class="form-control" placeholder="Remarks/Comments">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormDocument">{{assigned_msg.forward_work.document}}</label><br>
+                        <a href="{{assigned_msg.forward_work.document}}" class="btn btn-primary"
+                            download="{{assigned_msg.forward_work.document}}">download</a>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputSuggestions">Suggestions by {{assigned_msg.from_user}}</label>
+                        <textarea class="form-control" disabled name="suggestions" value=""
+                            id="Suggestions{{assigned_msg.pk}}" rows="3"
+                            placeholder="suggestions">{{assigned_msg.suggestions}}</textarea>
+                    </div>
+                    {% if user.is_superadmin == False %}
+                    {% if user.fullname != assigned_msg.from_user %}
+                    {% if assigned_msg.forward_work.status != "completed" and assigned_msg.forwarded != True %}
+                    {% if assigned_msg.forward_work.status != "pending..." %}
+                    <a href="{% url 'start' pk=assigned_msg.forward_work.pk %}" class="btn btn-primary">Start</a>
+                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#reply">Return</a>
+                    <a href="" class="btn btn-warning forward_key" id="forwardval{{assigned_msg.pk}}"
+                        data-toggle="modal" data-target="#forward">Forward</a>
+                    {% endif %}
+                    <a href="{% url 'completed' pk=assigned_msg.forward_work.pk %}"
+                        class="btn btn-success">Completed</a>
+                    {% endif %}
+                    {% endif %}
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
+    {% endfor %}
+    <!--end of assigned work display Modal -->
+
+    <!-- send/forwarded display Modal -->
+    {% for from_work in from_works %}
+    <div class="modal fade" id="DisplayMode3{{from_work.forward_work.pk}}" data-backdrop="static" data-keyboard="false"
+        tabindex="-2" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="display: inline-block; padding-bottom: 0; ">
+                    <h5 style="margin-bottom: 0;" id="staticBackdropLabel">Modal title{{from_work.forward_work.pk}}</h5>
+                    <!-- {% if assigned_msg.forward_work.forwarded %}
+                    <h6 style="color: rgb(146, 146, 146);">forwarded from {{assigned_msg.from_user}} to {{assigned_msg.to.account.fullname}} </h6>
+                    {% else %}
+                    <h6 style="color: rgb(146, 146, 146);"> generated by {{assigned_msg.forward_work.from_user}} </h6>
+                    {% endif %} -->
+                    <button type="button" style="position: absolute; top: 15px; right: 15px;" class="close"
+                        data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="inputTitle4">Work Title</label>
+                        <label hidden
+                            id="workingtitle12{{from_work.forward_work.pk}}">{{from_work.forward_work.title}}</label>
+                        <input type="text" name="title" disabled value="{{from_work.forward_work.title}}"
+                            class="form-control" placeholder="Work title">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputWorkDescription">Work Description</label>
+                        <textarea class="form-control" name="work_description" disabled
+                            id="WorkDescription12{{from_work.forward_work.pk}}" rows="3"
+                            placeholder="Work Description">{{from_work.forward_work.work_description}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputSuggestions">Suggestions</label>
+                        <textarea class="form-control" disabled name="suggestions" value=""
+                            id="Suggestions12{{from_work.forward_work.pk}}" rows="3"
+                            placeholder="suggestions">{{from_work.forward_work.suggestions}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputRemarks">Remarks/Comments</label>
+                        <label hidden
+                            id="Remarks12{{from_work.forward_work.pk}}">{{from_work.forward_work.remarks}}</label>
+                        <input type="text" name="remarks" disabled value="{{from_work.forward_work.remarks}}"
+                            class="form-control" placeholder="Remarks/Comments">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormDocument">{{from_work.forward_work.document}}</label><br>
+                        <a href="{{from_work.forward_work.document}}" class="btn btn-primary"
+                            download="{{from_work.forward_work.document}}">download</a>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputSuggestions">Suggestions by {{from_work.from_user}}</label>
+                        <textarea class="form-control" disabled name="suggestions" value=""
+                            id="Suggestions{{from_work.pk}}" rows="3"
+                            placeholder="suggestions">{{from_work.suggestions}}</textarea>
+                    </div>
+                    <!-- {% if user.is_superadmin == False and user.is_adminstrator == False %}
+                    {% if user.fullname != assigned_msg.from_user %}
+                    {% if assigned_msg.forward_work.status != "completed" and assigned_msg.forwarded != True %}
+                    {% if assigned_msg.forward_work.status != "pending..." %}
+                    <a href="" class="btn btn-primary">Start</a>
+                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#reply">Return</a>
+                    <a href="" class="btn btn-warning forward_key" id="forwardval{{assigned_msg.pk}}" data-toggle="modal" data-target="#forward">Forward</a>
+                    {% endif %}
+                    <a href="" class="btn btn-success">Completed</a>
+                    {% endif %}
+                    {% endif %}
+                    {% endif %} -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <!-- end of send/forwarded display Modal -->
+
+    <!-- Pending of my work display Modal -->
+    {% for pending in pending_status %}
+    <div class="modal fade" id="DisplayModel4{{pending.pk}}" data-backdrop="static" data-keyboard="false" tabindex="-2"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="display: inline-block; padding-bottom: 0; ">
+                    <h5 style="margin-bottom: 0;" id="staticBackdropLabel">Modal title{{pending.pk}}</h5>
+                    {% if pending.forwarded %}
+                    <h6 style="color: rgb(146, 146, 146);">forwarded from {{pending.from_user}} to
+                        {{pending.to.account.fullname}} </h6>
+                    {% else %}
+                    <h6 style="color: rgb(146, 146, 146);"> generated by {{pending.from_user}} </h6>
+                    {% endif %}
+                    <button type="button" style="position: absolute; top: 15px; right: 15px;" class="close"
+                        data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="inputTitle4">Work Title</label>
+                        <label hidden id="workingtitle4{{pending.pk}}">{{pendingtitle}}</label>
+                        <input type="text" name="title" disabled value="{{pending.title}}" class="form-control"
+                            placeholder="Work title">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputWorkDescription">Work Description</label>
+                        <textarea class="form-control" name="work_description" disabled
+                            id="WorkDescription4{{pending.pk}}" rows="3"
+                            placeholder="Work Description">{{pending.work_description}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputSuggestions">Suggestions</label>
+                        <textarea class="form-control" disabled name="suggestions" value=""
+                            id="Suggestions4{{pending.pk}}" rows="3"
+                            placeholder="suggestions">{{pending.suggestions}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputRemarks">Remarks/Comments</label>
+                        <label hidden id="Remarks4{{pending.pk}}">{{pending.remarks}}</label>
+                        <input type="text" name="remarks" disabled value="{{pending.remarks}}" class="form-control"
+                            placeholder="Remarks/Comments">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormDocument">{{pending.document}}</label><br>
+                        <a href="{{pending.document}}" class="btn btn-primary"
+                            download="{{pending.document}}">download</a>
+                    </div>
+                    {% if user.is_superadmin == False and user.is_adminstrator == False %}
+                    {% if pending.status != "completed" and pending.forwarded != True %}
+                    {% if pending.status != "pending..." %}
+                    <a href="{% url 'start' pk=pending.pk %}" class="btn btn-primary">Start</a>
+                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#reply">Return</a>
+                    <a href="" class="btn btn-warning" data-toggle="modal" data-target="#forward">Forward</a>
+                    {% endif %}
+                    <a href="{% url 'completed' pk=pending.pk %}" class="btn btn-success">Completed</a>
+                    {% endif %}
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <!--end of pending of my work display Modal -->
+
+    <!--Pending of ASSIGNED work display Modal-->
+    {% for pending in assign_pending_status %}
+    <div class="modal fade" id="DisplayModel5{{pending.forward_work.pk}}" data-backdrop="static"
+        data-keyboard="false" tabindex="-2" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="display: inline-block; padding-bottom: 0; ">
+                    <h5 style="margin-bottom: 0;" id="staticBackdropLabel">Modal title{{pending.forward_work.pk}}
+                    </h5>
+                    {% if pending.forward_work.forwarded %}
+                    <h6 style="color: rgb(146, 146, 146);">forwarded from {{pending.from_user}} to
+                        {{pending.to.account.fullname}} </h6>
+                    {% else %}
+                    <h6 style="color: rgb(146, 146, 146);"> generated by {{pending.forward_work.from_user}} </h6>
+                    {% endif %}
+                    <button type="button" style="position: absolute; top: 15px; right: 15px;" class="close"
+                        data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="inputTitle4">Work Title</label>
+                        <label hidden
+                            id="workingtitle5{{assigned_msg.forward_work.pk}}">{{pending.forward_work.title}}</label>
+                        <input type="text" name="title" disabled value="{{assignpendinged_msg.forward_work.title}}"
+                            class="form-control" placeholder="Work title">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputWorkDescription">Work Description</label>
+                        <textarea class="form-control" name="work_description" disabled
+                            id="WorkDescription5{{pending.forward_work.pk}}" rows="3"
+                            placeholder="Work Description">{{pending.forward_work.work_description}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputSuggestions">Suggestions</label>
+                        <textarea class="form-control" disabled name="suggestions" value=""
+                            id="Suggestions5{{pending.forward_work.pk}}" rows="3"
+                            placeholder="suggestions">{{pending.forward_work.suggestions}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputRemarks">Remarks/Comments</label>
+                        <label hidden
+                            id="Remarks5{{pending.forward_work.pk}}">{{pending.forward_work.remarks}}</label>
+                        <input type="text" name="remarks" disabled value="{{pending.forward_work.remarks}}"
+                            class="form-control" placeholder="Remarks/Comments">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormDocument">{{pending.forward_work.document}}</label><br>
+                        <a href="{{pending.forward_work.document}}" class="btn btn-primary"
+                            download="{{pending.forward_work.document}}">download</a>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputSuggestions">Suggestions by {{pending.from_user}}</label>
+                        <textarea class="form-control" disabled name="suggestions" value=""
+                            id="Suggestions5{{pending.pk}}" rows="3"
+                            placeholder="suggestions">{{pending.suggestions}}</textarea>
+                    </div>
+                    {% if user.is_superadmin == False %}
+                    {% if user.fullname != assigned_msg.from_user %}
+                    {% if pending.forward_work.status != "completed" and pending.forwarded != True %}
+                    {% if pending.forward_work.status != "pending..." %}
+                    <a href="{% url 'start' pk=pending.forward_work.pk %}" class="btn btn-primary">Start</a>
+                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#reply">Return</a>
+                    <a href="" class="btn btn-warning forward_key" id="forwardval{{assigned_msg.pk}}"
+                        data-toggle="modal" data-target="#forward">Forward</a>
+                    {% endif %}
+                    <a href="{% url 'completed' pk=pending.forward_work.pk %}"
+                        class="btn btn-success">Completed</a>
+                    {% endif %}
+                    {% endif %}
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <!--end of assigned work display Modal -->
+
+
+     <!-- completed_status of my work display Modal -->
+     {% for completed in completed_status %}
+     <div class="modal fade" id="DisplayModel6{{completed.pk}}" data-backdrop="static" data-keyboard="false" tabindex="-2"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered">
+             <div class="modal-content">
+                 <div class="modal-header" style="display: inline-block; padding-bottom: 0; ">
+                     <h5 style="margin-bottom: 0;" id="staticBackdropLabel">Modal title{{completed.pk}}</h5>
+                     {% if completed.forwarded %}
+                     <h6 style="color: rgb(146, 146, 146);">forwarded from {{completed.from_user}} to
+                         {{completed.to.account.fullname}} </h6>
+                     {% else %}
+                     <h6 style="color: rgb(146, 146, 146);"> generated by {{completed.from_user}} </h6>
+                     {% endif %}
+                     <button type="button" style="position: absolute; top: 15px; right: 15px;" class="close"
+                         data-dismiss="modal" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                     </button>
+                 </div>
+ 
+                 <div class="modal-body">
+                     <div class="form-group">
+                         <label for="inputTitle4">Work Title</label>
+                         <label hidden id="workingtitle6{{pending.pk}}">{{completed.title}}</label>
+                         <input type="text" name="title" disabled value="{{completed.title}}" class="form-control"
+                             placeholder="Work title">
+                     </div>
+                     <div class="form-group">
+                         <label for="inputWorkDescription">Work Description</label>
+                         <textarea class="form-control" name="work_description" disabled
+                             id="WorkDescription6{{completed.pk}}" rows="3"
+                             placeholder="Work Description">{{completed.work_description}}</textarea>
+                     </div>
+                     <div class="form-group">
+                         <label for="inputSuggestions">Suggestions</label>
+                         <textarea class="form-control" disabled name="suggestions" value=""
+                             id="Suggestions6{{completed.pk}}" rows="3"
+                             placeholder="suggestions">{{completed.suggestions}}</textarea>
+                     </div>
+                     <div class="form-group">
+                         <label for="inputRemarks">Remarks/Comments</label>
+                         <label hidden id="Remarks6{{completed.pk}}">{{completed.remarks}}</label>
+                         <input type="text" name="remarks" disabled value="{{completed.remarks}}" class="form-control"
+                             placeholder="Remarks/Comments">
+                     </div>
+                     <div class="form-group">
+                         <label for="exampleFormDocument">{{completed.document}}</label><br>
+                         <a href="{{completed.document}}" class="btn btn-primary"
+                             download="{{completed.document}}">download</a>
+                     </div>
+                 </div>
+                 <div class="modal-footer">
+                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                 </div>
+             </div>
+         </div>
+     </div>
+     {% endfor %}
+     <!--end of completed_status of my work display Modal -->
+ 
+     <!--completed_status of ASSIGNED work display Modal-->
+     {% for completed in assign_completed_status %}
+     <div class="modal fade" id="DisplayModel7{{completed.forward_work.pk}}" data-backdrop="static"
+         data-keyboard="false" tabindex="-2" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered">
+             <div class="modal-content">
+                 <div class="modal-header" style="display: inline-block; padding-bottom: 0; ">
+                     <h5 style="margin-bottom: 0;" id="staticBackdropLabel">Modal title{{completed.forward_work.pk}}
+                     </h5>
+                     {% if completed.forward_work.forwarded %}
+                     <h6 style="color: rgb(146, 146, 146);">forwarded from {{completed.from_user}} to
+                         {{completed.to.account.fullname}} </h6>
+                     {% else %}
+                     <h6 style="color: rgb(146, 146, 146);"> generated by {{completed.forward_work.from_user}} </h6>
+                     {% endif %}
+                     <button type="button" style="position: absolute; top: 15px; right: 15px;" class="close"
+                         data-dismiss="modal" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                     </button>
+                 </div>
+ 
+                 <div class="modal-body">
+                     <div class="form-group">
+                         <label for="inputTitle4">Work Title</label>
+                         <label hidden
+                             id="workingtitle7{{completed.forward_work.pk}}">{{completed.forward_work.title}}</label>
+                         <input type="text" name="title" disabled value="{{completed.forward_work.title}}"
+                             class="form-control" placeholder="Work title">
+                     </div>
+                     <div class="form-group">
+                         <label for="inputWorkDescription">Work Description</label>
+                         <textarea class="form-control" name="work_description" disabled
+                             id="WorkDescription7{{completed.forward_work.pk}}" rows="3"
+                             placeholder="Work Description">{{completed.forward_work.work_description}}</textarea>
+                     </div>
+                     <div class="form-group">
+                         <label for="inputSuggestions">Suggestions</label>
+                         <textarea class="form-control" disabled name="suggestions" value=""
+                             id="Suggestions7{{completed.forward_work.pk}}" rows="3"
+                             placeholder="suggestions">{{completed.forward_work.suggestions}}</textarea>
+                     </div>
+                     <div class="form-group">
+                         <label for="inputRemarks">Remarks/Comments</label>
+                         <label hidden
+                             id="Remarks7{{completed.forward_work.pk}}">{{completed.forward_work.remarks}}</label>
+                         <input type="text" name="remarks" disabled value="{{completed.forward_work.remarks}}"
+                             class="form-control" placeholder="Remarks/Comments">
+                     </div>
+                     <div class="form-group">
+                         <label for="exampleFormDocument">{{completed.forward_work.document}}</label><br>
+                         <a href="{{completed.forward_work.document}}" class="btn btn-primary"
+                             download="{{completed.forward_work.document}}">download</a>
+                     </div>
+                     <div class="form-group">
+                         <label for="inputSuggestions">Suggestions by {{completed.from_user}}</label>
+                         <textarea class="form-control" disabled name="suggestions" value=""
+                             id="Suggestions7{{completed.pk}}" rows="3"
+                             placeholder="suggestions">{{completed.suggestions}}</textarea>
+                     </div>
+                 </div>
+                 <div class="modal-footer">
+                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                 </div>
+             </div>
+         </div>
+     </div>
+     {% endfor %}
+     <!--end of completed_status work display Modal -->
+
     <!--edit model-->
     <div class="modal fade" id="EditModel" data-backdrop="static" data-keyboard="false" tabindex="-1"
         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -798,12 +1429,12 @@
                     <form method="POST" action="{% url 'forward_work' %}" enctype="multipart/form-data">
                         {% csrf_token %}
                         <input type="hidden" id="pk_val1" name="pk_val" value="">
+                        <input type="hidden" id="pk_val2" name="pk_val2" value="">
                         <div class="modal-body">
                             <div class="form-group">
                                 <label for="inputFrom2">From</label>
                                 <select id="inputFrom2" name="from" class="form-control">
-                                    <option selected>Choose...</option>
-                                    <option value="{{user.pk}}">{{user.fullname}}</option>
+                                    <option selected value="{{user.pk}}">{{user.fullname}}</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -811,7 +1442,7 @@
                                 <select id="inputTo2" name="to" class="form-control">
                                     <option selected>Choose...</option>
                                     {% for account in accounts %}
-                                    {% if account.is_superadmin == False and account.pk != user.pk and account.is_adminstrator == False %}
+                                    {% if account.is_superadmin == False and account.pk != user.pk%}
                                     {% for val in account.admin_set.all %}
                                     <option value="{{val.pk}}">
                                         <pre>{{account.fullname}} ({{val.designation}})</pre>
@@ -823,8 +1454,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="inputsuggestions2">Remarks/suggations</label>
-                                <textarea class="form-control" name="suggestions" id="inputsuggestions2"
-                                    rows="3" placeholder="Work Description"></textarea>
+                                <textarea class="form-control" name="suggestions" id="inputsuggestions2" rows="3"
+                                    placeholder="Work Description"></textarea>
                             </div>
                         </div>
 
@@ -850,29 +1481,27 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{% url 'generate_work' %}" enctype="multipart/form-data">{% csrf_token %}
+                    <form method="POST" action="{% url 'generate_work' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
                         <div class="modal-body">
                             <div class="form-group">
-                                <label for="inputFrom">From</label>
-                                <select id="inputFrom" name="from" class="form-control">
-                                    <option selected>Choose...</option>
-                                    <option value="{{user.pk}}">{{user.fullname}}</option>
-                                </select>
+                                <label for="inputFrom12">From</label>
+                                <input type="text" name="from" hidden value="{{user.pk}}">
+                                <input type="text" id="inputFrom12" disabled value="{{user.fullname}}"
+                                class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="inputTo">To</label>
-                                <select id="inputTo" name="to" class="form-control">
-                                    <option selected>Choose...</option>
-                                    <option value=""></option>
-                                </select>
+                                <label for="inputTo12">To</label>
+                                <input type="text" id="inputTo12" disabled value=""
+                                class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="inputSuggestions">Suggestions</label>
-                                <textarea class="form-control" name="suggestions" id="inputSuggestions" rows="3"
+                                <label for="inputSuggestions12">Suggestions</label>
+                                <textarea class="form-control" name="suggestions" id="inputSuggestions12" rows="3"
                                     placeholder="suggestions"></textarea>
                             </div>
                         </div>
-    
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">send</button>
@@ -955,10 +1584,25 @@
 
         $(".work_link").on("click", function () {
 
-        id = this.id;
-        pk = id.slice(5,);
-        console.log(pk);
-        $("#pk_val1").val(pk);
+            id = this.id;
+            pk = id.slice(5,);
+            console.log(pk);
+            txt = $(this).text();
+            console.log(txt);
+            $("#pk_val1").val(pk);
+        });
+
+        $(".ford_work_link").on("click", function () {
+            id = this.id;
+            pk = id.slice(5,);
+            console.log(pk);
+            $("#pk_val1").val(pk);
+        });
+        $(".forward_key").on("click", function () {
+            id = this.id;
+            pk = id.slice(10,);
+            console.log(pk);
+            $("#pk_val2").val(pk);
         });
         /* $('.delete_btn').on('click', function () {
             console.log('clicked');

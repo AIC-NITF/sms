@@ -15,13 +15,33 @@ def dashboard(request):
         value = user.admin_set.all()[0]
         if user.is_adminstrator:
             works = WorkGenerator.objects.all().order_by('-date_of_creation')
-            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works})
+            ford_status = WorkGenerator.objects.filter(forwarded=True).order_by('-date_of_creation')
+            pending_status = WorkGenerator.objects.filter(status='pending...').order_by('-date_of_creation')
+            completed_status = WorkGenerator.objects.filter(status='completed').order_by('-date_of_creation')
+            forwardwork = value.forward_set.all().order_by('-date_of_forward')
+            from_works = Forward.objects.filter(from_user=request.user.fullname).order_by('-date_of_forward')
+            print(ford_status)
+            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'forwardwork':forwardwork,'from_works':from_works,'ford_status':ford_status,'pending_status':pending_status,'completed_status':completed_status})
         else:
             admin_obj = user.admin_set.all()[0]
             works = admin_obj.workgenerator_set.all().order_by('-date_of_creation')
-            forwardwork = admin_obj.forward_set.all()
+            assigned_work = admin_obj.forward_set.all().order_by('-date_of_forward')
             print(works,"`````````````````````````")
-            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'forwardwork':forwardwork})        
+            from_works = Forward.objects.filter(from_user=request.user.fullname).order_by('-date_of_forward')
+            print(from_works)
+            
+            pending_status = admin_obj.workgenerator_set.filter(status='pending...').order_by('-date_of_creation')
+            completed_status = admin_obj.workgenerator_set.filter(status='completed').order_by('-date_of_creation')
+            val = admin_obj.forward_set.filter(to=admin_obj).order_by('-date_of_forward')
+            assign_pending_status = []
+            for v in val:
+                if v.forward_work.status == "pending...":
+                    assign_pending_status.append(v)
+            assign_completed_status = []
+            for v in val:
+                if v.forward_work.status == "completed":
+                    assign_completed_status.append(v)
+            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'pending_status':pending_status,'assign_pending_status':assign_pending_status,'completed_status':completed_status,'assign_completed_status':assign_completed_status})        
         
     else:
         user = request.user
@@ -44,11 +64,15 @@ def visit_employee(request,pk):
     print(pk,"-------------------")
     if value.account.is_adminstrator:
         works = WorkGenerator.objects.all().order_by('-date_of_creation')
-        return render(request,'emp_dashboard.html',{'value':value,'works':works})
+        ford_status = WorkGenerator.objects.filter(forwarded=True).order_by('-date_of_creation')
+        print(ford_status,"....................................................")
+        return render(request,'emp_dashboard.html',{'value':value,'works':works,'ford_status':ford_status})
     else:
         works = value.workgenerator_set.all().order_by('-date_of_creation')
+        forwardwork = value.forward_set.all().order_by('-date_of_forward')
+        from_works = Forward.objects.filter(from_user=value.account.fullname).order_by('-date_of_forward')
         print(works,"`````````````````````````")
-        return render(request,'emp_dashboard.html',{'value':value,'works':works})
+        return render(request,'emp_dashboard.html',{'value':value,'works':works,'forwardwork':forwardwork,'from_works':from_works})
     
     
 
@@ -386,6 +410,7 @@ def forward_work(request):
         from_user = request.POST['from']
         to = request.POST['to']
         pk = request.POST['pk_val']
+        forward_pk = request.POST['pk_val2']
         suggestions = request.POST['suggestions']
 
         from_obj = Account.objects.get(pk=int(from_user))
@@ -397,8 +422,13 @@ def forward_work(request):
         work = Forward.objects.create(from_user=from_obj.fullname,to=obj,forward_work=work_obj,suggestions=suggestions)
         status_obj = WorkGenerator.objects.get(pk=int(pk))
         print(obj.account.fullname)
-        status_obj.forward(from_obj.fullname,obj.account.fullname)
+        if status_obj.forwarded == False:
+            status_obj.forward(from_obj.fullname,obj.account.fullname)
+        else:
+            for_obj = Forward.objects.get(pk=int(forward_pk))
+            for_obj.forther_forward() 
         status_obj.change_status(status="forwarded->")
+        
         work.save()
         return redirect('dashboard')
 

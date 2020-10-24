@@ -250,14 +250,21 @@ class Forward(models.Model):
 	to  					= models.ForeignKey(Admin, on_delete=models.CASCADE)
 	forward_work  			= models.ForeignKey(WorkGenerator,default="", on_delete=models.CASCADE)
 	suggestions				= models.CharField(max_length=200,null=True,blank=True)
+	forwarded			    = models.BooleanField(default=False)
+	date_of_forward			= models.DateTimeField(verbose_name='date of forward', auto_now_add=True,null=True,blank=True)
+
+	def forther_forward(self):
+		self.forwarded = True
+		self.save()
 
 
 	def __str__(self):
-		return self.from_user +" " +self.to.account.fullname
+		return self.from_user +" " +self.to.account.fullname +" " +self.forward_work.title
 
-class Reply(models.Model):
+class Return(models.Model):
 	from_user				= models.CharField(max_length=100,null=True,blank=True)
-	to  					= models.ForeignKey(WorkGenerator, on_delete=models.CASCADE)
+	to  					= models.ForeignKey(Admin, on_delete=models.CASCADE)
+	work		  			= models.ForeignKey(WorkGenerator,default="", on_delete=models.CASCADE)
 	messaage				= models.CharField(max_length=500,null=True,blank=True)
 
 	def __str__(self):
