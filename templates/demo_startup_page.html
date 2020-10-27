@@ -278,12 +278,10 @@
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{user.username}}</span>
                                 {% if user.is_admin %}
                                 {% for imgsrc in  user.admin_set.all %}
-                                <img class="img-profile rounded-circle"
-                                    src="{{imgsrc.admin_img.url}}">
+                                <img class="img-profile rounded-circle" src="{{imgsrc.admin_img.url}}">
                                 {% endfor %}
                                 {% else %}
-                                <img class="img-profile rounded-circle"
-                                    src="{{value.startup_img.url}}">
+                                <img class="img-profile rounded-circle" src="{{value.startup_img.url}}">
                                 {% endif %}
                             </a>
                             <!-- Dropdown - User Information -->
@@ -632,12 +630,29 @@
                             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                                 <h3>Traction sheet</h3>
                                 {% if user.is_startup %}
-                                <a href="{% url 'monitor_form' %}"
+                                <a href="{% url 'traction_form' %}"
                                     class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                         class="fas fa-download fa-sm text-white-50"></i> Generate Traction Report</a>
                                 {% endif %}
                             </div>
+                            {% for value in traction_values %}
+                            <div class="courses-container">
+                                <div class="course">
+                                    <div class="course-preview">
+                                        <h6>Course</h6>
+                                        <h2>Month {{ forloop.counter }}</h2>
+                                        <a href=" # ">View all chapters <i class="fas fa-chevron-right"></i></a>
+                                    </div>
+                                    <div class="course-info">
+                                        <h6>Chapter 4</h6>
+                                        <h2>Traction Sheet{{ forloop.counter }}</h2>
+                                        <a href="{% url 'traction_report' pk=value.pk %}" class="btn1">View Report</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
                         </div>
+
                         <div class="tab-pane fade" id="v-pills-minute" role="tabpanel"
                             aria-labelledby="v-pills-minute-tab">
                             <h1>Minute Of Meeting</h1> Culpa dolor voluptate do laboris laboris irure reprehenderit id

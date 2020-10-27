@@ -1,5 +1,5 @@
 from django import forms
-from useraccount.models import StartUp,Admin,MonitorSheet
+from useraccount.models import StartUp,Admin,MonitorSheet,TractionSheet
 
 class StartUpForm(forms.ModelForm):
 
@@ -94,3 +94,25 @@ class MonitorSheetEditForm(forms.ModelForm):
             'required_help' 				: forms.Textarea(attrs={'class':'form-control','rows':"3"}),
         }
 
+
+class TractionSheetEditForm(forms.ModelForm):
+
+            
+    class Meta:
+        model = TractionSheet
+        exclude = ['connect_startup','allow_edit']
+        fields = ('__all__')
+
+        widgets = {
+            'total_order'                       : forms.TextInput(attrs={'class':'form-control'}),
+            'average_packet_size'			    : forms.TextInput(attrs={'class':'form-control'}),
+            'total_revenue_of_month'			: forms.TextInput(attrs={'class':'form-control'}),
+            'total_customers_served'	        : forms.TextInput(attrs={'class':'form-control'}),
+            'total_expense'					    : forms.TextInput(attrs={'class':'form-control'}),
+            'market_outreach'					: forms.TextInput(attrs={'class':'form-control'}),
+            'repeate_customers'					: forms.TextInput(attrs={'class':'form-control'}),
+            'total_revenue'			            : forms.TextInput(attrs={'class':'form-control'}),
+            'direct_job_created'				: forms.TextInput(attrs={'class':'form-control'}),
+            'indirect_job_created'				: forms.TextInput(attrs={'class':'form-control'}),
+            'profit'                            : forms.TextInput(attrs={'class':'form-control'}),
+        }

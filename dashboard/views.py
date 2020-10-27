@@ -1,7 +1,7 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.http import HttpResponse,Http404
-from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Return
-from .forms import StartUpForm,MonitorSheetEditForm
+from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Return,TractionSheet
+from .forms import StartUpForm,MonitorSheetEditForm,TractionSheetEditForm
 
 
 # Create your views here.
@@ -51,12 +51,13 @@ def dashboard(request):
         startup_obj = user.startup_set.all()[0]
         val2 = startup_obj.teammembers_set.all()
         values = startup_obj.monitorsheet_set.all()
+        traction_values = startup_obj.tractionsheet_set.all()
         print(user)
         print(user.pk)
         print(startup_obj)
         print(val2)
         print(values)
-        return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values})
+        return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'traction_values':traction_values})
 
 def visit_startup(request):
     accounts = Account.objects.all()
@@ -90,9 +91,10 @@ def profile(request,pk):
     startup_obj = details.startup_set.all()[0]
     val2 = startup_obj.teammembers_set.all()
     values = startup_obj.monitorsheet_set.all()
+    traction_values = startup_obj.tractionsheet_set.all()
     
     print("=====================================================================")
-    return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values})
+    return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'traction_values':traction_values})
 
 def startup_profile_edit(request,pk):
     print("hello guyss",pk)
@@ -339,7 +341,54 @@ def monitor_form(request):
 
 
 
+def traction_form(request):
+    if request.method == 'POST':
+        user = request.user
+        startup_obj = user.startup_set.all()[0]
 
+        total_order     = request.POST['total_order']
+        average_packet_size   = request.POST['average_packet_size']
+        total_revenue_of_month  = request.POST['total_revenue_of_month']
+        total_customers_served  = request.POST['total_customers_served']
+        total_expense     = request.POST['total_expense']
+        market_outreach   = request.POST['market_outreach']
+        repeate_customers    = request.POST['repeate_customers']
+        total_revenue     = request.POST['total_revenue']
+        direct_job_created   = request.POST['direct_job_created']
+        indirect_job_created   = request.POST['indirect_job_created']
+        profit = request.POST['profit']
+
+        traction_report = TractionSheet.objects.create(connect_startup=startup_obj,total_order=total_order,average_packet_size=average_packet_size,total_revenue_of_month=total_revenue_of_month,total_customers_served=total_customers_served,total_expense=total_expense,market_outreach=market_outreach,repeate_customers=repeate_customers,total_revenue=total_revenue,direct_job_created=direct_job_created,indirect_job_created=indirect_job_created,profit=profit)
+        return redirect('dashboard')
+    
+    else:
+        return render(request,'traction_form.html')
+
+def traction_report(request,pk):
+    traction_sheet_obj = TractionSheet.objects.get(pk=pk)
+    print(traction_sheet_obj,"+++++++++++++++++++++++++++++++++++++")
+    return render(request,'traction_report.html',{'traction_report':traction_sheet_obj})
+
+def allow_traction_edit(request,pk):
+    traction_report_obj = TractionSheet.objects.get(pk=pk)
+    traction_report_obj.allow_edit_option()
+    return redirect(traction_report,pk=pk)
+
+def edit_traction_sheet(request,pk):
+    content = get_object_or_404(TractionSheet,pk=pk)
+    print(content)
+    if request.method == 'POST':
+        form = TractionSheetEditForm(request.POST,instance=content)
+        print(form) 
+        if form.is_valid():
+            content = form.save(commit=False)
+            content.save()
+            content.not_allow_edit_option()
+            return redirect(dashboard)
+    else:
+        form = TractionSheetEditForm(instance=content)
+        print(form," form")
+    return render(request,'edit_traction_sheet.html',{'form':form})
 
 
 def generate_work(request):

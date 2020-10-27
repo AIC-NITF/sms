@@ -31,6 +31,14 @@ urlpatterns = [
     path('allowedit/<int:pk>',views.allowedit,name='allowedit'),
     path('monitor_sheet_edit/<int:pk>',views.monitor_sheet_edit,name='monitor_sheet_edit'),
 
+    path('traction_form/',views.traction_form,name='traction_form'),
+    path('traction_report/<int:pk>/',views.traction_report,name='traction_report'),
+    path('allow_traction_edit/<int:pk>',views.allow_traction_edit,name='allow_traction_edit'),
+    path('edit_traction_sheet/<int:pk>',views.edit_traction_sheet,name='edit_traction_sheet'),
+
+
+
+
     path('visit_startup/',views.visit_startup,name='visit_startup'),
     path('generate_work/',views.generate_work,name='generate_work'),
     path('edit_work/',views.edit_work,name='edit_work'),

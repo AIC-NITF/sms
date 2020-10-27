@@ -204,6 +204,40 @@ class MonitorSheet(models.Model):
 		self.save()
 
 
+class TractionSheet(models.Model):
+	connect_startup			      	= models.ForeignKey(StartUp, on_delete=models.CASCADE)
+	total_order						= models.CharField(max_length=200,null=True,blank=True)
+	average_packet_size				= models.CharField(max_length=200,null=True,blank=True)
+	total_revenue_of_month			= models.CharField(max_length=200,null=True,blank=True)
+	total_customers_served			= models.CharField(max_length=200,null=True,blank=True)
+	total_expense					= models.CharField(max_length=200,null=True,blank=True)
+	market_outreach					= models.CharField(max_length=200,null=True,blank=True)
+	repeate_customers				= models.CharField(max_length=200,null=True,blank=True)
+	total_revenue					= models.CharField(max_length=200,null=True,blank=True)
+	direct_job_created				= models.CharField(max_length=200,null=True,blank=True)
+	indirect_job_created			= models.CharField(max_length=200,null=True,blank=True)
+	profit							= models.CharField(max_length=200,null=True,blank=True)
+
+	allow_edit 						= models.BooleanField(default=False)
+	generated_date					= models.DateTimeField(verbose_name='report generated date', auto_now_add=True)
+
+
+	def __str__(self):
+		return self.connect_startup.startup_name
+
+	def allow_edit_option(self):
+		self.allow_edit = True
+		self.save()
+
+	def not_allow_edit_option(self):
+		self.allow_edit = False
+		self.save()
+
+
+
+
+
+
 
 class WorkGenerator(models.Model):
 	from_user					 = models.CharField(max_length=100,null=True,blank=True)
