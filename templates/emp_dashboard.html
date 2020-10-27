@@ -379,18 +379,6 @@
                                         href="#pills-forwarded" role="tab" aria-controls="pills-forwarded"
                                         aria-selected="false">Forwarded</a>
                                 </li>
-
-                                <li class="nav-item" role="presentation">
-                                    <a class="nav-link" id="pills-pending-tab" data-toggle="pill" href="#pills-pending"
-                                        role="tab" aria-controls="pills-pending" aria-selected="false">pending</a>
-                                </li>
-                                {% if user.is_adminstrator or value.account.is_adminstrator %}
-                                <li class="nav-item" role="presentation">
-                                    <a class="nav-link" id="pills-forwarded_status-tab" data-toggle="pill"
-                                        href="#pills-forwarded_status" role="tab" aria-controls="pills-forwarded_status"
-                                        aria-selected="false">forwarded</a>
-                                </li>
-                                {% endif %}
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link" id="pills-returned-tab" data-toggle="pill"
                                         href="#pills-returned" role="tab" aria-controls="pills-returned"
@@ -398,9 +386,13 @@
                                 </li>
 
                                 <li class="nav-item" role="presentation">
+                                    <a class="nav-link" id="pills-pending-tab" data-toggle="pill" href="#pills-pending"
+                                        role="tab" aria-controls="pills-pending" aria-selected="false">pending</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
                                     <a class="nav-link" id="pills-closed-tab" data-toggle="pill" href="#pills-closed"
                                         role="tab" aria-controls="pills-closed" aria-selected="false">Completed</a>
-                                </li>
+                                </li>    
                             </ul>
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="pills-all" role="tabpanel"
@@ -631,44 +623,6 @@
                                     </div>
                                 </div>
 
-                                <div class="tab-pane fade" id="pills-forwarded_status" role="tabpanel"
-                                    aria-labelledby="pills-forwarded_status-tab">
-                                    <div class="table-responsive-lg">
-                                        <table class="table">
-                                            <thead class="thead-dark">
-                                                <tr>
-                                                    <th scope="col">slno</th>
-                                                    <th scope="col">Work Title</th>
-                                                    <th scope="col">From</th>
-                                                    <th scope="col">To</th>
-                                                    <th scope="col">Date</th>
-                                                    <th scope="col">Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% for val in ford_status %}
-                                                <tr>
-                                                    <th scope="row">{{forloop.counter}}</th>
-                                                    <td><a class="ford_work_link"
-                                                            id="work2{{assigned_msg.forward_work.pk}}" href=""
-                                                            data-toggle="modal"
-                                                            data-target="#DisplayMode2{{assigned_msg.forward_work.pk}}"
-                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{val.title}}</a>
-                                                    </td>
-                                                    <td>{{val.from_user}}</td>
-                                                    <td>{{val.to.account.fullname}}</td>
-                                                    <td>{{val.date_of_creation}}</td>
-                                                    <td>{{val.status}} <br>
-                                                        {% if val.date_of_complition %}
-                                                        {{val.date_of_complition}}
-                                                        {% endif %}
-                                                    </td>
-                                                </tr>
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
                                 <div class="tab-pane fade" id="pills-assigned" role="tabpanel"
                                     aria-labelledby="pills-assigned-tab">
                                     <div class="table-responsive-lg">
@@ -1415,11 +1369,13 @@
                     {% if user.is_adminstrator and ret_obj.work.forwarded == False %}
                     <a href="" class="btn btn-warning return_class" id="RA{{ret_obj.pk}}" data-toggle="modal"
                         data-target="#forward1">ReAssign</a>
+                        <a href="" data-toggle="modal" data-target="#deleteModal{{ret_obj.pk}}" class="btn btn-primary">Delete Work</a>
                     {% else %}
-                    <a href="{% url 'return_start' pk=ret_obj.pk %}" class="btn btn-primary">Start</a>
+                    <a href="" data-toggle="modal" data-target="#deleteModal{{ret_obj.pk}}" class="btn btn-primary">Delete Work</a>
+                    <!-- <a href="{% url 'return_start' pk=ret_obj.pk %}" class="btn btn-primary">Start</a>
                     <a href="" class="btn btn-warning forward_key" id="forwardval{{ret_obj.pk}}" data-toggle="modal" data-target="#forward">Forward</a>
                     <a href="" class="btn btn-danger return" id="RW{{ret_obj.work.from_user_pk}}" data-toggle="modal"
-                        data-target="#reply">Return</a>
+                        data-target="#reply">Return</a> -->
                     {% endif %}
                 </div>
                 <div class="modal-footer">
@@ -1632,6 +1588,32 @@
         </div>
     </div>
     <!-- reassign end-->
+
+    <!-- delete work model-->
+    {% for ret_obj in return_obj %}
+    <div class="modal fade" id="deleteModal{{ret_obj.pk}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                </div>
+                <div class="modal-body">
+                    {% if user.is_adminstrator and ret_obj.work.forwarded == False %}
+                    <h5>Are you sure That you want to delete the generated work??</h5>
+                    {% else %}
+                    <h5>Detele the return work</h5>
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="{% url 'delete_work' pk=ret_obj.pk %}">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <!-- end delete work  -->
 
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

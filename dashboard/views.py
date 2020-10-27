@@ -18,12 +18,12 @@ def dashboard(request):
             ford_status = WorkGenerator.objects.filter(forwarded=True).order_by('-date_of_creation')
             pending_status = WorkGenerator.objects.filter(status='pending...').order_by('-date_of_creation')
             completed_status = WorkGenerator.objects.filter(status='completed').order_by('-date_of_creation')
-            forwardwork = value.forward_set.all().order_by('-date_of_forward')
+            assigned_work = value.forward_set.all().order_by('-date_of_forward')
             from_works = Forward.objects.filter(from_user=request.user.fullname).order_by('-date_of_forward')
             print(ford_status)
             return_obj = Return.objects.filter(to=value)
             print(return_obj)
-            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'forwardwork':forwardwork,'from_works':from_works,'ford_status':ford_status,'pending_status':pending_status,'completed_status':completed_status,'return_obj':return_obj})
+            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'ford_status':ford_status,'pending_status':pending_status,'completed_status':completed_status,'return_obj':return_obj})
         else:
             admin_obj = user.admin_set.all()[0]
             works = admin_obj.workgenerator_set.all().order_by('-date_of_creation')
@@ -551,6 +551,14 @@ def return_start(request,pk):
         work_obj.change_status(status="pending...")
         work_obj.remove_forward()
     ret_obj.delete()
+    return redirect('dashboard')
+
+def delete_work(request,pk):
+    ret_obj = Return.objects.get(pk=pk)
+    if request.user.is_adminstrator and ret_obj.work.forwarded == False:
+        ret_obj.work.delete()
+    else:
+        ret_obj.delete()
     return redirect('dashboard')
 
 
