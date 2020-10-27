@@ -40,5 +40,8 @@ urlpatterns = [
     path('completed/<int:pk>/',views.completed,name='completed'),
 
     path('forward_work/',views.forward_work,name='forward_work'),
+    path('return_work/',views.return_work,name='return_work'),
+    path('reassign/',views.reassign,name='reassign'),
+    path('return_start/<int:pk>/',views.return_start,name='return_start'),
     #url(r'^download/(?P<path>.*)$', serve, {'document root': settings.MEDIA_ROOT}),
 ]

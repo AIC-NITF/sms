@@ -1,6 +1,6 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.http import HttpResponse,Http404
-from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward
+from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Return
 from .forms import StartUpForm,MonitorSheetEditForm
 
 
@@ -21,7 +21,9 @@ def dashboard(request):
             forwardwork = value.forward_set.all().order_by('-date_of_forward')
             from_works = Forward.objects.filter(from_user=request.user.fullname).order_by('-date_of_forward')
             print(ford_status)
-            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'forwardwork':forwardwork,'from_works':from_works,'ford_status':ford_status,'pending_status':pending_status,'completed_status':completed_status})
+            return_obj = Return.objects.filter(to=value)
+            print(return_obj)
+            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'forwardwork':forwardwork,'from_works':from_works,'ford_status':ford_status,'pending_status':pending_status,'completed_status':completed_status,'return_obj':return_obj})
         else:
             admin_obj = user.admin_set.all()[0]
             works = admin_obj.workgenerator_set.all().order_by('-date_of_creation')
@@ -41,7 +43,8 @@ def dashboard(request):
             for v in val:
                 if v.forward_work.status == "completed":
                     assign_completed_status.append(v)
-            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'pending_status':pending_status,'assign_pending_status':assign_pending_status,'completed_status':completed_status,'assign_completed_status':assign_completed_status})        
+            return_obj = Return.objects.filter(to=value)
+            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'pending_status':pending_status,'assign_pending_status':assign_pending_status,'completed_status':completed_status,'assign_completed_status':assign_completed_status,'return_obj':return_obj})        
         
     else:
         user = request.user
@@ -355,7 +358,7 @@ def generate_work(request):
         print(from_obj.fullname)
         obj = Admin.objects.get(pk=int(to))
         print(obj,"=====================")
-        work = WorkGenerator.objects.create(from_user=from_obj.fullname,to=obj,title=title,work_description=work_description,suggestions=suggestions,remarks=remarks,document=document)
+        work = WorkGenerator.objects.create(from_user=from_obj.fullname,to=obj,title=title,work_description=work_description,suggestions=suggestions,remarks=remarks,document=document,from_user_pk=from_user)
         work.change_status(status="Not Started..")
         return redirect('dashboard')
 
@@ -416,12 +419,16 @@ def forward_work(request):
         from_obj = Account.objects.get(pk=int(from_user))
         print(from_obj.fullname)
         obj = Admin.objects.get(pk=int(to))
-        print(obj,"=====================")
+        print(forward_pk,"=====================")
         work_obj = WorkGenerator.objects.get(pk=int(pk))
         print(work_obj,"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-        work = Forward.objects.create(from_user=from_obj.fullname,to=obj,forward_work=work_obj,suggestions=suggestions)
+        work = Forward.objects.create(from_user=from_obj.fullname,to=obj,forward_work=work_obj,suggestions=suggestions,from_user_pk=from_user,forward_pk=forward_pk)
         status_obj = WorkGenerator.objects.get(pk=int(pk))
         print(obj.account.fullname)
+        if status_obj.status == "returned":
+            ret_obj = Return.objects.get(pk=int(forward_pk))
+            ret_obj.delete()
+
         if status_obj.forwarded == False:
             status_obj.forward(from_obj.fullname,obj.account.fullname)
         else:
@@ -431,6 +438,72 @@ def forward_work(request):
         
         work.save()
         return redirect('dashboard')
+
+def return_work(request):
+    if request.method == 'POST':
+        from_user = request.POST['from']
+        to = request.POST['to']
+        work_pk = request.POST['work_pk']
+        suggestions = request.POST['suggestions']
+        ford_work_pk = request.POST['ford_work_pk']
+        print(ford_work_pk)
+        print(to,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+        from_obj = Account.objects.get(pk=int(from_user))
+        print(from_obj,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.")
+        obj = Account.objects.get(pk=int(to))
+        to_obj = obj.admin_set.all()[0]
+        print(to_obj,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+        work_obj = WorkGenerator.objects.get(pk=int(work_pk))
+
+        return_obj = Return.objects.create(from_user=from_obj.fullname,to=to_obj,work=work_obj,message=suggestions)
+
+        if work_obj.forwarded:
+            ford_obj = Forward.objects.get(pk=int(ford_work_pk))
+            print(ford_obj)
+            return_obj.assign_forward_pk(forward_pk=ford_obj.forward_pk)
+            if ford_obj.forward_pk:
+                old_ford_obj = Forward.objects.get(pk=ford_obj.forward_pk)
+                old_ford_obj.remove_forward()
+            else:
+                work_obj.remove_forward()
+            ford_obj.delete()
+        else:
+            work_obj.make_null()
+        work_obj.change_status(status="returned")
+        return_obj.save()
+        return redirect('dashboard')
+
+def reassign(request):
+    print(".....................................................................")
+    if request.method == 'POST':
+        from_user = request.POST['from']
+        to = request.POST['to']
+        work_pk = request.POST['pk_val']
+        suggestions = request.POST['suggestions']
+        rk_val = request.POST['rk_val']
+        print(to,"/////////////////////////////////////////")
+        
+        obj = Admin.objects.get(pk=int(to))
+        work_obj = WorkGenerator.objects.get(pk=int(work_pk))
+        ret = Return.objects.get(pk=int(rk_val))
+        work_obj.update_to(to=obj)
+        work_obj.change_status(status="Not Started..")
+        ret.delete()
+        return redirect('dashboard')
+
+def return_start(request,pk):
+    ret_obj = Return.objects.get(pk=pk)
+    if ret_obj.forward_pk:
+        ford_obj = Forward.objects.get(pk=int(ret_obj.forward_pk))
+        ford_obj.forward_work.change_status(status="pending...")
+        ford_obj.remove_forward()
+    else:
+        work_obj = ret_obj.work
+        work_obj.change_status(status="pending...")
+        work_obj.remove_forward()
+    ret_obj.delete()
+    return redirect('dashboard')
+
 
 
 # def download(request, path):
