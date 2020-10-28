@@ -1,6 +1,8 @@
 from django.shortcuts import render,get_object_or_404,redirect
-from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet
+from django.http import HttpResponse,Http404
+from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward
 from .forms import StartUpForm,MonitorSheetEditForm
+from django.core.files.storage import FileSystemStorage
 
 
 # Create your views here.
@@ -8,8 +10,20 @@ def dashboard(request):
     accounts = Account.objects.all()
     user = request.user
     admins = Admin.objects.all()
-    if user.is_admin:
+    if user.is_superadmin:
         return render(request,'startup.html',{'accounts':accounts})
+    elif user.is_admin:
+        value = user.admin_set.all()[0]
+        if user.is_adminstrator:
+            works = WorkGenerator.objects.all().order_by('-date_of_creation')
+            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works})
+        else:
+            admin_obj = user.admin_set.all()[0]
+            works = admin_obj.workgenerator_set.all().order_by('-date_of_creation')
+            forwardwork = admin_obj.forward_set.all()
+            print(works,"`````````````````````````")
+            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'forwardwork':forwardwork})        
+        
     else:
         user = request.user
         startup_obj = user.startup_set.all()[0]
@@ -21,7 +35,24 @@ def dashboard(request):
         print(val2)
         print(values)
         return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values})
-        
+
+def visit_startup(request):
+    accounts = Account.objects.all()
+    return render(request,'startup.html',{'accounts':accounts})
+
+def visit_employee(request,pk):
+    value = Admin.objects.get(pk=pk)
+    print(pk,"-------------------")
+    if value.account.is_adminstrator:
+        works = WorkGenerator.objects.all().order_by('-date_of_creation')
+        return render(request,'emp_dashboard.html',{'value':value,'works':works})
+    else:
+        works = value.workgenerator_set.all().order_by('-date_of_creation')
+        print(works,"`````````````````````````")
+        return render(request,'emp_dashboard.html',{'value':value,'works':works})
+    
+    
+
 def admin_form(request):
     return render(request,'admin_form.html')
 
@@ -279,3 +310,117 @@ def monitor_form(request):
         return redirect('dashboard')
     else:
         return render(request,'monitor_form.html')
+
+
+
+
+
+
+def generate_work(request):
+    
+    if request.method == 'POST' or request.FILES['document']:
+
+        fs = FileSystemStorage()
+        if request.FILES['document']:
+            doc = request.FILES['document']
+            file_name = fs.save(doc.name,doc)
+            file_url = fs.url(file_name)
+        
+        if file_name:
+            pass
+        else:
+            file_name = ''
+        
+        from_user = request.POST['from']
+        to = request.POST['to']
+        title = request.POST['title']
+        work_description = request.POST['work_description']
+        suggestions = request.POST['suggestions']
+        remarks = request.POST['remarks']
+        #document = request.FILES['document']
+        
+        from_obj = Account.objects.get(pk=int(from_user))
+        print(from_obj.fullname)
+        obj = Admin.objects.get(pk=int(to))
+        print(obj,"=====================")
+        work = WorkGenerator.objects.create(from_user=from_obj.fullname,to=obj,title=title,work_description=work_description,suggestions=suggestions,remarks=remarks,document=file_name)
+        work.change_status(status="Not Started..")
+        return redirect('dashboard')
+    return redirect('index')
+
+def edit_work(request):
+    if request.method == "POST":
+        pk = request.POST['pk_val']
+        title = request.POST['title']
+        work_description = request.POST['work_description']
+        suggestions = request.POST['suggestions']
+        remarks = request.POST['remarks']
+
+        work_obj = WorkGenerator.objects.get(pk=pk)
+
+        if title:
+            title = title
+        else:
+            title = ' '
+        
+        if work_description:
+            work_description = work_description
+        else:
+            work_description = ' '
+
+        if suggestions:
+            suggestions = suggestions
+        else:
+            suggestions = ' '
+        
+        if remarks:
+            remarks = remarks
+        else:
+            remarks = ' '
+
+        work_obj.update_work(title = title,work_description = work_description,suggestions = suggestions,remarks=remarks)
+    return redirect('dashboard')
+
+
+
+def start(request,pk):
+    work_obj = WorkGenerator.objects.get(pk=pk)
+    work_obj.change_status(status="pending...")
+    return redirect('dashboard')
+
+def completed(request,pk):
+    work_obj = WorkGenerator.objects.get(pk=pk)
+    work_obj.change_status(status="completed")
+    work_obj.update_date()
+    return redirect('dashboard')
+
+def forward_work(request):
+    if request.method == 'POST':
+        from_user = request.POST['from']
+        to = request.POST['to']
+        pk = request.POST['pk_val']
+        suggestions = request.POST['suggestions']
+
+        from_obj = Account.objects.get(pk=int(from_user))
+        print(from_obj.fullname)
+        obj = Admin.objects.get(pk=int(to))
+        print(obj,"=====================")
+        work_obj = WorkGenerator.objects.get(pk=int(pk))
+        print(work_obj,"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+        work = Forward.objects.create(from_user=from_obj.fullname,to=obj,forward_work=work_obj,suggestions=suggestions)
+        status_obj = WorkGenerator.objects.get(pk=int(pk))
+        print(obj.account.fullname)
+        status_obj.forward(from_obj.fullname,obj.account.fullname)
+        status_obj.change_status(status="forwarded->")
+        work.save()
+        return redirect('dashboard')
+
+
+# def download(request, path):
+#     file_path = os.path.join(settings.MEDIA_ROOT, path)
+#     if os.path.exists(file_path):
+#         with open(file_path, 'rb') as fh:
+#             response = HttpResponse(fh.read(), content_type="application/document")
+#             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+#             return response
+#     raise Http404

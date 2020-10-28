@@ -28,8 +28,13 @@ class MonitorSheetEditForm(forms.ModelForm):
             
     class Meta:
         model = MonitorSheet
-        exclude = ['connect_startup','allow_edit','mou_date','ssha_date','date_of_filling','mou','ssha_signed','share_transferred','share_certificates']
+        exclude = ['connect_startup','allow_edit']
         fields = ('__all__')
+        CHOICES = [
+            ('Yes','Yes'),
+            ('No','No'),
+        ]
+        mou = forms.ChoiceField(widget=forms.Select(choices=CHOICES))
 
         widgets = {
 
@@ -48,13 +53,17 @@ class MonitorSheetEditForm(forms.ModelForm):
             'share_holder_pattern'			: forms.TextInput(attrs={'class':'form-control'}),
             'authorized_capital_amount'		: forms.TextInput(attrs={'class':'form-control'}),
             'paid_up_capital_amount'		: forms.TextInput(attrs={'class':'form-control'}),
+            'date_of_filling'               : forms.DateInput(attrs={'type': 'date','class':'form-control'}),
             
-            
-            
+            'mou'                           : forms.Select(choices=CHOICES,attrs={'class':'form-control'}),
+            'mou_date'                      : forms.DateInput(attrs={'type': 'date','class':'form-control'}),
             'incubation_fees'				: forms.TextInput(attrs={'class':'form-control'}),
             'chef_monitor_assign'			: forms.TextInput(attrs={'class':'form-control'}),
+            'ssha_signed'                   : forms.Select(choices=CHOICES,attrs={'class':'form-control'}),
+            'ssha_date'                     : forms.DateInput(attrs={'type': 'date','class':'form-control'}),
             
-            
+            'share_transferred'             : forms.Select(choices=CHOICES,attrs={'class':'form-control'}),
+            'share_certificates'            : forms.Select(choices=CHOICES,attrs={'class':'form-control'}),
             'no_of_seats_taken'				: forms.TextInput(attrs={'class':'form-control'}),
             'rent_of_seats'					: forms.TextInput(attrs={'class':'form-control'}),
             'capital_invested'				: forms.TextInput(attrs={'class':'form-control'}),

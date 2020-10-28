@@ -20,9 +20,9 @@
                         <h2><a href="#">Profile</a></h2>
                     </div>
                 </div>
-                <div class="col-md-5 offset-md-2">
+               <!--  <div class="col-md-5 offset-md-2">
                     <a class="float-right" href="{% url 'startup_profile_edit' pk=value.pk %}"><i class="fas fa-edit fa-lg"></i></a>
-                </div>
+                </div> -->
             </div>
         </div>
     </header>
@@ -31,7 +31,7 @@
     <!-- Hero section start -->
     <section class="hero-section">
         <div class="container-fluid text-center">
-            <img src="{% static 'profile/img/hero-3.jpg' %}" alt="">
+            <img class="rounded-circle" src="{{value.admin_img.url}}" alt="">
             <div class="hero-text">
                 <h2>{{value.account.fullname}}</h2>
             </div>

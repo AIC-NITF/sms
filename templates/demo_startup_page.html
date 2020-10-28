@@ -332,8 +332,15 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{user.username}}</span>
+                                {% if user.is_admin %}
+                                {% for imgsrc in  user.admin_set.all %}
                                 <img class="img-profile rounded-circle"
-                                    src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                                    src="{{imgsrc.admin_img.url}}">
+                                {% endfor %}
+                                {% else %}
+                                <img class="img-profile rounded-circle"
+                                    src="{{value.startup_img.url}}">
+                                {% endif %}
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -396,7 +403,7 @@
                                 <!-- Hero section start -->
                                 <section class="hero-section">
                                     <div class="container-fluid text-center">
-                                        <img src="{% static 'profile/img/hero-3.jpg' %}" alt="">
+                                        <img src="{{value.startup_img.url}}" width="250" height="250" alt="">
                                         <div class="hero-text">
                                             <h2>{{value.startup_name}}</h2>
                                         </div>
