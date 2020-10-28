@@ -204,10 +204,44 @@ class MonitorSheet(models.Model):
 		self.save()
 
 
+class TractionSheet(models.Model):
+	connect_startup			      	= models.ForeignKey(StartUp, on_delete=models.CASCADE)
+	total_order						= models.CharField(max_length=200,null=True,blank=True)
+	average_packet_size				= models.CharField(max_length=200,null=True,blank=True)
+	total_revenue_of_month			= models.CharField(max_length=200,null=True,blank=True)
+	total_customers_served			= models.CharField(max_length=200,null=True,blank=True)
+	total_expense					= models.CharField(max_length=200,null=True,blank=True)
+	market_outreach					= models.CharField(max_length=200,null=True,blank=True)
+	repeate_customers				= models.CharField(max_length=200,null=True,blank=True)
+	total_revenue					= models.CharField(max_length=200,null=True,blank=True)
+	direct_job_created				= models.CharField(max_length=200,null=True,blank=True)
+	indirect_job_created			= models.CharField(max_length=200,null=True,blank=True)
+	profit							= models.CharField(max_length=200,null=True,blank=True)
+
+	allow_edit 						= models.BooleanField(default=False)
+	generated_date					= models.DateTimeField(verbose_name='report generated date', auto_now_add=True)
+
+
+	def __str__(self):
+		return self.connect_startup.startup_name
+
+	def allow_edit_option(self):
+		self.allow_edit = True
+		self.save()
+
+	def not_allow_edit_option(self):
+		self.allow_edit = False
+		self.save()
+
+
+
+
+
+
 
 class WorkGenerator(models.Model):
 	from_user					 = models.CharField(max_length=100,null=True,blank=True)
-	to                           = models.ForeignKey(Admin, on_delete=models.CASCADE)
+	to                           = models.ForeignKey(Admin,null=True,blank=True, on_delete=models.CASCADE)
 	date_of_creation			 = models.DateTimeField(verbose_name='date of creation', auto_now_add=True)	
 	title   					 = models.CharField(max_length=1000,null=True,blank=True)
 	work_description			 = models.CharField(max_length=2000,null=True,blank=True)
@@ -218,7 +252,8 @@ class WorkGenerator(models.Model):
 	forwarded					 = models.BooleanField(default=False)
 	forwarded_from 				 = models.CharField(max_length=200,null=True,blank=True)
 	forwarded_to				 = models.CharField(max_length=200,null=True,blank=True)
-	date_of_complition			 = models.DateTimeField(blank=True, null=True)	
+	date_of_complition			 = models.DateTimeField(blank=True, null=True)
+	from_user_pk				 = models.CharField(max_length=500,null=True,blank=True)
 	
 
 
@@ -244,21 +279,57 @@ class WorkGenerator(models.Model):
 		self.forwarded_from = from_user
 		self.forwarded_to = to
 		self.save()
+	
+	def make_null(self):
+		self.to = None
+		self.save()
+
+	def update_to(self,to):
+		self.to = to
+		self.date_of_creation = timezone.now()
+		self.save()
+	def remove_forward(self):
+		self.forwarded = False
+		self.save()
 
 class Forward(models.Model):
 	from_user				= models.CharField(max_length=100,null=True,blank=True)
-	to  					= models.ForeignKey(Admin, on_delete=models.CASCADE)
-	forward_work  			= models.ForeignKey(WorkGenerator,default="", on_delete=models.CASCADE)
+	to  					= models.ForeignKey(Admin,null=True,blank=True, on_delete=models.CASCADE)
+	forward_work  			= models.ForeignKey(WorkGenerator,null=True,blank=True,default="", on_delete=models.CASCADE)
 	suggestions				= models.CharField(max_length=200,null=True,blank=True)
+	forwarded			    = models.BooleanField(default=False)
+	date_of_forward			= models.DateTimeField(verbose_name='date of forward', auto_now_add=True,null=True,blank=True)
+	from_user_pk		    = models.CharField(max_length=500,null=True,blank=True)
+	forward_pk				= models.CharField(max_length=100,null=True,blank=True)
+
+	def forther_forward(self):
+		self.forwarded = True
+		self.save()
+	def remove_forward(self):
+		self.forwarded = False
+		self.save()
+
+	def make_null(self):
+		self.to = None
+		self.save()
 
 
 	def __str__(self):
-		return self.from_user +" " +self.to.account.fullname
+		return self.from_user +" " +self.forward_work.title
 
-class Reply(models.Model):
+class Return(models.Model):
 	from_user				= models.CharField(max_length=100,null=True,blank=True)
-	to  					= models.ForeignKey(WorkGenerator, on_delete=models.CASCADE)
-	messaage				= models.CharField(max_length=500,null=True,blank=True)
+	to  					= models.ForeignKey(Admin, on_delete=models.CASCADE)
+	work		  			= models.ForeignKey(WorkGenerator,default="", on_delete=models.CASCADE)
+	message				    = models.CharField(max_length=500,null=True,blank=True)
+	return_date				= models.DateTimeField(verbose_name='return date', auto_now_add=True,null=True,blank=True)
+	forward_pk				= models.CharField(max_length=100,null=True,blank=True)
 
 	def __str__(self):
-		return self.from_user 
+		return self.from_user
+
+	def assign_forward_pk(self,forward_pk):
+		self.forward_pk = forward_pk
+		self.save()
+
+	 

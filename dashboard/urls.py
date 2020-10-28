@@ -31,6 +31,14 @@ urlpatterns = [
     path('allowedit/<int:pk>',views.allowedit,name='allowedit'),
     path('monitor_sheet_edit/<int:pk>',views.monitor_sheet_edit,name='monitor_sheet_edit'),
 
+    path('traction_form/',views.traction_form,name='traction_form'),
+    path('traction_report/<int:pk>/',views.traction_report,name='traction_report'),
+    path('allow_traction_edit/<int:pk>',views.allow_traction_edit,name='allow_traction_edit'),
+    path('edit_traction_sheet/<int:pk>',views.edit_traction_sheet,name='edit_traction_sheet'),
+
+
+
+
     path('visit_startup/',views.visit_startup,name='visit_startup'),
     path('generate_work/',views.generate_work,name='generate_work'),
     path('edit_work/',views.edit_work,name='edit_work'),
@@ -40,5 +48,10 @@ urlpatterns = [
     path('completed/<int:pk>/',views.completed,name='completed'),
 
     path('forward_work/',views.forward_work,name='forward_work'),
+    path('return_work/',views.return_work,name='return_work'),
+    path('reassign/',views.reassign,name='reassign'),
+    path('return_start/<int:pk>/',views.return_start,name='return_start'),
+
+    path('delete_work/<int:pk>',views.delete_work,name='delete_work'),
     #url(r'^download/(?P<path>.*)$', serve, {'document root': settings.MEDIA_ROOT}),
 ]

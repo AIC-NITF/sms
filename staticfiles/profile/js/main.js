@@ -10,14 +10,14 @@
 'use strict';
 
 
-$(window).on('load', function() { 
-	/*------------------
-		Preloder
-	--------------------*/
-	$(".loader").fadeOut(); 
-	$("#preloder").delay(400).fadeOut("slow");
+// $(window).on('load', function() { 
+// 	/*------------------
+// 		Preloder
+// 	--------------------*/
+// 	$(".loader").fadeOut(); 
+// 	$("#preloder").delay(400).fadeOut("slow");
 
-});
+// });
 
 
 (function($) {
@@ -31,13 +31,13 @@ $(window).on('load', function() {
 	});
 
 
-	$('.review-slider').owlCarousel({
-		loop: true,
-		nav: false,
-		dots: true,
-		items: 1,
-		autoplay: true
-	});
+	// $('.review-slider').owlCarousel({
+	// 	loop: true,
+	// 	nav: false,
+	// 	dots: true,
+	// 	items: 1,
+	// 	autoplay: true
+	// });
 
 
 
@@ -71,11 +71,11 @@ $(window).on('load', function() {
 	/*------------------
 		Popup
 	--------------------*/
-	$('.portfolio-item .port-pic').magnificPopup({
-		type: 'image',
-		mainClass: 'img-popup-warp',
-		removalDelay: 500,
-	});
+	// $('.portfolio-item .port-pic').magnificPopup({
+	// 	type: 'image',
+	// 	mainClass: 'img-popup-warp',
+	// 	removalDelay: 500,
+	// });
 
 
 

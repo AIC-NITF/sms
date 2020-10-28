@@ -1,8 +1,7 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.http import HttpResponse,Http404
-from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward
-from .forms import StartUpForm,MonitorSheetEditForm
-from django.core.files.storage import FileSystemStorage
+from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Return,TractionSheet
+from .forms import StartUpForm,MonitorSheetEditForm,TractionSheetEditForm
 
 
 # Create your views here.
@@ -16,25 +15,49 @@ def dashboard(request):
         value = user.admin_set.all()[0]
         if user.is_adminstrator:
             works = WorkGenerator.objects.all().order_by('-date_of_creation')
-            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works})
+            ford_status = WorkGenerator.objects.filter(forwarded=True).order_by('-date_of_creation')
+            pending_status = WorkGenerator.objects.filter(status='pending...').order_by('-date_of_creation')
+            completed_status = WorkGenerator.objects.filter(status='completed').order_by('-date_of_creation')
+            assigned_work = value.forward_set.all().order_by('-date_of_forward')
+            from_works = Forward.objects.filter(from_user=request.user.fullname).order_by('-date_of_forward')
+            print(ford_status)
+            return_obj = Return.objects.filter(to=value)
+            print(return_obj)
+            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'ford_status':ford_status,'pending_status':pending_status,'completed_status':completed_status,'return_obj':return_obj})
         else:
             admin_obj = user.admin_set.all()[0]
             works = admin_obj.workgenerator_set.all().order_by('-date_of_creation')
-            forwardwork = admin_obj.forward_set.all()
+            assigned_work = admin_obj.forward_set.all().order_by('-date_of_forward')
             print(works,"`````````````````````````")
-            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'forwardwork':forwardwork})        
+            from_works = Forward.objects.filter(from_user=request.user.fullname).order_by('-date_of_forward')
+            print(from_works)
+            
+            pending_status = admin_obj.workgenerator_set.filter(status='pending...').order_by('-date_of_creation')
+            completed_status = admin_obj.workgenerator_set.filter(status='completed').order_by('-date_of_creation')
+            val = admin_obj.forward_set.filter(to=admin_obj).order_by('-date_of_forward')
+            assign_pending_status = []
+            for v in val:
+                if v.forward_work.status == "pending...":
+                    assign_pending_status.append(v)
+            assign_completed_status = []
+            for v in val:
+                if v.forward_work.status == "completed":
+                    assign_completed_status.append(v)
+            return_obj = Return.objects.filter(to=value)
+            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'pending_status':pending_status,'assign_pending_status':assign_pending_status,'completed_status':completed_status,'assign_completed_status':assign_completed_status,'return_obj':return_obj})        
         
     else:
         user = request.user
         startup_obj = user.startup_set.all()[0]
         val2 = startup_obj.teammembers_set.all()
         values = startup_obj.monitorsheet_set.all()
+        traction_values = startup_obj.tractionsheet_set.all()
         print(user)
         print(user.pk)
         print(startup_obj)
         print(val2)
         print(values)
-        return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values})
+        return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'traction_values':traction_values})
 
 def visit_startup(request):
     accounts = Account.objects.all()
@@ -45,11 +68,15 @@ def visit_employee(request,pk):
     print(pk,"-------------------")
     if value.account.is_adminstrator:
         works = WorkGenerator.objects.all().order_by('-date_of_creation')
-        return render(request,'emp_dashboard.html',{'value':value,'works':works})
+        ford_status = WorkGenerator.objects.filter(forwarded=True).order_by('-date_of_creation')
+        print(ford_status,"....................................................")
+        return render(request,'emp_dashboard.html',{'value':value,'works':works,'ford_status':ford_status})
     else:
         works = value.workgenerator_set.all().order_by('-date_of_creation')
+        forwardwork = value.forward_set.all().order_by('-date_of_forward')
+        from_works = Forward.objects.filter(from_user=value.account.fullname).order_by('-date_of_forward')
         print(works,"`````````````````````````")
-        return render(request,'emp_dashboard.html',{'value':value,'works':works})
+        return render(request,'emp_dashboard.html',{'value':value,'works':works,'forwardwork':forwardwork,'from_works':from_works})
     
     
 
@@ -64,9 +91,10 @@ def profile(request,pk):
     startup_obj = details.startup_set.all()[0]
     val2 = startup_obj.teammembers_set.all()
     values = startup_obj.monitorsheet_set.all()
+    traction_values = startup_obj.tractionsheet_set.all()
     
     print("=====================================================================")
-    return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values})
+    return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'traction_values':traction_values})
 
 def startup_profile_edit(request,pk):
     print("hello guyss",pk)
@@ -313,7 +341,54 @@ def monitor_form(request):
 
 
 
+def traction_form(request):
+    if request.method == 'POST':
+        user = request.user
+        startup_obj = user.startup_set.all()[0]
 
+        total_order     = request.POST['total_order']
+        average_packet_size   = request.POST['average_packet_size']
+        total_revenue_of_month  = request.POST['total_revenue_of_month']
+        total_customers_served  = request.POST['total_customers_served']
+        total_expense     = request.POST['total_expense']
+        market_outreach   = request.POST['market_outreach']
+        repeate_customers    = request.POST['repeate_customers']
+        total_revenue     = request.POST['total_revenue']
+        direct_job_created   = request.POST['direct_job_created']
+        indirect_job_created   = request.POST['indirect_job_created']
+        profit = request.POST['profit']
+
+        traction_report = TractionSheet.objects.create(connect_startup=startup_obj,total_order=total_order,average_packet_size=average_packet_size,total_revenue_of_month=total_revenue_of_month,total_customers_served=total_customers_served,total_expense=total_expense,market_outreach=market_outreach,repeate_customers=repeate_customers,total_revenue=total_revenue,direct_job_created=direct_job_created,indirect_job_created=indirect_job_created,profit=profit)
+        return redirect('dashboard')
+    
+    else:
+        return render(request,'traction_form.html')
+
+def traction_report(request,pk):
+    traction_sheet_obj = TractionSheet.objects.get(pk=pk)
+    print(traction_sheet_obj,"+++++++++++++++++++++++++++++++++++++")
+    return render(request,'traction_report.html',{'traction_report':traction_sheet_obj})
+
+def allow_traction_edit(request,pk):
+    traction_report_obj = TractionSheet.objects.get(pk=pk)
+    traction_report_obj.allow_edit_option()
+    return redirect(traction_report,pk=pk)
+
+def edit_traction_sheet(request,pk):
+    content = get_object_or_404(TractionSheet,pk=pk)
+    print(content)
+    if request.method == 'POST':
+        form = TractionSheetEditForm(request.POST,instance=content)
+        print(form) 
+        if form.is_valid():
+            content = form.save(commit=False)
+            content.save()
+            content.not_allow_edit_option()
+            return redirect(dashboard)
+    else:
+        form = TractionSheetEditForm(instance=content)
+        print(form," form")
+    return render(request,'edit_traction_sheet.html',{'form':form})
 
 
 def generate_work(request):
@@ -343,7 +418,7 @@ def generate_work(request):
         print(from_obj.fullname)
         obj = Admin.objects.get(pk=int(to))
         print(obj,"=====================")
-        work = WorkGenerator.objects.create(from_user=from_obj.fullname,to=obj,title=title,work_description=work_description,suggestions=suggestions,remarks=remarks,document=file_name)
+        work = WorkGenerator.objects.create(from_user=from_obj.fullname,to=obj,title=title,work_description=work_description,suggestions=suggestions,remarks=remarks,document=document,from_user_pk=from_user)
         work.change_status(status="Not Started..")
         return redirect('dashboard')
     return redirect('index')
@@ -399,21 +474,105 @@ def forward_work(request):
         from_user = request.POST['from']
         to = request.POST['to']
         pk = request.POST['pk_val']
+        forward_pk = request.POST['pk_val2']
         suggestions = request.POST['suggestions']
 
         from_obj = Account.objects.get(pk=int(from_user))
         print(from_obj.fullname)
         obj = Admin.objects.get(pk=int(to))
-        print(obj,"=====================")
+        print(forward_pk,"=====================")
         work_obj = WorkGenerator.objects.get(pk=int(pk))
         print(work_obj,"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-        work = Forward.objects.create(from_user=from_obj.fullname,to=obj,forward_work=work_obj,suggestions=suggestions)
+        work = Forward.objects.create(from_user=from_obj.fullname,to=obj,forward_work=work_obj,suggestions=suggestions,from_user_pk=from_user,forward_pk=forward_pk)
         status_obj = WorkGenerator.objects.get(pk=int(pk))
         print(obj.account.fullname)
-        status_obj.forward(from_obj.fullname,obj.account.fullname)
+        if status_obj.status == "returned":
+            ret_obj = Return.objects.get(pk=int(forward_pk))
+            ret_obj.delete()
+
+        if status_obj.forwarded == False:
+            status_obj.forward(from_obj.fullname,obj.account.fullname)
+        else:
+            for_obj = Forward.objects.get(pk=int(forward_pk))
+            for_obj.forther_forward() 
         status_obj.change_status(status="forwarded->")
+        
         work.save()
         return redirect('dashboard')
+
+def return_work(request):
+    if request.method == 'POST':
+        from_user = request.POST['from']
+        to = request.POST['to']
+        work_pk = request.POST['work_pk']
+        suggestions = request.POST['suggestions']
+        ford_work_pk = request.POST['ford_work_pk']
+        print(ford_work_pk)
+        print(to,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+        from_obj = Account.objects.get(pk=int(from_user))
+        print(from_obj,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.")
+        obj = Account.objects.get(pk=int(to))
+        to_obj = obj.admin_set.all()[0]
+        print(to_obj,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+        work_obj = WorkGenerator.objects.get(pk=int(work_pk))
+
+        return_obj = Return.objects.create(from_user=from_obj.fullname,to=to_obj,work=work_obj,message=suggestions)
+
+        if work_obj.forwarded:
+            ford_obj = Forward.objects.get(pk=int(ford_work_pk))
+            print(ford_obj)
+            return_obj.assign_forward_pk(forward_pk=ford_obj.forward_pk)
+            if ford_obj.forward_pk:
+                old_ford_obj = Forward.objects.get(pk=ford_obj.forward_pk)
+                old_ford_obj.remove_forward()
+            else:
+                work_obj.remove_forward()
+            ford_obj.delete()
+        else:
+            work_obj.make_null()
+        work_obj.change_status(status="returned")
+        return_obj.save()
+        return redirect('dashboard')
+
+def reassign(request):
+    print(".....................................................................")
+    if request.method == 'POST':
+        from_user = request.POST['from']
+        to = request.POST['to']
+        work_pk = request.POST['pk_val']
+        suggestions = request.POST['suggestions']
+        rk_val = request.POST['rk_val']
+        print(to,"/////////////////////////////////////////")
+        
+        obj = Admin.objects.get(pk=int(to))
+        work_obj = WorkGenerator.objects.get(pk=int(work_pk))
+        ret = Return.objects.get(pk=int(rk_val))
+        work_obj.update_to(to=obj)
+        work_obj.change_status(status="Not Started..")
+        ret.delete()
+        return redirect('dashboard')
+
+def return_start(request,pk):
+    ret_obj = Return.objects.get(pk=pk)
+    if ret_obj.forward_pk:
+        ford_obj = Forward.objects.get(pk=int(ret_obj.forward_pk))
+        ford_obj.forward_work.change_status(status="pending...")
+        ford_obj.remove_forward()
+    else:
+        work_obj = ret_obj.work
+        work_obj.change_status(status="pending...")
+        work_obj.remove_forward()
+    ret_obj.delete()
+    return redirect('dashboard')
+
+def delete_work(request,pk):
+    ret_obj = Return.objects.get(pk=pk)
+    if request.user.is_adminstrator and ret_obj.work.forwarded == False:
+        ret_obj.work.delete()
+    else:
+        ret_obj.delete()
+    return redirect('dashboard')
+
 
 
 # def download(request, path):
