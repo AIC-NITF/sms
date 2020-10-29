@@ -1,6 +1,6 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.http import HttpResponse,Http404
-from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Return,TractionSheet
+from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Return,TractionSheet,MoM
 from .forms import StartUpForm,MonitorSheetEditForm,TractionSheetEditForm
 
 
@@ -52,12 +52,18 @@ def dashboard(request):
         val2 = startup_obj.teammembers_set.all()
         values = startup_obj.monitorsheet_set.all()
         traction_values = startup_obj.tractionsheet_set.all()
+        account = Account.objects.filter(is_superadmin=True)[0]
+        sendings = MoM.objects.filter(from_user=user.fullname,to=account)
+        receving = MoM.objects.filter(from_user=account.fullname,to=user)
+        print(sendings)
+        print(receving)
+        print(account)
         print(user)
         print(user.pk)
         print(startup_obj)
         print(val2)
         print(values)
-        return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'traction_values':traction_values})
+        return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'traction_values':traction_values,'account':account,'sendings':sendings,'receving':receving})
 
 def visit_startup(request):
     accounts = Account.objects.all()
@@ -92,9 +98,12 @@ def profile(request,pk):
     val2 = startup_obj.teammembers_set.all()
     values = startup_obj.monitorsheet_set.all()
     traction_values = startup_obj.tractionsheet_set.all()
+    sendings = MoM.objects.filter(from_user=request.user.fullname,to=details)
+    receving = MoM.objects.filter(from_user=details.fullname,to=request.user)
+
     
     print("=====================================================================")
-    return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'traction_values':traction_values})
+    return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'traction_values':traction_values,'sendings':sendings,'receving':receving})
 
 def startup_profile_edit(request,pk):
     print("hello guyss",pk)
@@ -339,7 +348,32 @@ def monitor_form(request):
     else:
         return render(request,'monitor_form.html')
 
+def send_mom(request):
+    print("helllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllo")
+    if request.method == 'POST' or request.FILES['document']:
+        print("helooooooooooooooooooo")
+        from_user = request.POST['from']
+        to = request.POST['to']
+        title = request.POST['title']
+        description = request.POST['description']
+        document = request.FILES['document']
 
+        from_obj = Account.objects.get(pk=int(from_user))
+        to_obj = Account.objects.get(pk=int(to))
+        print(to_obj)
+
+        mom_obj = MoM.objects.create(from_user=from_obj.fullname,to=to_obj,title=title,description=description,document=document)
+        mom_obj.save()
+
+        if request.user.is_superadmin:
+            return redirect(profile,int(to))
+        else:
+            return redirect(dashboard)
+    else:
+        if request.user.is_superadmin:
+            return redirect(profile,int(to))
+        else:
+            return redirect(dashboard)
 
 def traction_form(request):
     if request.method == 'POST':

@@ -235,6 +235,17 @@ class TractionSheet(models.Model):
 
 
 
+class MoM(models.Model):
+	from_user 	 				= models.CharField(max_length=100,null=True,blank=True)
+	to                          = models.ForeignKey(Account,null=True,blank=True, on_delete=models.CASCADE)
+	date_of_creation			= models.DateTimeField(verbose_name='date of creation', auto_now_add=True)
+	title						= models.CharField(max_length=500,null=True,blank=True)
+	description					= models.CharField(max_length=1000,null=True,blank=True)
+	document                    = models.FileField(upload_to='files',null=True,blank=True)
+
+	def __str__(self):
+		return self.title	
+
 
 
 

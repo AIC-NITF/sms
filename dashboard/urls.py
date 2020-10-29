@@ -36,8 +36,7 @@ urlpatterns = [
     path('allow_traction_edit/<int:pk>',views.allow_traction_edit,name='allow_traction_edit'),
     path('edit_traction_sheet/<int:pk>',views.edit_traction_sheet,name='edit_traction_sheet'),
 
-
-
+    path('send_mom',views.send_mom,name='send_mom'),
 
     path('visit_startup/',views.visit_startup,name='visit_startup'),
     path('generate_work/',views.generate_work,name='generate_work'),
