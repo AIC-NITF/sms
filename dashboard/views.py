@@ -2,6 +2,7 @@ from django.shortcuts import render,get_object_or_404,redirect
 from django.http import HttpResponse,Http404
 from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Return,TractionSheet,MoM
 from .forms import StartUpForm,MonitorSheetEditForm,TractionSheetEditForm
+from django.core.files.storage import FileSystemStorage
 
 
 # Create your views here.
@@ -21,7 +22,7 @@ def dashboard(request):
             assigned_work = value.forward_set.all().order_by('-date_of_forward')
             from_works = Forward.objects.filter(from_user=request.user.fullname).order_by('-date_of_forward')
             print(ford_status)
-            return_obj = Return.objects.filter(to=value)
+            return_obj = Return.objects.filter(to=value).order_by('-return_date')
             print(return_obj)
             return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'ford_status':ford_status,'pending_status':pending_status,'completed_status':completed_status,'return_obj':return_obj})
         else:
@@ -43,7 +44,7 @@ def dashboard(request):
             for v in val:
                 if v.forward_work.status == "completed":
                     assign_completed_status.append(v)
-            return_obj = Return.objects.filter(to=value)
+            return_obj = Return.objects.filter(to=value).order_by('-return_date')
             return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'pending_status':pending_status,'assign_pending_status':assign_pending_status,'completed_status':completed_status,'assign_completed_status':assign_completed_status,'return_obj':return_obj})        
         
     else:
@@ -426,24 +427,36 @@ def edit_traction_sheet(request,pk):
 
 
 def generate_work(request):
-    print("========================================================")
-    if request.method == 'POST' or request.FILES['document']:
-        print("helooooooooooooooooooo")
+    
+    if request.method == 'POST':
+
+        fs = FileSystemStorage()
+        if request.FILES['document']:
+            doc = request.FILES['document']
+            file_name = fs.save(doc.name,doc)
+            file_url = fs.url(file_name)
+        
+        if file_name:
+            pass
+        else:
+            file_name = ''
+        
         from_user = request.POST['from']
         to = request.POST['to']
         title = request.POST['title']
         work_description = request.POST['work_description']
         suggestions = request.POST['suggestions']
         remarks = request.POST['remarks']
-        document = request.FILES['document']
+        #document = request.FILES['document']
         
         from_obj = Account.objects.get(pk=int(from_user))
         print(from_obj.fullname)
         obj = Admin.objects.get(pk=int(to))
         print(obj,"=====================")
-        work = WorkGenerator.objects.create(from_user=from_obj.fullname,to=obj,title=title,work_description=work_description,suggestions=suggestions,remarks=remarks,document=document,from_user_pk=from_user)
+        work = WorkGenerator.objects.create(from_user=from_obj.fullname,to=obj,title=title,work_description=work_description,suggestions=suggestions,remarks=remarks,document=file_name,from_user_pk=from_user)
         work.change_status(status="Not Started..")
         return redirect('dashboard')
+    return redirect('index')
 
 def edit_work(request):
     if request.method == "POST":

@@ -5,6 +5,7 @@
 }
 .courses-container{
 	margin: 0 auto;
+	
 }
 .course {
 	background-color: #fff;
@@ -36,6 +37,7 @@
 	color: #fff;
 	padding: 30px;
 	width: 250px;
+	
 }
 
 .course-preview a {
@@ -45,12 +47,14 @@
 	opacity: 0.6;
 	margin-top: 30px;
 	text-decoration: none;
+	
 }
 
 .course-info {
 	padding: 30px;
 	position: relative;
 	width: 100%;
+	
 }
 
 .btn1 {
@@ -78,6 +82,8 @@
 	text-decoration: none;
 }
 
+<<<<<<< HEAD
+=======
 
 /* media css for  view report  card*/
 @media screen and (max-width: 400px) {
@@ -131,3 +137,4 @@
 	}
 		
 }
+>>>>>>> fb9d29cc3a89fb38b03feff9073d60ff51018bcf
