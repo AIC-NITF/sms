@@ -54,8 +54,8 @@ def dashboard(request):
         values = startup_obj.monitorsheet_set.all()
         traction_values = startup_obj.tractionsheet_set.all()
         account = Account.objects.filter(is_superadmin=True)[0]
-        sendings = MoM.objects.filter(from_user=user.fullname,to=account)
-        receving = MoM.objects.filter(from_user=account.fullname,to=user)
+        sendings = MoM.objects.filter(from_user=user.fullname,to=account).order_by('-date_of_creation')
+        receving = MoM.objects.filter(from_user=account.fullname,to=user).order_by('-date_of_creation')
         print(sendings)
         print(receving)
         print(account)
@@ -99,8 +99,8 @@ def profile(request,pk):
     val2 = startup_obj.teammembers_set.all()
     values = startup_obj.monitorsheet_set.all()
     traction_values = startup_obj.tractionsheet_set.all()
-    sendings = MoM.objects.filter(from_user=request.user.fullname,to=details)
-    receving = MoM.objects.filter(from_user=details.fullname,to=request.user)
+    sendings = MoM.objects.filter(from_user=request.user.fullname,to=details).order_by('-date_of_creation')
+    receving = MoM.objects.filter(from_user=details.fullname,to=request.user).order_by('-date_of_creation')
 
     
     print("=====================================================================")
