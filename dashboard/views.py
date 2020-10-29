@@ -395,16 +395,16 @@ def generate_work(request):
     
     if request.method == 'POST' or request.FILES['document']:
 
-        fs = FileSystemStorage()
-        if request.FILES['document']:
-            doc = request.FILES['document']
-            file_name = fs.save(doc.name,doc)
-            file_url = fs.url(file_name)
+        # fs = FileSystemStorage()
+        # if request.FILES['document']:
+        #     doc = request.FILES['document']
+        #     file_name = fs.save(doc.name,doc)
+        #     file_url = fs.url(file_name)
         
-        if file_name:
-            pass
-        else:
-            file_name = ''
+        # if file_name:
+        #     pass
+        # else:
+        #     file_name = ''
         
         from_user = request.POST['from']
         to = request.POST['to']
@@ -412,13 +412,18 @@ def generate_work(request):
         work_description = request.POST['work_description']
         suggestions = request.POST['suggestions']
         remarks = request.POST['remarks']
-        #document = request.FILES['document']
+        checkbox = request.POST.get('upload_checkbox',None)
+        if checkbox: 
+            document = request.FILES['document']
         
         from_obj = Account.objects.get(pk=int(from_user))
         print(from_obj.fullname)
         obj = Admin.objects.get(pk=int(to))
         print(obj,"=====================")
-        work = WorkGenerator.objects.create(from_user=from_obj.fullname,to=obj,title=title,work_description=work_description,suggestions=suggestions,remarks=remarks,document=document,from_user_pk=from_user)
+        if checkbox:
+            work = WorkGenerator.objects.create(from_user=from_obj.fullname,to=obj,title=title,work_description=work_description,suggestions=suggestions,remarks=remarks,document=document,from_user_pk=from_user)
+        else:
+            work = WorkGenerator.objects.create(from_user=from_obj.fullname,to=obj,title=title,work_description=work_description,suggestions=suggestions,remarks=remarks,from_user_pk=from_user)
         work.change_status(status="Not Started..")
         return redirect('dashboard')
     return redirect('index')

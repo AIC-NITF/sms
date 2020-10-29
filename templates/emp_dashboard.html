@@ -760,7 +760,7 @@
                         <div class="form-group">
                             <label for="inputTo">To</label>
                             <select id="inputTo" name="to" class="form-control">
-                                <option selected>Choose...</option>
+                                <option selected required>Choose...</option>
                                 {% for account in accounts %}
                                 {% if account.is_superadmin == False and account.pk != user.pk %}
                                 {% for val in account.admin_set.all %}
@@ -775,7 +775,7 @@
                         <div class="form-group">
                             <label for="inputTitle4">Work Title</label>
                             <input type="text" name="title" class="form-control" id="inputTitle4"
-                                placeholder="Work title">
+                                placeholder="Work title" required>
                         </div>
                         <div class="form-group">
                             <label for="inputWorkDescription">Work Description</label>
@@ -792,9 +792,17 @@
                             <input type="text" name="remarks" class="form-control" id="inputRemarks"
                                 placeholder="Remarks/Comments">
                         </div>
+
                         <div class="form-group">
+                            <label class="switch">
+                                <input type="checkbox" id="upload_chkbox" name="upload_checkbox">
+                                <span class="slider round"> Check the box to attach file</span>
+                              </label>
+                        </div>
+
+                        <div class="form-group" id="file_upload_div">
                             <label for="exampleFormDocument">Choose File To Upload</label>
-                            <input type="file" name="document" class="form-control-file" id="exampleFormDocument">
+                            <input type="file" name="document" class="form-control-file" id="file_upload" required >
                         </div>
                     </div>
 
@@ -858,10 +866,13 @@
                         <input type="text" name="remarks" disabled value="{{work.remarks}}" class="form-control"
                             placeholder="Remarks/Comments">
                     </div>
+                    {% if work.document %}
                     <div class="form-group">
                         <label for="exampleFormDocument">{{work.document}}</label><br>
                         <a href="{{work.document}}" class="btn btn-primary" download="{{work.document}}">download</a>
                     </div>
+                    {% endif %}
+
                     {% if user.is_superadmin == False and user.is_adminstrator == False %}
                     {% if work.status != "completed" and work.forwarded != True %}
                     {% if work.status != "pending..." %}
@@ -1677,6 +1688,24 @@
 
 
     <script src="{% static 'profile/js/main.js' %}"></script>
+
+    <script>
+        $('#file_upload_div').hide();
+        $('#file_upload').prop('disabled',true);
+         $('input[type="checkbox"]').click(function(){
+            if($(this).prop("checked") == true){
+                console.log("Checkbox is checked.");
+                $('#file_upload_div').show();
+                $('#file_upload').prop('disabled',false);
+            }
+            else if($(this).prop("checked") == false){
+                console.log("Checkbox is unchecked.");
+                $('#file_upload_div').hide();
+                $('#file_upload').prop('disabled',true);
+            }
+        });
+    </script>
+
     <script>
 
         $(".work_edit").on("click", function () {
