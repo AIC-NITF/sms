@@ -54,4 +54,7 @@ urlpatterns = [
 
     path('delete_work/<int:pk>',views.delete_work,name='delete_work'),
     #url(r'^download/(?P<path>.*)$', serve, {'document root': settings.MEDIA_ROOT}),
+
+    path('new_work_clicked',views.new_work_clicked,name='new_work_clicked'),
+    path('count_values',views.count_values,name='count_values'),
 ]

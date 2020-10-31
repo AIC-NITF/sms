@@ -32,8 +32,28 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
 
+<style>
+.glow {
+  font-size: 15px;
+  margin-left: 10px;
+  color: #fff;
+  text-align: center;
+  -webkit-animation: glow 1s ease-in-out infinite alternate;
+  -moz-animation: glow 1s ease-in-out infinite alternate;
+  animation: glow 1s ease-in-out infinite alternate;
+}
 
-        
+@-webkit-keyframes glow {
+  from {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+  }
+  
+  to {
+    text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+  }
+}
+</style>
+
 </head>
 
 <body id="page-top">
@@ -389,7 +409,7 @@
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link" id="pills-returned-tab" data-toggle="pill"
                                         href="#pills-returned" role="tab" aria-controls="pills-returned"
-                                        aria-selected="false">returned</a>
+                                        aria-selected="false">returned <span id="returned_total"></span></a>
                                 </li>
 
                                 <li class="nav-item" role="presentation">
@@ -427,9 +447,9 @@
                                                 {% for work in works %}
                                                 <tr>
                                                     <th scope="row">{{forloop.counter}}</th>
-                                                    <td><a class="work_link" id="work1{{work.pk}}" href=""
+                                                    <td class="new_work"><a class="work_link " id="work1{{work.pk}}" href=""
                                                             data-toggle="modal" data-target="#DisplayModel{{work.pk}}"
-                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{work.title}}</a>
+                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{work.title}} {% if work.new_work %} <span id="new_work{{work.pk}}"><b style="color: red;" class="glow"> New</b></span> {% endif %}</a>
                                                     </td>
                                                     {% if user.is_adminstrator %}
                                                     <td>{{user.fullname}}</td>
@@ -702,7 +722,7 @@
                                                             id="work3{{from_work.forward_work.pk}}" href=""
                                                             data-toggle="modal"
                                                             data-target="#DisplayMode3{{from_work.forward_work.pk}}"
-                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{from_work.forward_work.title}}</a>
+                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{from_work.forward_work.title}}  </a>
                                                     </td>
                                                     <td>{{from_work.from_user}}</td>
                                                     <td>{{from_work.to.account.fullname}}</td>
@@ -760,7 +780,7 @@
                         <div class="form-group">
                             <label for="inputTo">To</label>
                             <select id="inputTo" name="to" class="form-control">
-                                <option selected required>Choose...</option>
+                                <!-- <option required>Choose...</option> -->
                                 {% for account in accounts %}
                                 {% if account.is_superadmin == False and account.pk != user.pk %}
                                 {% for val in account.admin_set.all %}
@@ -846,7 +866,7 @@
                     {% endif %}
                     <div class="form-group">
                         <label for="inputTitle4">Work Title</label>
-                        <label hidden id="workingtitle{{work.pk}}">{{work.title}}</label>
+                        <label hidden id="workingtitle{{work.pk}}">{{work.title}} </label>
                         <input type="text" name="title" disabled value="{{work.title}}" class="form-control"
                             placeholder="Work title">
                     </div>
@@ -1678,7 +1698,7 @@
         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
         crossorigin="anonymous"></script>
     <script src="{% static 'dashboard/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script> -->
-
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 
     <!-- Core plugin JavaScript-->
     <script src="{% static 'dashboard/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
@@ -1705,6 +1725,8 @@
             }
         });
     </script>
+
+    
 
     <script>
 
@@ -1743,7 +1765,38 @@
             console.log(pk);
             $("#pk_val1").val(pk);
             $("#work_pk").val(pk);
+            $.ajax({
+                url:'{% url "new_work_clicked" %}',
+                data:{
+                    'pk':pk
+                },
+                dataType:'json',
+                success: function(data){
+                    if (data.new_work){
+                        console.log('I am clicked.. pk');
+                    }
+                    else{
+                        id = '#new_work' + pk;
+                        $(id).hide();
+                    }
+                }
+            })
         });
+
+
+        $(document).ready(function(){
+            $.ajax({
+                url:'{% url "count_values" %}',
+                dataType:'json',
+                success:function(data){
+                    $('#returned_total').val(data.returns);
+                    console.log(data.returns);
+                }
+                
+            })
+        });
+
+
 
         $(".ford_work_link").on("click", function () {
             id = this.id;

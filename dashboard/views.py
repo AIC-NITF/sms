@@ -1,5 +1,5 @@
 from django.shortcuts import render,get_object_or_404,redirect
-from django.http import HttpResponse,Http404
+from django.http import HttpResponse,Http404,JsonResponse
 from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Return,TractionSheet
 from .forms import StartUpForm,MonitorSheetEditForm,TractionSheetEditForm
 
@@ -588,3 +588,23 @@ def delete_work(request,pk):
 #             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
 #             return response
 #     raise Http404
+
+
+def new_work_clicked(request):
+    pk = request.GET.get('pk',None)
+    work = WorkGenerator.objects.get(pk=pk)
+    print(pk)
+    work.new_work = False
+    work.save()
+    data = {
+        'new_work':work.new_work
+    }
+    return JsonResponse(data)
+
+def count_values(request):
+    returns = Return.objects.filter(work__new_work = True)
+    print(len(returns))
+    data = {
+        'returns':len(returns)
+    }
+    return JsonResponse(data)

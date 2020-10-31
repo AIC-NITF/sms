@@ -235,10 +235,6 @@ class TractionSheet(models.Model):
 
 
 
-
-
-
-
 class WorkGenerator(models.Model):
 	from_user					 = models.CharField(max_length=100,null=True,blank=True)
 	to                           = models.ForeignKey(Admin,null=True,blank=True, on_delete=models.CASCADE)
@@ -254,6 +250,7 @@ class WorkGenerator(models.Model):
 	forwarded_to				 = models.CharField(max_length=200,null=True,blank=True)
 	date_of_complition			 = models.DateTimeField(blank=True, null=True)
 	from_user_pk				 = models.CharField(max_length=500,null=True,blank=True)
+	new_work 					 = models.BooleanField(default=True)
 	
 
 
