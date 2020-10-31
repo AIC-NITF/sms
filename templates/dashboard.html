@@ -24,6 +24,7 @@
 
     <!-- Custom styles for this template-->
     <link href="{% static 'dashboard/css/sb-admin-2.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'blog/blog_css.css' %}">
     {% block css %}{% endblock %}
 
 </head>
@@ -78,6 +79,14 @@
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-sticky-note"></i>
                     <span>Create Start-Up</span>
+                </a>
+            </li>
+
+            <li id="startup" class="nav-item check">
+                <a class="nav-link collapsed" href="{% url 'blogPost' %}" data-target="#collapseUtilities"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-sticky-note"></i>
+                    <span>Blog Post</span>
                 </a>
             </li>
             {% endif %}

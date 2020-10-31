@@ -1,8 +1,4 @@
 from django.urls import path,include
-# from django.conf.urls import url
-# from django.conf import settings
-# from django.conf.urls.static import static
-# from django.views.static import serve
 from . import views
 urlpatterns = [
     path('',views.dashboard,name='dashboard'),
@@ -37,6 +33,9 @@ urlpatterns = [
     path('edit_traction_sheet/<int:pk>',views.edit_traction_sheet,name='edit_traction_sheet'),
 
     path('send_mom',views.send_mom,name='send_mom'),
+    path('blogPost',views.blogPost,name='blogPost'),
+    path('newBlogPost',views.newBlogPost,name='newBlogPost'),
+
 
     path('visit_startup/',views.visit_startup,name='visit_startup'),
     path('generate_work/',views.generate_work,name='generate_work'),
@@ -52,5 +51,5 @@ urlpatterns = [
     path('return_start/<int:pk>/',views.return_start,name='return_start'),
 
     path('delete_work/<int:pk>',views.delete_work,name='delete_work'),
-    #url(r'^download/(?P<path>.*)$', serve, {'document root': settings.MEDIA_ROOT}),
+    
 ]

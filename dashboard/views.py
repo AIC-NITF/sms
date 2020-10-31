@@ -1,7 +1,7 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.http import HttpResponse,Http404
-from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Return,TractionSheet,MoM
-from .forms import StartUpForm,MonitorSheetEditForm,TractionSheetEditForm
+from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Return,TractionSheet,MoM,BlogPost
+from .forms import StartUpForm,MonitorSheetEditForm,TractionSheetEditForm,BlogPostForm
 from django.core.files.storage import FileSystemStorage
 
 
@@ -425,21 +425,48 @@ def edit_traction_sheet(request,pk):
         print(form," form")
     return render(request,'edit_traction_sheet.html',{'form':form})
 
+def blogPost(request):
+    posts = BlogPost.objects.all().order_by('-date_of_creation')
+    return render(request,'blogPost.html',{'posts':posts})
+
+def newBlogPost(request):
+    print("0.0.................0000000000000.000000000000")
+    # if request.method == "POST":
+    #     form = BlogPostForm(request.POST)
+    #     if form.is_valid():
+    #         print(form,"...333333333333333..........3333333333")
+    #         post = form.save(commit=False)
+    #         post.save()
+    #         return redirect('blogPost')
+    # else:
+    #     form = BlogPostForm()
+    #     print(form)
+    if request.method == "POST":
+        title = request.POST['title']
+        description = request.POST['description']
+        blog_img = request.FILES['blog_img']
+        print(blog_img)
+        post = BlogPost.objects.create(title=title,description=description,blog_img=blog_img)
+        post.save()
+        return redirect('blogPost')
+    
+
+    return redirect('blogPost')
 
 def generate_work(request):
     
     if request.method == 'POST':
 
-        fs = FileSystemStorage()
-        if request.FILES['document']:
-            doc = request.FILES['document']
-            file_name = fs.save(doc.name,doc)
-            file_url = fs.url(file_name)
+        # fs = FileSystemStorage()
+        # if request.FILES['document']:
+        #     doc = request.FILES['document']
+        #     file_name = fs.save(doc.name,doc)
+        #     file_url = fs.url(file_name)
         
-        if file_name:
-            pass
-        else:
-            file_name = ''
+        # if file_name:
+        #     pass
+        # else:
+        #     file_name = ''
         
         from_user = request.POST['from']
         to = request.POST['to']
@@ -447,13 +474,18 @@ def generate_work(request):
         work_description = request.POST['work_description']
         suggestions = request.POST['suggestions']
         remarks = request.POST['remarks']
-        #document = request.FILES['document']
+        checkbox = request.POST.get('upload_checkbox',None)
+        if checkbox: 
+            document = request.FILES['document']
         
         from_obj = Account.objects.get(pk=int(from_user))
         print(from_obj.fullname)
         obj = Admin.objects.get(pk=int(to))
         print(obj,"=====================")
-        work = WorkGenerator.objects.create(from_user=from_obj.fullname,to=obj,title=title,work_description=work_description,suggestions=suggestions,remarks=remarks,document=file_name,from_user_pk=from_user)
+        if checkbox:
+            work = WorkGenerator.objects.create(from_user=from_obj.fullname,to=obj,title=title,work_description=work_description,suggestions=suggestions,remarks=remarks,document=document,from_user_pk=from_user)
+        else:
+            work = WorkGenerator.objects.create(from_user=from_obj.fullname,to=obj,title=title,work_description=work_description,suggestions=suggestions,remarks=remarks,from_user_pk=from_user)
         work.change_status(status="Not Started..")
         return redirect('dashboard')
     return redirect('index')
@@ -610,11 +642,11 @@ def delete_work(request,pk):
 
 
 
-# def download(request, path):
-#     file_path = os.path.join(settings.MEDIA_ROOT, path)
-#     if os.path.exists(file_path):
-#         with open(file_path, 'rb') as fh:
-#             response = HttpResponse(fh.read(), content_type="application/document")
-#             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
-#             return response
-#     raise Http404
+def download(request, path):
+    file_path = os.path.join(settings.MEDIA_ROOT, path)
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/document")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404

@@ -1,0 +1,96 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+{% load static %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h3 style="text-align: center;font-weight: bold;">Blog Post</h3>
+    <a href="" data-toggle="modal" data-target="#post" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+            class="fas fa-download fa-sm text-white-50"></i> Post </a>
+</div>
+
+<!-- BLOG POST-->
+{% for post in posts %}
+<div class="container mt-5">
+    <div class="row">
+      <div class="col-12">
+        <article class="blog-card">
+          <div class="blog-card__background">
+            <div class="card__background--wrapper">
+              <div class="card__background--main" style="background-image: url('{{post.blog_img.url}}');">
+                <div class="card__background--layer"></div>
+              </div>
+            </div>
+          </div>
+          <div class="blog-card__head">
+            <span class="date__box">
+              <span class="date__day">11</span>
+              <span class="date__month">JAN</span>
+            </span>
+          </div>
+          <div class="blog-card__info">
+            <h5>{{post.title}}</h5>
+            <p>
+              <a href="#" class="icon-link mr-3"><i class="fa fa-pencil-square-o"></i> Tony Jahson</a>
+              <a href="#" class="icon-link"><i class="fa fa-comments-o"></i> 150</a>
+            </p>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Doloremque vero libero voluptatibus earum? Alias dignissimos quo cum, nulla esse facere atque, blanditiis doloribus at sunt quas, repellendus vel? Et, hic!</p>
+            <a href="#" class="btn btn--with-icon button"><i class="btn-icon fa fa-long-arrow-right"></i>READ MORE</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- blog upload Model-->
+<div class="modal fade" id="post" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Create Post</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{% url 'newBlogPost' %}" enctype="multipart/form-data">{% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="inputTitle4">Title</label>
+                        <input type="text" name="title" class="form-control" id="inputTitle4"
+                                        placeholder="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputWorkDescription">Description</label>
+                        <textarea class="form-control" name="description" id="inputWorkDescription" rows="3"
+                                        placeholder="Description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputWorkblog_img">Upload Image</label>
+                        <input type="file" name="blog_img" class="form-control-file" id="inputWorkblog_img">
+                    </div>
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Post</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--end of send mom-->
+{% endblock %}

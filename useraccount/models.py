@@ -247,6 +247,15 @@ class MoM(models.Model):
 		return self.title	
 
 
+class BlogPost(models.Model):
+	title   					= models.CharField(max_length=1000,null=True,blank=True)
+	description			 		= models.CharField(max_length=5000,null=True,blank=True)
+	blog_img					= models.ImageField(upload_to='blog_img/',null=True,blank=True)
+	date_of_creation			= models.DateTimeField(verbose_name='date of creation', auto_now_add=True)
+
+
+	def __str__(self):
+		return self.title
 
 
 
