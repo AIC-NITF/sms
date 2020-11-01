@@ -412,19 +412,11 @@
                                         aria-selected="false">returned <span id="returned_total"></span></a>
                                 </li>
 
-                                <li class="nav-item" role="presentation">
-                                    <a class="nav-link" id="pills-pending-tab" data-toggle="pill" href="#pills-pending"
-                                        role="tab" aria-controls="pills-pending" aria-selected="false">pending</a>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <a class="nav-link" id="pills-closed-tab" data-toggle="pill" href="#pills-closed"
-                                        role="tab" aria-controls="pills-closed" aria-selected="false">Completed</a>
-                                </li>
                                 <li class="nav-item dropdown"> 
-                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Filter</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item nav-link" id="action-tab" data-toggle="pill" href="#action" role="tab" aria-controls="action" aria-selected="false">Action</a>
-                                        <a class="dropdown-item nav-link" id="action2-tab" data-toggle="pill" href="#action2" role="tab" aria-controls="action2" aria-selected="false">Action2</a>
+                                        <a class="dropdown-item nav-link" id="pills-pending-tab" data-toggle="pill" href="#pills-pending" role="tab" aria-controls="pills-pending" aria-selected="false">pending</a>
+                                        <a class="dropdown-item nav-link" id="pills-closed-tab" data-toggle="pill" href="#pills-closed" role="tab" aria-controls="pills-closed" aria-selected="false">Completed</a>
                                     </div>
                                 </li>    
                             </ul>
@@ -469,8 +461,10 @@
                                         </table>
                                     </div>
                                 </div>
+                                
                                 <div class="tab-pane fade" id="pills-pending" role="tabpanel"
                                     aria-labelledby="pills-pending-tab">
+                                    <center><h2>Pending Status</h2></center>
                                     <div class="table-responsive-lg">
                                         <h3>My Work Status</h3>
                                         <table class="table">
@@ -510,6 +504,7 @@
                                     <br>
                                     <br>
                                     <div class="table-responsive-lg">
+                                        <center><h2>Completed Status</h2></center>
                                         <h3>Assigned Work Status</h3>
                                         <table class="table">
                                             <thead class="thead-dark">
@@ -624,7 +619,7 @@
                                 </div>
                                
 
-                                <div class="tab-pane fade" id="action" role="tabpanel" aria-labelledby="action-tab"><h1>action</h1></div>
+                                
                                 <div class="tab-pane fade" id="action2" role="tabpanel" aria-labelledby="action2-tab"><h1>action2</h1></div>
 
                                 <div class="tab-pane fade" id="pills-returned" role="tabpanel"
@@ -842,7 +837,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header" style="display: inline-block; padding-bottom: 0; ">
-                    <h5 style="margin-bottom: 0;" id="staticBackdropLabel">Modal title{{user.pk}}</h5>
+                    <h5 style="margin-bottom: 0; font-weight:bold;color:tomato;" id="staticBackdropLabel">My Work</h5>
                     {% if work.forwarded %}
                     <h6 style="color: rgb(146, 146, 146);">forwarded from {{work.forwarded_from}} to
                         {{work.forwarded_to}} </h6>
@@ -888,8 +883,8 @@
                     </div>
                     {% if work.document %}
                     <div class="form-group">
-                        <label for="exampleFormDocument">{{work.document}}</label><br>
-                        <a href="{{work.document}}" class="btn btn-primary" download="{{work.document}}">download</a>
+                        <label for="exampleFormDocument">{{work.document.url}}</label><br>
+                        <a href="{{work.document.url}}" class="btn btn-primary" download="{{work.document.url}}">download</a>
                     </div>
                     {% endif %}
 
@@ -923,7 +918,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header" style="display: inline-block; padding-bottom: 0; ">
-                    <h5 style="margin-bottom: 0;" id="staticBackdropLabel">Modal title{{assigned_msg.pk}}
+                    <h5 style="margin-bottom: 0; font-weight:bold;color:tomato;" id="staticBackdropLabel">Assigned Work
                     </h5>
                     {% if assigned_msg.forward_work.forwarded %}
                     <h6 style="color: rgb(146, 146, 146);">forwarded from {{assigned_msg.from_user}} to
@@ -964,11 +959,13 @@
                         <input type="text" name="remarks" disabled value="{{assigned_msg.forward_work.remarks}}"
                             class="form-control" placeholder="Remarks/Comments">
                     </div>
+                    {% if assigned_msg.forward_work.document %}
                     <div class="form-group">
-                        <label for="exampleFormDocument">{{assigned_msg.forward_work.document}}</label><br>
-                        <a href="{{assigned_msg.forward_work.document}}" class="btn btn-primary"
-                            download="{{assigned_msg.forward_work.document}}">download</a>
+                        <label for="exampleFormDocument">{{assigned_msg.forward_work.document.url}}</label><br>
+                        <a href="{{assigned_msg.forward_work.document.url}}" class="btn btn-primary"
+                            download="{{assigned_msg.forward_work.document.url}}">download</a>
                     </div>
+                    {% endif %}
                     <div class="form-group">
                         <label for="inputSuggestions">Suggestions by {{assigned_msg.from_user}}</label>
                         <textarea class="form-control" disabled name="suggestions" value=""
@@ -1008,7 +1005,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header" style="display: inline-block; padding-bottom: 0; ">
-                    <h5 style="margin-bottom: 0;" id="staticBackdropLabel">Modal title{{from_work.forward_work.pk}}</h5>
+                    <h5 style="margin-bottom: 0; font-weight:bold;color:tomato;" id="staticBackdropLabel">Forward Work</h5>
                     <!-- {% if assigned_msg.forward_work.forwarded %}
                     <h6 style="color: rgb(146, 146, 146);">forwarded from {{assigned_msg.from_user}} to {{assigned_msg.to.account.fullname}} </h6>
                     {% else %}
@@ -1047,11 +1044,13 @@
                         <input type="text" name="remarks" disabled value="{{from_work.forward_work.remarks}}"
                             class="form-control" placeholder="Remarks/Comments">
                     </div>
+                    {% if from_work.forward_work.document %}
                     <div class="form-group">
-                        <label for="exampleFormDocument">{{from_work.forward_work.document}}</label><br>
-                        <a href="{{from_work.forward_work.document}}" class="btn btn-primary"
-                            download="{{from_work.forward_work.document}}">download</a>
+                        <label for="exampleFormDocument">{{from_work.forward_work.document.url}}</label><br>
+                        <a href="{{from_work.forward_work.document.url}}" class="btn btn-primary"
+                            download="{{from_work.forward_work.document.url}}">download</a>
                     </div>
+                    {% endif %}
                     <div class="form-group">
                         <label for="inputSuggestions">Suggestions by {{from_work.from_user}}</label>
                         <textarea class="form-control" disabled name="suggestions" value=""
@@ -1086,8 +1085,8 @@
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header" style="display: inline-block; padding-bottom: 0; ">
-                    <h5 style="margin-bottom: 0;" id="staticBackdropLabel">Modal title{{pending.pk}}</h5>
+                <div class="modal-header" style="display: inline-block; padding-bottom: 0;">
+                    <h5 style="margin-bottom: 0; font-weight:bold;color:tomato;" id="staticBackdropLabel">Pending...My Work</h5>
                     {% if pending.forwarded %}
                     <h6 style="color: rgb(146, 146, 146);">forwarded from {{pending.from_user}} to
                         {{pending.to.account.fullname}} </h6>
@@ -1157,8 +1156,8 @@
         tabindex="-2" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header" style="display: inline-block; padding-bottom: 0; ">
-                    <h5 style="margin-bottom: 0;" id="staticBackdropLabel">Modal title{{pending.forward_work.pk}}
+                <div class="modal-header" style="display: inline-block; padding-bottom: 0">
+                    <h5 style="margin-bottom: 0; font-weight:bold;color:tomato;" id="staticBackdropLabel">Pending... Assigned Work
                     </h5>
                     {% if pending.forward_work.forwarded %}
                     <h6 style="color: rgb(146, 146, 146);">forwarded from {{pending.from_user}} to
@@ -1198,11 +1197,13 @@
                         <input type="text" name="remarks" disabled value="{{pending.forward_work.remarks}}"
                             class="form-control" placeholder="Remarks/Comments">
                     </div>
+                    {% if pending.forward_work.document %}
                     <div class="form-group">
-                        <label for="exampleFormDocument">{{pending.forward_work.document}}</label><br>
-                        <a href="{{pending.forward_work.document}}" class="btn btn-primary"
-                            download="{{pending.forward_work.document}}">download</a>
+                        <label for="exampleFormDocument">{{pending.forward_work.document.url}}</label><br>
+                        <a href="{{pending.forward_work.document.url}}" class="btn btn-primary"
+                            download="{{pending.forward_work.document.url}}">download</a>
                     </div>
+                    {% endif %}
                     <div class="form-group">
                         <label for="inputSuggestions">Suggestions by {{pending.from_user}}</label>
                         <textarea class="form-control" disabled name="suggestions" value=""
@@ -1240,8 +1241,8 @@
         tabindex="-2" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header" style="display: inline-block; padding-bottom: 0; ">
-                    <h5 style="margin-bottom: 0;" id="staticBackdropLabel">Modal title{{completed.pk}}</h5>
+                <div class="modal-header" style="display: inline-block; padding-bottom: 0;">
+                    <h5 style="margin-bottom: 0; font-weight:bold;color:tomato;" id="staticBackdropLabel">Completed My Work</h5>
                     {% if completed.forwarded %}
                     <h6 style="color: rgb(146, 146, 146);">forwarded from {{completed.from_user}} to
                         {{completed.to.account.fullname}} </h6>
@@ -1279,11 +1280,13 @@
                         <input type="text" name="remarks" disabled value="{{completed.remarks}}" class="form-control"
                             placeholder="Remarks/Comments">
                     </div>
+                    {% if completed.document %}
                     <div class="form-group">
                         <label for="exampleFormDocument">{{completed.document}}</label><br>
-                        <a href="{{completed.document}}" class="btn btn-primary"
-                            download="{{completed.document}}">download</a>
+                        <a href="{{completed.document.url}}" class="btn btn-primary"
+                            download="{{completed.document.url}}">download</a>
                     </div>
+                    {% endif %}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -1300,8 +1303,8 @@
         tabindex="-2" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header" style="display: inline-block; padding-bottom: 0; ">
-                    <h5 style="margin-bottom: 0;" id="staticBackdropLabel">Modal title{{completed.forward_work.pk}}
+                <div class="modal-header" style="display: inline-block; padding-bottom: 0;">
+                    <h5 style="margin-bottom: 0; font-weight:bold;color:tomato;" id="staticBackdropLabel">Completed Assigned Work
                     </h5>
                     {% if completed.forward_work.forwarded %}
                     <h6 style="color: rgb(146, 146, 146);">forwarded from {{completed.from_user}} to
@@ -1342,11 +1345,13 @@
                         <input type="text" name="remarks" disabled value="{{completed.forward_work.remarks}}"
                             class="form-control" placeholder="Remarks/Comments">
                     </div>
+                    {% if completed.forward_work.document %}
                     <div class="form-group">
-                        <label for="exampleFormDocument">{{completed.forward_work.document}}</label><br>
-                        <a href="{{completed.forward_work.document}}" class="btn btn-primary"
-                            download="{{completed.forward_work.document}}">download</a>
+                        <label for="exampleFormDocument">{{completed.forward_work.document.url}}</label><br>
+                        <a href="{{completed.forward_work.document.url}}" class="btn btn-primary"
+                            download="{{completed.forward_work.document.url}}">download</a>
                     </div>
+                    {% endif %}
                     <div class="form-group">
                         <label for="inputSuggestions">Suggestions by {{completed.from_user}}</label>
                         <textarea class="form-control" disabled name="suggestions" value=""
@@ -1371,8 +1376,8 @@
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header" style="display: inline-block; padding-bottom: 0; ">
-                    <h5 style="margin-bottom: 0;" id="staticBackdropLabel">Modal title{{ret_obj.work.pk}}
+                <div class="modal-header" style="display: inline-block; padding-bottom: 0;">
+                    <h5 style="margin-bottom: 0; font-weight:bold;color:tomato;" id="staticBackdropLabel">Returned
                     </h5>
                     <button type="button" style="position: absolute; top: 15px; right: 15px;" class="close"
                         data-dismiss="modal" aria-label="Close">
@@ -1405,11 +1410,13 @@
                         <input type="text" name="remarks" disabled value="{{ret_obj.work.remarks}}" class="form-control"
                             placeholder="Remarks/Comments">
                     </div>
+                    {% if ret_obj.work.document %}
                     <div class="form-group">
-                        <label for="exampleFormDocument">{{ret_obj.work.document}}</label><br>
-                        <a href="{{ret_obj.work.document}}" class="btn btn-primary"
-                            download="{{ret_obj.work.document}}">download</a>
+                        <label for="exampleFormDocument">{{ret_obj.work.document.url}}</label><br>
+                        <a href="{{ret_obj.work.document.url}}" class="btn btn-primary"
+                            download="{{ret_obj.work.document.url}}">download</a>
                     </div>
+                    {% endif %}
                     <div class="form-group">
                         <label for="inputSuggestions">Message by {{ret_obj.from_user}}</label>
                         <textarea class="form-control" disabled name="suggestions" value=""
@@ -1494,7 +1501,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Forward</h5>
+                    <h5 class="modal-title" style="font-weight:bold;color:tomato;" id="staticBackdropLabel">Forward</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -1549,7 +1556,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Return</h5>
+                    <h5 class="modal-title" style="font-weight:bold;color:tomato;" id="staticBackdropLabel">Return</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -1589,7 +1596,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">ReAssign</h5>
+                    <h5 class="modal-title" style="font-weight:bold;color:tomato;" id="staticBackdropLabel">ReAssign</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -1646,7 +1653,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                    <h5 class="modal-title" style="font-weight:bold;color:tomato;" id="exampleModalLabel">Delete</h5>
                 </div>
                 <div class="modal-body">
                     {% if user.is_adminstrator and ret_obj.work.forwarded == False %}

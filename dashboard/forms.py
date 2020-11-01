@@ -1,5 +1,5 @@
 from django import forms
-from useraccount.models import StartUp,Admin,MonitorSheet,TractionSheet
+from useraccount.models import StartUp,Admin,MonitorSheet,TractionSheet,BlogPost
 
 class StartUpForm(forms.ModelForm):
 
@@ -115,4 +115,19 @@ class TractionSheetEditForm(forms.ModelForm):
             'direct_job_created'				: forms.TextInput(attrs={'class':'form-control'}),
             'indirect_job_created'				: forms.TextInput(attrs={'class':'form-control'}),
             'profit'                            : forms.TextInput(attrs={'class':'form-control'}),
+        }
+
+
+class BlogPostForm(forms.ModelForm):
+
+    class Meta:
+        model = BlogPost
+        exclude = ['date_of_creation']
+        fields = ('__all__')
+
+
+        widgets = {
+            'title'                         : forms.TextInput(attrs={'class':'form-control'}),
+            'description'			        : forms.Textarea(attrs={'class':'form-control','rows':"3"}),
+            'blog_img'			            : forms.FileInput(attrs={'class':'form-control'}),
         }

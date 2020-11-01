@@ -1,6 +1,6 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.http import HttpResponse,Http404,JsonResponse
-from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Return,TractionSheet
+from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Return,TractionSheet,MoM,BlogPost
 from .forms import StartUpForm,MonitorSheetEditForm,TractionSheetEditForm
 
 
@@ -21,7 +21,7 @@ def dashboard(request):
             assigned_work = value.forward_set.all().order_by('-date_of_forward')
             from_works = Forward.objects.filter(from_user=request.user.fullname).order_by('-date_of_forward')
             print(ford_status)
-            return_obj = Return.objects.filter(to=value)
+            return_obj = Return.objects.filter(to=value).order_by('-return_date')
             print(return_obj)
             return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'ford_status':ford_status,'pending_status':pending_status,'completed_status':completed_status,'return_obj':return_obj})
         else:
@@ -43,7 +43,7 @@ def dashboard(request):
             for v in val:
                 if v.forward_work.status == "completed":
                     assign_completed_status.append(v)
-            return_obj = Return.objects.filter(to=value)
+            return_obj = Return.objects.filter(to=value).order_by('-return_date')
             return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'pending_status':pending_status,'assign_pending_status':assign_pending_status,'completed_status':completed_status,'assign_completed_status':assign_completed_status,'return_obj':return_obj})        
         
     else:
@@ -52,12 +52,18 @@ def dashboard(request):
         val2 = startup_obj.teammembers_set.all()
         values = startup_obj.monitorsheet_set.all()
         traction_values = startup_obj.tractionsheet_set.all()
+        account = Account.objects.filter(is_superadmin=True)[0]
+        sendings = MoM.objects.filter(from_user=user.fullname,to=account).order_by('-date_of_creation')
+        receving = MoM.objects.filter(from_user=account.fullname,to=user).order_by('-date_of_creation')
+        print(sendings)
+        print(receving)
+        print(account)
         print(user)
         print(user.pk)
         print(startup_obj)
         print(val2)
         print(values)
-        return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'traction_values':traction_values})
+        return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'traction_values':traction_values,'account':account,'sendings':sendings,'receving':receving})
 
 def visit_startup(request):
     accounts = Account.objects.all()
@@ -92,9 +98,12 @@ def profile(request,pk):
     val2 = startup_obj.teammembers_set.all()
     values = startup_obj.monitorsheet_set.all()
     traction_values = startup_obj.tractionsheet_set.all()
+    sendings = MoM.objects.filter(from_user=request.user.fullname,to=details).order_by('-date_of_creation')
+    receving = MoM.objects.filter(from_user=details.fullname,to=request.user).order_by('-date_of_creation')
+
     
     print("=====================================================================")
-    return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'traction_values':traction_values})
+    return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'traction_values':traction_values,'sendings':sendings,'receving':receving})
 
 def startup_profile_edit(request,pk):
     print("hello guyss",pk)
@@ -339,7 +348,32 @@ def monitor_form(request):
     else:
         return render(request,'monitor_form.html')
 
+def send_mom(request):
+    print("helllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllo")
+    if request.method == 'POST' or request.FILES['document']:
+        print("helooooooooooooooooooo")
+        from_user = request.POST['from']
+        to = request.POST['to']
+        title = request.POST['title']
+        description = request.POST['description']
+        document = request.FILES['document']
 
+        from_obj = Account.objects.get(pk=int(from_user))
+        to_obj = Account.objects.get(pk=int(to))
+        print(to_obj)
+
+        mom_obj = MoM.objects.create(from_user=from_obj.fullname,to=to_obj,title=title,description=description,document=document)
+        mom_obj.save()
+
+        if request.user.is_superadmin:
+            return redirect(profile,int(to))
+        else:
+            return redirect(dashboard)
+    else:
+        if request.user.is_superadmin:
+            return redirect(profile,int(to))
+        else:
+            return redirect(dashboard)
 
 def traction_form(request):
     if request.method == 'POST':
@@ -390,10 +424,37 @@ def edit_traction_sheet(request,pk):
         print(form," form")
     return render(request,'edit_traction_sheet.html',{'form':form})
 
+def blogPost(request):
+    posts = BlogPost.objects.all().order_by('-date_of_creation')
+    return render(request,'blogPost.html',{'posts':posts})
+
+def newBlogPost(request):
+    print("0.0.................0000000000000.000000000000")
+    # if request.method == "POST":
+    #     form = BlogPostForm(request.POST)
+    #     if form.is_valid():
+    #         print(form,"...333333333333333..........3333333333")
+    #         post = form.save(commit=False)
+    #         post.save()
+    #         return redirect('blogPost')
+    # else:
+    #     form = BlogPostForm()
+    #     print(form)
+    if request.method == "POST":
+        title = request.POST['title']
+        description = request.POST['description']
+        blog_img = request.FILES['blog_img']
+        print(blog_img)
+        post = BlogPost.objects.create(title=title,description=description,blog_img=blog_img)
+        post.save()
+        return redirect('blogPost')
+    
+
+    return redirect('blogPost')
 
 def generate_work(request):
     
-    if request.method == 'POST' or request.FILES['document']:
+    if request.method == 'POST':
 
         # fs = FileSystemStorage()
         # if request.FILES['document']:
@@ -608,3 +669,11 @@ def count_values(request):
         'returns':len(returns)
     }
     return JsonResponse(data)
+def download(request, path):
+    file_path = os.path.join(settings.MEDIA_ROOT, path)
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/document")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404

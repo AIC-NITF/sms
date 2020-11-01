@@ -31,16 +31,6 @@
 	});
 
 
-	// $('.review-slider').owlCarousel({
-	// 	loop: true,
-	// 	nav: false,
-	// 	dots: true,
-	// 	items: 1,
-	// 	autoplay: true
-	// });
-
-
-
 	$('.progress-bar-style').each(function() {
 		var progress = $(this).data("progress");
 		var prog_width = progress + '%';

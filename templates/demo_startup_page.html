@@ -29,18 +29,19 @@
 
 
     <style>
-        
         @media screen and (max-width: 400px) {
             .course-preview {
                 height: 100px;
                 width: 120px;
             }
-            .course-preview h6{
+
+            .course-preview h6 {
                 font-size: 10px;
                 color: white;
                 margin-left: -8px;
             }
-            .course-preview h2{
+
+            .course-preview h2 {
                 font-size: 12px;
                 color: white;
                 font-weight: bold;
@@ -49,24 +50,27 @@
 
             .course-info {
                 height: 100px;
-               
+
             }
-            .course-info h6{
+
+            .course-info h6 {
                 font-size: 8px;
                 color: black;
                 margin-left: -15px;
-                
+
                 margin-top: -10px;
                 margin-bottom: 15px;
             }
-            .course-info h2{
+
+            .course-info h2 {
                 font-size: 12px;
                 color: black;
                 font-weight: bold;
                 margin-left: -15px;
-                
+
                 margin-top: -10px;
             }
+
             .btn1 {
                 height: 20px;
                 width: 90px;
@@ -79,7 +83,7 @@
                 bottom: 5px;
                 right: 7px;
             }
-                
+
         }
     </style>
 
@@ -366,9 +370,9 @@
                         <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel"
                             aria-labelledby="v-pills-profile-tab">
 
-                            <div id="preloder">
+                            <!-- <div id="preloder">
                                 <div class="loader"></div>
-                            </div>
+                            </div> -->
 
                             <div class="home-five-style">
                                 <!-- Header section start -->
@@ -711,18 +715,235 @@
 
                         <div class="tab-pane fade" id="v-pills-minute" role="tabpanel"
                             aria-labelledby="v-pills-minute-tab">
-                            <h1>Minute Of Meeting</h1> Culpa dolor voluptate do laboris laboris irure reprehenderit id
-                            incididunt duis pariatur mollit aute magna pariatur consectetur. Eu veniam duis non ut dolor
-                            deserunt commodo et minim in quis laboris ipsum velit id veniam. Quis ut consectetur
-                            adipisicing officia excepteur non sit. Ut et elit aliquip labore Lorem enim eu. Ullamco
-                            mollit occaecat dolore ipsum id officia mollit qui esse anim eiusmod do sint minim
-                            consectetur qui.
+                            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                <h3>Minute Of Meeting</h3>
+                                <a href="{% url 'traction_form' %}"
+                                    class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
+                                    data-toggle="modal" data-target="#sendMoM"><i
+                                        class="fas fa-download fa-sm text-white-50"></i> Send MoM</a>
+                            </div>
+
+                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="pills-receved-tab" data-toggle="pill"
+                                        href="#pills-receved" role="tab" aria-controls="pills-receved"
+                                        aria-selected="true">Receved</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-send-tab" data-toggle="pill" href="#pills-send"
+                                        role="tab" aria-controls="pills-send" aria-selected="false">Send</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-receved" role="tabpanel"
+                                    aria-labelledby="pills-receved-tab">
+
+                                    <div class="table-responsive-lg">
+                                        <table class="table">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th scope="col">SlNo</th>
+                                                    <th scope="col">Title</th>
+                                                    <th scope="col">From</th>
+                                                    <th scope="col">To</th>
+                                                    <th scope="col">Receved Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for receve in receving %}
+                                                <tr>
+                                                    <th scope="row">{{forloop.counter}}</th>
+                                                    <td><a href="" data-toggle="modal"data-target="#receveDisplay{{receve.pk}}" style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{receve.title}}</a></td>
+                                                    <td>{{receve.from_user}}</td>
+                                                    <td>{{receve.to.fullname}}</td>
+                                                    <td>{{receve.date_of_creation}}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+                                </div>
+                                <div class="tab-pane fade" id="pills-send" role="tabpanel"
+                                    aria-labelledby="pills-send-tab">
+
+                                    <div class="table-responsive-lg">
+                                        <table class="table">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th scope="col">SlNo</th>
+                                                    <th scope="col">Title</th>
+                                                    <th scope="col">From</th>
+                                                    <th scope="col">To</th>
+                                                    <th scope="col">Send Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for send in sendings %}
+                                                <tr>
+                                                    <th scope="row">{{forloop.counter}}</th>
+                                                    <td>
+                                                        <a href="" data-toggle="modal"data-target="#sendDisplay{{send.pk}}" style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{send.title}}</a>
+                                                    </td>
+                                                    <td>{{send.from_user}}</td>
+                                                    <td>{{send.to.fullname}}</td>
+                                                    <td>{{send.date_of_creation}}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <!-- End of Content Wrapper -->
             </div>
             <!-- End of Page Wrapper -->
+
+            <!-- Modal -->
+            <div class="modal fade" id="sendMoM" data-backdrop="static" data-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Send MoM</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form method="POST" action="{% url 'send_mom' %}" enctype="multipart/form-data">{% csrf_token %}
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="inputFrom">From</label>
+                                    <select id="inputFrom" name="from" class="form-control">
+                                        <option selected value="{{user.pk}}">{{user.fullname}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputTo">To</label>
+                                    <select id="inputTo" name="to" class="form-control">
+                                        {% if user.is_superadmin %}
+                                        <option selected value="{{value.account.pk}}">{{value.account.fullname}}
+                                        </option>
+                                        {% else %}
+                                        <option selected value="{{account.pk}}">{{account.fullname}}</option>
+                                        {% endif %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputTitle4">Title</label>
+                                    <input type="text" name="title" class="form-control" id="inputTitle4"
+                                        placeholder="Work title">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputWorkDescription">Description</label>
+                                    <textarea class="form-control" name="description" id="inputWorkDescription" rows="3"
+                                        placeholder="Description"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormDocument">Upload File</label>
+                                    <input type="file" name="document" class="form-control-file"
+                                        id="exampleFormDocument">
+                                </div>
+
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">send</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--end of send mom-->
+            <!--display receved mom-->
+            {% for receve in receving %}
+            <div class="modal fade" id="receveDisplay{{receve.pk}}" data-backdrop="static" data-keyboard="false"
+                tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header" style="display: inline-block; padding-bottom: 0; ">
+                            <h5 style="margin-bottom: 0; font-weight:bold;color:tomato;" id="staticBackdropLabel">Receved MoM</h5>
+                            <button type="button" style="position: absolute; top: 15px; right: 15px;" class="close"
+                                data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="inputTitle4">Title</label>
+                                <label hidden id="title{{receve.pk}}">{{receve.title}}</label>
+                                <input type="text"  disabled value="{{receve.title}}" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputWorkDescription">Description</label>
+                                <textarea class="form-control" name="work_description" disabled
+                                    id="Description{{receve.pk}}" rows="3"
+                                    >{{receve.description}}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleFormDocument">{{receve.document}}</label><br>
+                                <a href="{{receve.document}}" class="btn btn-primary"
+                                    download="{{receve.document}}">download</a>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <!--end of Display Receved mom -->
+            <!--Display of send mom -->
+            {% for send in sendings %}
+            <div class="modal fade" id="sendDisplay{{send.pk}}" data-backdrop="static" data-keyboard="false"
+                tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header" style="display: inline-block; padding-bottom: 0; ">
+                            <h5 style="margin-bottom: 0; font-weight:bold;color:tomato;" id="staticBackdropLabel">Send MoM</h5>
+                            <button type="button" style="position: absolute; top: 15px; right: 15px;" class="close"
+                                data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="inputTitle4">Title</label>
+                                <label hidden id="title1{{send.pk}}">{{send.title}}</label>
+                                <input type="text"  disabled value="{{send.title}}" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputDescription">Description</label>
+                                <textarea class="form-control" name="description" disabled
+                                    id="Description1{{send.pk}}" rows="3"
+                                    >{{send.description}}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleFormDocument">{{send.document}}</label><br>
+                                <a href="{{send.document}}" class="btn btn-primary"
+                                    download="{{send.document}}">download</a>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <!--end of Display send MoM -->
+
+
 
             <!-- Scroll to Top Button-->
             <a class="scroll-to-top rounded" href="#page-top">
