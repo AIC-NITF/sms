@@ -108,6 +108,7 @@ class StartUp(models.Model):
 	dspp_registered			= models.CharField(max_length=10,null=True,blank=True)
 	legal_entity_register   = models.CharField(max_length=100,null=True,blank=True)
 	startup_img				= models.ImageField(upload_to='images/',null=True,blank=True)
+	founder_img				= models.ImageField(upload_to='images/',null=True,blank=True)
 
 	def __str__(self):
 		return self.startup_name
@@ -274,6 +275,7 @@ class WorkGenerator(models.Model):
 	forwarded_to				 = models.CharField(max_length=200,null=True,blank=True)
 	date_of_complition			 = models.DateTimeField(blank=True, null=True)
 	from_user_pk				 = models.CharField(max_length=500,null=True,blank=True)
+	new_work					 = models.BooleanField(default=True)
 	
 
 
@@ -321,6 +323,7 @@ class Forward(models.Model):
 	date_of_forward			= models.DateTimeField(verbose_name='date of forward', auto_now_add=True,null=True,blank=True)
 	from_user_pk		    = models.CharField(max_length=500,null=True,blank=True)
 	forward_pk				= models.CharField(max_length=100,null=True,blank=True)
+	new_forward		    	= models.BooleanField(default=True)
 
 	def forther_forward(self):
 		self.forwarded = True
@@ -344,6 +347,7 @@ class Return(models.Model):
 	message				    = models.CharField(max_length=500,null=True,blank=True)
 	return_date				= models.DateTimeField(verbose_name='return date', auto_now_add=True,null=True,blank=True)
 	forward_pk				= models.CharField(max_length=100,null=True,blank=True)
+	new_return		    	= models.BooleanField(default=True)
 
 	def __str__(self):
 		return self.from_user
