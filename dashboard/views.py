@@ -44,7 +44,12 @@ def dashboard(request):
                 if v.forward_work.status == "completed":
                     assign_completed_status.append(v)
             return_obj = Return.objects.filter(to=value).order_by('-return_date')
-            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'pending_status':pending_status,'assign_pending_status':assign_pending_status,'completed_status':completed_status,'assign_completed_status':assign_completed_status,'return_obj':return_obj})        
+
+            work_notifications = admin_obj.workgenerator_set.filter(new_work=True).order_by('-date_of_creation')
+            forward_notifications = admin_obj.forward_set.filter(new_forward=True).order_by('-date_of_forward')
+            return_notifications = Return.objects.filter(to=value,new_return=True).order_by('-return_date')
+            total_notifications = len(work_notifications) + len(forward_notifications) + len(return_notifications)
+            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'pending_status':pending_status,'assign_pending_status':assign_pending_status,'completed_status':completed_status,'assign_completed_status':assign_completed_status,'return_obj':return_obj,'work_notifications':work_notifications,'forward_notifications':forward_notifications,'return_notifications':return_notifications,'total_notifications':total_notifications})        
         
     else:
         user = request.user
@@ -55,14 +60,14 @@ def dashboard(request):
         account = Account.objects.filter(is_superadmin=True)[0]
         sendings = MoM.objects.filter(from_user=user.fullname,to=account).order_by('-date_of_creation')
         receving = MoM.objects.filter(from_user=account.fullname,to=user).order_by('-date_of_creation')
-        print(sendings)
-        print(receving)
-        print(account)
-        print(user)
-        print(user.pk)
-        print(startup_obj)
-        print(val2)
-        print(values)
+        # print(sendings)
+        # print(receving)
+        # print(account)
+        # print(user)
+        # print(user.pk)
+        # print(startup_obj)
+        # print(val2)
+        # print(values)
         return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'traction_values':traction_values,'account':account,'sendings':sendings,'receving':receving})
 
 def visit_startup(request):

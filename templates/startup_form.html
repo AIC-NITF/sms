@@ -3,67 +3,71 @@
 
 <form method="POST" action="{% url 'startup_register' %}" enctype="multipart/form-data">{% csrf_token %}
   <div class="row">
-    <div class="form-group col-md-12">
+    <div class="form-group col-md-6">
       <label for="inputStartUpName4">Name Of Start-Up :</label>
-      <input type="text" name="startup_name" class="form-control" id="inputStartUpName4" placeholder="Name Of Start-Up">
+      <input required type="text" name="startup_name" class="form-control" id="inputStartUpName4" placeholder="Name Of Start-Up">
     </div>
     <div class="form-group col-md-6">
       <label for="exampleFormControlFile1">Choose Image For startup</label>
-      <input type="file" name="startup_img" class="form-control-file" id="exampleFormControlFile1">
+      <input required type="file" name="startup_img" class="form-control-file" id="exampleFormControlFile1">
     </div>
     <div class="form-group col-md-6">
       <label for="inputTeamHead4">Head Of the Team/Founder :</label>
-      <input type="text" name="full_name" class="form-control" id="inputTeamHead4" placeholder="Team head/Founder">
+      <input required type="text" name="full_name" class="form-control" id="inputTeamHead4" placeholder="Team head/Founder">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="exampleFormControlFile2">Choose Image For Founder</label>
+      <input required type="file" name="founder_img" class="form-control-file" id="exampleFormControlFile2">
     </div>
     <div class="form-group col-md-6">
       <label for="inputFoundersDesignation4">Designation of Founder :</label>
-      <input type="text" name="founders_designation" class="form-control" id="inputFoundersDesignation4"
+      <input required type="text" name="founders_designation" class="form-control" id="inputFoundersDesignation4"
         placeholder="Founders's Designation">
     </div>
     <div class="form-group col-md-6">
       <label for="inputCIN4">Company Identification Number (CIN) :</label>
-      <input type="text" name="comp_identification_no" class="form-control" id="inputCIN4" placeholder="CIN">
+      <input required type="text" name="comp_identification_no" class="form-control" id="inputCIN4" placeholder="CIN">
     </div>
     <div class="form-group col-md-6">
       <label for="inputIncubateeLevel4">Current level of Incubatee :</label>
-      <input type="text" name="inubatee_level" class="form-control" id="inputIncubateeLevel4"
+      <input required type="text" name="inubatee_level" class="form-control" id="inputIncubateeLevel4"
         placeholder="incubatee_level">
     </div>
     <div class="form-group col-md-6">
       <label for="inputOperationalModel4">Operational Model : </label>
-      <input type="text" name="operational_model" class="form-control" id="inputOperationalModel4"
+      <input required type="text" name="operational_model" class="form-control" id="inputOperationalModel4"
         placeholder="Operational Model">
     </div>
     <div class="form-group col-md-6">
       <label for="inputLegalEntity4">Name Of Legal Entity :</label>
-      <input type="text" name="legal_entity" class="form-control" id="inputLegalEntity4"
+      <input required type="text" name="legal_entity" class="form-control" id="inputLegalEntity4"
         placeholder="Name Of Legal Entity">
     </div>
     <div class="form-group col-md-6">
       <label for="inputDateofRegistration4">Date of Registration of the legal entity of the startup :</label>
-      <input type="date" name="registrationdate" class="form-control" id="inputDateofRegistration4"
+      <input required type="date" name="registrationdate" class="form-control" id="inputDateofRegistration4"
         placeholder="Registration date">
     </div>
     
     <div class="form-group col-md-6">
       <label for="inputCity4">Belong to Which City :</label>
-      <input type="text" name="city" class="form-control" id="inputCity4" placeholder="City">
+      <input required type="text" name="city" class="form-control" id="inputCity4" placeholder="City">
     </div>
     <div class="form-group col-md-6">
       <label for="inputWebsiteAddress4">Website Address :</label>
-      <input type="url" name="website" class="form-control" id="inputWebsiteAddress4" placeholder="website address">
+      <input required type="url" name="website" class="form-control" id="inputWebsiteAddress4" placeholder="website address">
     </div>
     <div class="form-group col-md-6">
       <label for="inputSector4">Sector :</label>
-      <input type="text" name="sector" class="form-control" id="inputSector4" placeholder="sector">
+      <input required type="text" name="sector" class="form-control" id="inputSector4" placeholder="sector">
     </div>
     <div class="form-group col-md-6">
       <label for="inputDateofJoin4">Start Date of the Incubation :</label>
-      <input type="date" name="joindate" class="form-control" id="inputDateofJoin4" placeholder="joined date">
+      <input required type="date" name="joindate" class="form-control" id="inputDateofJoin4" placeholder="joined date">
     </div>
     <div class="form-group col-md-6">
       <label for="inputTypeOfIncubatee4" style="margin-right: 5%;">Type of Incubatee :</label><br>
-      <select name="type_of_incubatee" class="custom-select col-md-12">
+      <select name="type_of_incubatee" class="custom-select col-md-12" required>
         <option selected="selected" disabled>Choose From below:</option>
         <option value="Physical">Physical</option>
         <option value="Virtual">Virtual</option>
@@ -71,12 +75,12 @@
     </div>
     <div class="form-group col-md-6">
       <label for="inputTeamMembers4">No. of employees existing at the time of joining the incubator:</label>
-      <input type="text" name="team_members" class="form-control" id="inputTeamMembers4" placeholder="team members">
+      <input required type="text" name="team_members" class="form-control" id="inputTeamMembers4" placeholder="team members">
     </div>
 
     <div class="form-group col-md-6">
       <label for="inputTypeOfIncubatee4" style="margin-right: 5%;">Women Led Startup : (Yes/No) </label><br>
-      <select name="women_led_startup" class="custom-select col-md-12">
+      <select name="women_led_startup" class="custom-select col-md-12" required>
         <option selected="selected" disabled>Choose From below:</option>
         <option value="Yes">Yes</option>
         <option value="No">No</option>
@@ -85,19 +89,19 @@
 
     <div class="form-group col-md-6">
       <label for="inputLocation4">Registered Address of Startup :</label>
-      <input type="text" name="location" class="form-control" id="inputLocation4"
+      <input required type="text" name="location" class="form-control" id="inputLocation4"
         placeholder="location They are Working">
     </div>
 
     <div class="form-group col-md-6">
       <label for="inputGovtProgram4">Startup working towards any of the flagship government programmes :</label>
-      <input type="text" name="gov_program" class="form-control" id="inputGovtProgram4"
+      <input required type="text" name="gov_program" class="form-control" id="inputGovtProgram4"
         placeholder="government programmes">
     </div>
 
     <div class="form-group col-md-6">
       <label for="inputMSMERegistration4" style="margin-right: 5%;">MSME registered : (Yes/No) </label><br>
-      <select name="msme_registered" class="custom-select col-md-12">
+      <select name="msme_registered" class="custom-select col-md-12" required>
         <option selected="selected" disabled>Choose From below:</option>
         <option value="Yes">Yes</option>
         <option value="No">No</option>
@@ -106,7 +110,7 @@
 
     <div class="form-group col-md-6">
       <label for="inputDIPPRegistration4" style="margin-right: 5%;">DIPP Registered : (Yes/No) </label><br>
-      <select name="dspp_registered" class="custom-select col-md-12">
+      <select name="dspp_registered" class="custom-select col-md-12" required>
         <option selected="selected" disabled>Choose From below:</option>
         <option value="Yes">Yes</option>
         <option value="No">No</option>
@@ -115,25 +119,25 @@
 
     <div class="form-group col-md-6">
       <label for="inputEmail4">Email :</label>
-      <input type="email" name="email" class="form-control" id="inputEmail4" placeholder="Email">
+      <input required type="email" name="email" class="form-control" id="inputEmail4" placeholder="Email">
     </div>
 
     <div class="form-group col-md-6">
       <label for="inputContactNo4">Contact No. :</label>
-      <input type="text" name="contact" class="form-control" id="inputContactNo4" placeholder="Contact No.">
+      <input required type="text" name="contact" class="form-control" id="inputContactNo4" placeholder="Contact No.">
     </div>
 
     <div class="form-group col-md-6">
       <label for="inputUsername4">Username :</label>
-      <input type="text" name="username" class="form-control" id="inputUsername4" placeholder="username">
+      <input required type="text" name="username" class="form-control" id="inputUsername4" placeholder="username">
     </div>
     <div class="form-group col-md-6">
       <label for="inputPassword4">Password :</label>
-      <input type="password" name="password1" class="form-control" id="inputPassword4" placeholder="Password">
+      <input required type="password" name="password1" class="form-control" id="inputPassword4" placeholder="Password">
     </div>
     <div class="form-group col-md-6">
       <label for="inputPassword41">Confirm Password :</label>
-      <input type="password" name="password2" class="form-control" id="inputPassword41" placeholder="Confirm Password">
+      <input required type="password" name="password2" class="form-control" id="inputPassword41" placeholder="Confirm Password">
     </div>
     
 

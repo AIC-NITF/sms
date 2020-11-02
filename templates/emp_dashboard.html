@@ -168,7 +168,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
+                                <span class="badge badge-danger badge-counter" id="total_notification">{{total_notifications}}</span>
                             </a>
                             <!-- Dropdown - Alerts -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -176,39 +176,53 @@
                                 <h6 class="dropdown-header">
                                     Alerts Center
                                 </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                {% for notification in work_notifications %}
+                                <div class="dropdown-item d-flex align-items-center" >
+                                    <div class="mr-3" id="work_circle{{notification.pk}}">
+                                        <div class="icon-circle bg-primary">
+                                            <i class="fas fa-file-alt text-white"></i>
+                                        </div>
+                                    </div>
+                                    <div id="work_text{{notification.pk}}">
+                                        <a class="work_link" id="work1{{notification.pk}}" href=""
+                                                            data-toggle="modal" data-target="#DisplayModel{{notification.pk}}"
+                                                            style="text-decoration: none;">
+                                    
+                                        <div class="small text-gray-500">{{notification.date_of_creation}}</div>
+                                        <span class="font-weight-bold">{{notification.title}}</span>
+                                        <div class="small text-gray-500">status:-{{notification.status}}</div>
+                                    </a>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                {% for notification in forward_notifications %}
+                                <div class="dropdown-item d-flex align-items-center">
                                     <div class="mr-3">
                                         <div class="icon-circle bg-primary">
                                             <i class="fas fa-file-alt text-white"></i>
                                         </div>
                                     </div>
                                     <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                                        <div class="small text-gray-500">{{notification.date_of_forward}}</div>
+                                        <span class="font-weight-bold">{{notification.forward_work.title}}</span>
+                                        <div class="small text-gray-500">status:-{{notification.forward_work.status}}</div>
                                     </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                </div>
+                                {% endfor %}
+                                {% for notification in return_notifications %}
+                                <div class="dropdown-item d-flex align-items-center">
                                     <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
+                                        <div class="icon-circle bg-primary">
+                                            <i class="fas fa-file-alt text-white"></i>
                                         </div>
                                     </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 7, 2019</div>
-                                        $290.29 has been deposited into your account!
+                                    <div >
+                                        <div class="small text-gray-500">{{notification.return_date}}</div>
+                                        <span class="font-weight-bold">{{notification.work.title}}</span>
+                                        <div class="small text-gray-500">status:-{{notification.work.status}}</div>
                                     </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 2, 2019</div>
-                                        Spending Alert: We've noticed unusually high spending for your account.
-                                    </div>
-                                </a>
+                                </div>
+                                {% endfor %}
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                             </div>
                         </li>
@@ -441,7 +455,7 @@
                                                     <th scope="row">{{forloop.counter}}</th>
                                                     <td class="new_work"><a class="work_link " id="work1{{work.pk}}" href=""
                                                             data-toggle="modal" data-target="#DisplayModel{{work.pk}}"
-                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{work.title}} {% if work.new_work %} <span id="new_work{{work.pk}}"><b style="color: red;" class="glow"> New</b></span> {% endif %}</a>
+                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{work.title}} {% if work.new_work %}{% if not user.is_adminstrator %} <span id="new_work{{work.pk}}"><b style="color: red;" class="glow"> New</b></span>{% endif %} {% endif %}</a>
                                                     </td>
                                                     {% if user.is_adminstrator %}
                                                     <td>{{user.fullname}}</td>
@@ -1784,12 +1798,27 @@
                     }
                     else{
                         id = '#new_work' + pk;
+                        work_circle = '#work_circle' + pk;
+                        work_text = '#work_text' + pk;
                         $(id).hide();
+                        $(work_circle).hide();
+                        $(work_text).hide();
+                        total = document.getElementById('total_notification').innerText;
+                        
+                        new_total = parseInt(total) - 1;
+                        
+                        document.getElementById('total_notification').innerText = new_total;
                     }
                 }
             })
         });
 
+
+     
+
+
+
+        
 
         $(document).ready(function(){
             $.ajax({
