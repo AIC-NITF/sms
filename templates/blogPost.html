@@ -25,6 +25,12 @@
 </article>
 {% endfor %}
 
+{% for post in posts %}
+<div style="height: 200px;width: 200px;background-image: url('{{post.blog_img.url}}');">
+
+</div>
+<!-- <img src="{{post.blog_img.url}}" height="100" width="120" alt="Imageees" style="border: 1px solid blue;"> -->
+{% endfor %}
 
 
 
@@ -84,7 +90,7 @@
         <button type="button" style="position: absolute; top: 15px; right: 15px;" class="close" data-dismiss="modal"
           aria-label="Close">
           <span aria-hidden="true">&times;</span>
-      </button>
+        </button>
       </div>
       <img src="{{post.blog_img.url}}" width="100%" alt="">
       <div class="modal-body">

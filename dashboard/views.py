@@ -1,8 +1,7 @@
 from django.shortcuts import render,get_object_or_404,redirect
-from django.http import HttpResponse,Http404
+from django.http import HttpResponse,Http404,JsonResponse
 from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Return,TractionSheet,MoM,BlogPost
-from .forms import StartUpForm,MonitorSheetEditForm,TractionSheetEditForm,BlogPostForm
-from django.core.files.storage import FileSystemStorage
+from .forms import StartUpForm,MonitorSheetEditForm,TractionSheetEditForm
 
 
 # Create your views here.
@@ -54,6 +53,8 @@ def dashboard(request):
             forward_notifications = admin_obj.forward_set.filter(new_forward=True).order_by('-date_of_forward')
             return_notifications = Return.objects.filter(to=value,new_return=True).order_by('-return_date')
             total_notifications = len(work_notifications) + len(forward_notifications) + len(return_notifications)
+            print(work_notifications,"======================")
+            print(total_notifications,"`````````````````````")
             return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'pending_status':pending_status,'assign_pending_status':assign_pending_status,'completed_status':completed_status,'assign_completed_status':assign_completed_status,'return_obj':return_obj,'work_notifications':work_notifications,'forward_notifications':forward_notifications,'return_notifications':return_notifications,'total_notifications':total_notifications})        
         
     else:
@@ -643,6 +644,34 @@ def delete_work(request,pk):
 
 
 
+# def download(request, path):
+#     file_path = os.path.join(settings.MEDIA_ROOT, path)
+#     if os.path.exists(file_path):
+#         with open(file_path, 'rb') as fh:
+#             response = HttpResponse(fh.read(), content_type="application/document")
+#             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+#             return response
+#     raise Http404
+
+
+def new_work_clicked(request):
+    pk = request.GET.get('pk',None)
+    work = WorkGenerator.objects.get(pk=pk)
+    print(pk)
+    work.new_work = False
+    work.save()
+    data = {
+        'new_work':work.new_work
+    }
+    return JsonResponse(data)
+
+def count_values(request):
+    returns = Return.objects.filter(work__new_work = True)
+    print(len(returns))
+    data = {
+        'returns':len(returns)
+    }
+    return JsonResponse(data)
 def download(request, path):
     file_path = os.path.join(settings.MEDIA_ROOT, path)
     if os.path.exists(file_path):
