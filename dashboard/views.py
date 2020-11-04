@@ -21,10 +21,14 @@ def dashboard(request):
             completed_status = WorkGenerator.objects.filter(status='completed').order_by('-date_of_creation')
             assigned_work = value.forward_set.all().order_by('-date_of_forward')
             from_works = Forward.objects.filter(from_user=request.user.fullname).order_by('-date_of_forward')
+            
+            forward_notifications = value.forward_set.filter(new_forward=True).order_by('-date_of_forward')
+            return_notifications = Return.objects.filter(to=value,new_return=True).order_by('-return_date')
+            total_notifications =  len(forward_notifications) + len(return_notifications)
             print(ford_status)
             return_obj = Return.objects.filter(to=value).order_by('-return_date')
             print(return_obj)
-            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'ford_status':ford_status,'pending_status':pending_status,'completed_status':completed_status,'return_obj':return_obj})
+            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'ford_status':ford_status,'pending_status':pending_status,'completed_status':completed_status,'return_obj':return_obj,'forward_notifications':forward_notifications,'return_notifications':return_notifications,'total_notifications':total_notifications})
         else:
             admin_obj = user.admin_set.all()[0]
             works = admin_obj.workgenerator_set.all().order_by('-date_of_creation')
@@ -61,6 +65,7 @@ def dashboard(request):
         account = Account.objects.filter(is_superadmin=True)[0]
         sendings = MoM.objects.filter(from_user=user.fullname,to=account).order_by('-date_of_creation')
         receving = MoM.objects.filter(from_user=account.fullname,to=user).order_by('-date_of_creation')
+        posts = BlogPost.objects.all().order_by('-date_of_creation')
         print(sendings)
         print(receving)
         print(account)
@@ -69,7 +74,7 @@ def dashboard(request):
         print(startup_obj)
         print(val2)
         print(values)
-        return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'traction_values':traction_values,'account':account,'sendings':sendings,'receving':receving})
+        return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'traction_values':traction_values,'account':account,'sendings':sendings,'receving':receving,'posts':posts})
 
 def visit_startup(request):
     accounts = Account.objects.all()
@@ -255,8 +260,9 @@ def monitor_sheet_edit(request,pk):
         print(form) 
         if form.is_valid():
             content = form.save(commit=False)
-            content.save()
             content.not_allow_edit_option()
+            content.update_date()
+            content.save()
             return redirect(dashboard)
     else:
         form = MonitorSheetEditForm(instance=content)
@@ -306,7 +312,6 @@ def monitor_form(request):
         share_holder_pattern = request.POST['share_holder_pattern']
         authorized_capital_amount = request.POST['authorized_capital_amount']
         paid_up_capital_amount = request.POST['paid_up_capital_amount']
-        date_of_filling = request.POST['date_of_filling']
         
         mou = request.POST['mou']
         print(mou,"-------------------------------------------------")
@@ -345,7 +350,7 @@ def monitor_form(request):
         action = request.POST['action']
         required_help = request.POST['required_help']
 
-        monitor_report = MonitorSheet.objects.create(connect_startup=startup_obj,company_name=company_name,lead_entreprenure=lead_entreprenure,designation=designation,website=website,email=email,contact_no=contact_no,address=address,product_service=product_service,industry=industry,competitors=competitors,incubation_period=incubation_period,chef_monitor=chef_monitor,share_holder_pattern=share_holder_pattern,authorized_capital_amount=authorized_capital_amount,paid_up_capital_amount=paid_up_capital_amount,date_of_filling=date_of_filling,
+        monitor_report = MonitorSheet.objects.create(connect_startup=startup_obj,company_name=company_name,lead_entreprenure=lead_entreprenure,designation=designation,website=website,email=email,contact_no=contact_no,address=address,product_service=product_service,industry=industry,competitors=competitors,incubation_period=incubation_period,chef_monitor=chef_monitor,share_holder_pattern=share_holder_pattern,authorized_capital_amount=authorized_capital_amount,paid_up_capital_amount=paid_up_capital_amount,
                                                       mou=mou,mou_date=mou_date,incubation_fees=incubation_fees,chef_monitor_assign=chef_monitor_assign,ssha_signed=ssha_signed,ssha_date=ssha_date,share_transferred=share_transferred,share_certificates=share_certificates,no_of_seats_taken=no_of_seats_taken,rent_of_seats=rent_of_seats,capital_invested=capital_invested,status_of_registration=status_of_registration,current_traction=current_traction,status_of_product_service=status_of_product_service,status_of_operations=status_of_operations,current_team_member=current_team_member,
                                                       ipr_status=ipr_status,sales=sales,revenue=revenue,pipeline=pipeline,current_client=current_client,profit_earned=profit_earned,new_team_member=new_team_member,no_of_employees=no_of_employees,problem_faced=problem_faced,option=option,marketing=marketing,helped=helped,remarks=remarks,
                                                        name_date=name_date,feture_plan=feture_plan,action=action,required_help=required_help)
@@ -422,8 +427,9 @@ def edit_traction_sheet(request,pk):
         print(form) 
         if form.is_valid():
             content = form.save(commit=False)
-            content.save()
             content.not_allow_edit_option()
+            content.update_date()
+            content.save()
             return redirect(dashboard)
     else:
         form = TractionSheetEditForm(instance=content)
@@ -436,16 +442,6 @@ def blogPost(request):
 
 def newBlogPost(request):
     print("0.0.................0000000000000.000000000000")
-    # if request.method == "POST":
-    #     form = BlogPostForm(request.POST)
-    #     if form.is_valid():
-    #         print(form,"...333333333333333..........3333333333")
-    #         post = form.save(commit=False)
-    #         post.save()
-    #         return redirect('blogPost')
-    # else:
-    #     form = BlogPostForm()
-    #     print(form)
     if request.method == "POST":
         title = request.POST['title']
         description = request.POST['description']

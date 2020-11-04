@@ -152,7 +152,7 @@ class MonitorSheet(models.Model):
 	share_holder_pattern			= models.CharField(max_length=200,null=True,blank=True)
 	authorized_capital_amount		= models.CharField(max_length=200,null=True,blank=True)
 	paid_up_capital_amount			= models.CharField(max_length=200,null=True,blank=True)
-	date_of_filling					= models.CharField(max_length=200,null=True,blank=True)
+	date_of_filling					= models.DateTimeField(verbose_name='date of filling', auto_now_add=True,null=True,blank=True)
 	
 	mou								= models.CharField(max_length=200,null=True,blank=True)
 	incubation_fees					= models.CharField(max_length=200,null=True,blank=True)
@@ -194,7 +194,7 @@ class MonitorSheet(models.Model):
 
 
 	def __str__(self):
-		return self.company_name +" " +self.date_of_filling
+		return self.company_name
 
 	def allow_edit_option(self):
 		self.allow_edit = True
@@ -202,6 +202,10 @@ class MonitorSheet(models.Model):
 	
 	def not_allow_edit_option(self):
 		self.allow_edit = False
+		self.save()
+
+	def update_date(self):
+		self.date_of_filling = timezone.now()
 		self.save()
 
 
@@ -232,6 +236,10 @@ class TractionSheet(models.Model):
 
 	def not_allow_edit_option(self):
 		self.allow_edit = False
+		self.save()
+
+	def update_date(self):
+		self.generated_date = timezone.now()
 		self.save()
 
 

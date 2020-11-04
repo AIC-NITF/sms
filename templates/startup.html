@@ -71,7 +71,7 @@
                     <td><span id="employee_id{{evalue.pk}}" >{{evalue.employee_id}}</span></td>
                     <td><span id="email{{evalue.pk}}" >{{evalue.email}}</span></td>
                     <td><span id="contact_no{{evalue.pk}}" >{{evalue.contact_no}}</span></td>
-                    <td><a href="{% url 'visit_employee' pk=evalue.pk %}"><span id="profile{{evalue.pk}}"><img class="rounded-circle" src="{{evalue.admin_img.url}}" width="50" height="50" alt=""></span></a></td>
+                    <td><span id="profile{{evalue.pk}}"><img class="rounded-circle" src="{{evalue.admin_img.url}}" width="50" height="50" alt=""></span></td>
                     {% if user.is_superadmin %}
                     <td>
                         <div class="d-flex justify-content-center">

@@ -87,7 +87,7 @@
                                 <li class="nav-item">
                                     <!-- <a class="nav-link active" href="#" data-scroll-nav="3">Log in</a> -->
                                     <!-- Button trigger modal -->
-                                {% if user.is_authenticated %}
+                                    {% if user.is_authenticated %}
 
                                 <li> {{user.username}} <a href="{% url 'dashboard' %}"><i
                                             class="fa fa-user-secret fa-lg" style="padding: 10px 20px;"></i></a></li>
@@ -229,8 +229,14 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-lock"></i></span>
                             </div>
-                            <input type="password" class="form-control" name="password" placeholder="Password"
+                            <input type="password" id="pwenter" class="form-control" name="password" placeholder="Password"
                                 aria-label="Password" aria-describedby="basic-addon1">
+                            <div class="input-group-append">
+                                <span class="input-group-text" onclick="myFunction()">
+                                    <i id="hide1" style="display: none;" class="fa fa-eye"></i>
+                                    <i id="hide2" class="fa fa-eye-slash"></i>
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -470,6 +476,24 @@
         <!--end footer bottom-->
     </footer>
     <!--end footer-->
+    <script>
+        function myFunction(){
+            var x = document.getElementById("pwenter");
+            var y = document.getElementById("hide1");
+            var z = document.getElementById("hide2");
+
+            if(x.type === "password"){
+                x.type = "text";
+                y.style.display='block';
+                z.style.display='none';
+            }
+            else{
+                x.type = "password";
+                y.style.display='none';
+                z.style.display='block';
+            }
+        }
+    </script>
     <!--jQuery js-->
     <script src="{% static 'assets/js/jquery-3.3.1.min.js' %}"></script>
     <!--proper js-->

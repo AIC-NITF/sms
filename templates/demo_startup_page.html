@@ -11,6 +11,7 @@
 
     <title>Dashboard</title>
     <!-- <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}"> -->
+    <link rel="stylesheet" href="{% static 'blog/blog_css.css' %}">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'dashboard/css/startup.css' %}">
@@ -29,6 +30,9 @@
 
 
     <style>
+        .course-preview h6,.course-preview h2 {
+                color: white;
+        }
         @media screen and (max-width: 400px) {
             .course-preview {
                 height: 100px;
@@ -109,6 +113,14 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
+            <li id="dashboard" class="nav-item">
+                <a class="nav-link" href="{% url 'dashboard' %}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
 
 
             <!-- Nav Item - Utilities Collapse Menu -->
@@ -149,6 +161,11 @@
                     <a class="nav-link" id="v-pills-minute-tab" data-toggle="pill" href="#v-pills-minute" role="tab"
                         aria-controls="v-pills-minute" aria-selected="false"><i class="fas fa-fw fa-sticky-note"></i>
                         Minute Of Meeting</a>
+                    {% if user.is_superadmin != True%}
+                    <a class="nav-link" id="v-pills-blogPost-tab" data-toggle="pill" href="#v-pills-blogPost" role="tab"
+                        aria-controls="v-pills-blogPost" aria-selected="false"><i class="fas fa-fw fa-sticky-note"></i>
+                        Blog Post</a>
+                    {% endif %}
                 </div>
             </li>
             <!-- Sidebar Toggler (Sidebar) -->
@@ -670,12 +687,10 @@
                             <div class="courses-container">
                                 <div class="course">
                                     <div class="course-preview">
-                                        <h6>Course</h6>
                                         <h2>Month {{ forloop.counter }}</h2>
-                                        <a href=" # ">View all chapters <i class="fas fa-chevron-right"></i></a>
+                                        <h6>{{value.date_of_filling}}</h6>
                                     </div>
                                     <div class="course-info">
-                                        <h6>Chapter 4</h6>
                                         <h2>Monitor Sheet{{ forloop.counter }}</h2>
                                         <a href="{% url 'monitor_report' pk=value.pk %}" class="btn1">View Report</a>
                                     </div>
@@ -699,12 +714,10 @@
                             <div class="courses-container">
                                 <div class="course">
                                     <div class="course-preview">
-                                        <h6>Course</h6>
                                         <h2>Month {{ forloop.counter }}</h2>
-                                        <a href=" # ">View all chapters <i class="fas fa-chevron-right"></i></a>
+                                        <h6>{{value.generated_date}}</h6>
                                     </div>
                                     <div class="course-info">
-                                        <h6>Chapter 4</h6>
                                         <h2>Traction Sheet{{ forloop.counter }}</h2>
                                         <a href="{% url 'traction_report' pk=value.pk %}" class="btn1">View Report</a>
                                     </div>
@@ -753,7 +766,10 @@
                                                 {% for receve in receving %}
                                                 <tr>
                                                     <th scope="row">{{forloop.counter}}</th>
-                                                    <td><a href="" data-toggle="modal"data-target="#receveDisplay{{receve.pk}}" style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{receve.title}}</a></td>
+                                                    <td><a href="" data-toggle="modal"
+                                                            data-target="#receveDisplay{{receve.pk}}"
+                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{receve.title}}</a>
+                                                    </td>
                                                     <td>{{receve.from_user}}</td>
                                                     <td>{{receve.to.fullname}}</td>
                                                     <td>{{receve.date_of_creation}}</td>
@@ -784,7 +800,9 @@
                                                 <tr>
                                                     <th scope="row">{{forloop.counter}}</th>
                                                     <td>
-                                                        <a href="" data-toggle="modal"data-target="#sendDisplay{{send.pk}}" style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{send.title}}</a>
+                                                        <a href="" data-toggle="modal"
+                                                            data-target="#sendDisplay{{send.pk}}"
+                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{send.title}}</a>
                                                     </td>
                                                     <td>{{send.from_user}}</td>
                                                     <td>{{send.to.fullname}}</td>
@@ -798,6 +816,33 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="tab-pane fade" id="v-pills-blogPost" role="tabpanel"
+                            aria-labelledby="v-pills-blogPost-tab">
+                            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                <h3 style="text-align: center;font-weight: bold;">BlogPost</h3>
+                            </div>
+
+                            <!-- BLOG POST-->
+                            {% for post in posts %}
+                            <article class="single-tour"><img src="{{post.blog_img.url}}"
+                                    alt="Best of Paris in 7 Days Tour">
+                                <footer>
+                                    <div class="tour-info">
+                                        <h4>{{post.title}}</h4>
+                                        <small>{{post.date_of_creation}}</small>
+                                    </div>
+                                    <p>{{post.description|slice:":255"}} ... <a href="" data-toggle="modal"
+                                            data-target="#post{{post.pk}}"> read
+                                            more</a></p>
+                                </footer>
+                            </article>
+                            {% endfor %}
+
+                        </div>
+
+
+
                     </div>
                 </div>
                 <!-- End of Content Wrapper -->
@@ -869,7 +914,8 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header" style="display: inline-block; padding-bottom: 0; ">
-                            <h5 style="margin-bottom: 0; font-weight:bold;color:tomato;" id="staticBackdropLabel">Receved MoM</h5>
+                            <h5 style="margin-bottom: 0; font-weight:bold;color:tomato;" id="staticBackdropLabel">
+                                Receved MoM</h5>
                             <button type="button" style="position: absolute; top: 15px; right: 15px;" class="close"
                                 data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
@@ -880,13 +926,12 @@
                             <div class="form-group">
                                 <label for="inputTitle4">Title</label>
                                 <label hidden id="title{{receve.pk}}">{{receve.title}}</label>
-                                <input type="text"  disabled value="{{receve.title}}" class="form-control">
+                                <input type="text" disabled value="{{receve.title}}" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="inputWorkDescription">Description</label>
                                 <textarea class="form-control" name="work_description" disabled
-                                    id="Description{{receve.pk}}" rows="3"
-                                    >{{receve.description}}</textarea>
+                                    id="Description{{receve.pk}}" rows="3">{{receve.description}}</textarea>
                             </div>
                             <div class="form-group">
                                 <label for="exampleFormDocument">{{receve.document}}</label><br>
@@ -909,7 +954,8 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header" style="display: inline-block; padding-bottom: 0; ">
-                            <h5 style="margin-bottom: 0; font-weight:bold;color:tomato;" id="staticBackdropLabel">Send MoM</h5>
+                            <h5 style="margin-bottom: 0; font-weight:bold;color:tomato;" id="staticBackdropLabel">Send
+                                MoM</h5>
                             <button type="button" style="position: absolute; top: 15px; right: 15px;" class="close"
                                 data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
@@ -920,13 +966,12 @@
                             <div class="form-group">
                                 <label for="inputTitle4">Title</label>
                                 <label hidden id="title1{{send.pk}}">{{send.title}}</label>
-                                <input type="text"  disabled value="{{send.title}}" class="form-control">
+                                <input type="text" disabled value="{{send.title}}" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="inputDescription">Description</label>
-                                <textarea class="form-control" name="description" disabled
-                                    id="Description1{{send.pk}}" rows="3"
-                                    >{{send.description}}</textarea>
+                                <textarea class="form-control" name="description" disabled id="Description1{{send.pk}}"
+                                    rows="3">{{send.description}}</textarea>
                             </div>
                             <div class="form-group">
                                 <label for="exampleFormDocument">{{send.document}}</label><br>
@@ -943,6 +988,38 @@
             {% endfor %}
             <!--end of Display send MoM -->
 
+            {% for post in posts %}
+            <!-- display blog model Model-->
+            <div class="modal fade" id="post{{post.pk}}" data-backdrop="static" data-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header" style="display: inline-block; padding-bottom: 0; ">
+                            <h5 class="modal-title" id="staticBackdropLabel">Blog Post</h5>
+                            <small>{{post.date_of_creation}}</small>
+                            <button type="button" style="position: absolute; top: 15px; right: 15px;" class="close"
+                                data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <img src="{{post.blog_img.url}}" width="100%" alt="">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="inputTitle4">Title</label>
+                                <input type="text" name="title" class="form-control" disabled value="{{post.title}}"
+                                    placeholder="title">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputWorkDescription">Description</label>
+                                <textarea disabled class="form-control" name="description" rows="10"
+                                    placeholder="Description">{{post.description}}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <!--end display blog Model-->
 
 
             <!-- Scroll to Top Button-->

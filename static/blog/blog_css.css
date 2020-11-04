@@ -1,132 +1,147 @@
-body {
-    background: #eee;
-}
-.date__box {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #ccc;
-    border: 4px solid;
-    font-weight: bold;
-    padding: 5px 10px;
-}
-.date__box .date__day {
-    font-size: 22px;
-}
-.blog-card {
-    padding: 30px;
-    position: relative;
-}
-.blog-card .date__box {
-    opacity: 0;
-    transform: scale(0.5);
-    transition: 300ms ease-in-out;
-}
-.blog-card .blog-card__background, .blog-card .card__background--layer {
-    z-index: -1;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-.blog-card .blog-card__background {
-    padding: 15px;
-    background: white;
-}
-.blog-card .card__background--wrapper {
-    height: 100%;
-    clip-path: polygon(0 0, 100% 0, 100% 80%, 0 60%);
-    position: relative;
-    overflow: hidden;
-}
-.blog-card .card__background--main {
-    height: 100%;
-    position: relative;
-    transition: 300ms ease-in-out;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-.blog-card .card__background--layer {
-    z-index: 0;
-    opacity: 0;
-    background: rgba(51, 51, 51, 0.9);
-    transition: 300ms ease-in-out;
-}
-.blog-card .blog-card__head {
-    height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.blog-card .blog-card__info {
-    z-index: 10;
-    background: white;
-    padding: 20px 15px;
-}
-.blog-card .blog-card__info h5 {
-    transition: 300ms ease-in-out;
-}
-.blog-card:hover .date__box {
-    opacity: 1;
-    transform: scale(1);
-}
-.blog-card:hover .card__background--main {
-    transform: scale(1.2) rotate(5deg);
-}
-.blog-card:hover .card__background--layer {
-    opacity: 1;
-}
-.blog-card:hover .blog-card__info h5 {
-    color: #ffb535;
-}
-a.icon-link {
-    color: #363738;
-    transition: 200ms ease-in-out;
-}
-a.icon-link i {
-    color: #ffb535;
-}
-a.icon-link:hover {
-    color: #ffb535;
-    text-decoration: none;
-}
-.button {
-    background: white;
-    color: #363738;
-    font-weight: bold;
-    outline: none;
-    box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-    border-radius: 0;
-    height: 50px;
-    line-height: 50px;
-    display: inline-block;
+* {
+    margin: 0;
     padding: 0;
-    border: none;
-}
-.button:focus {
-    box-shadow: none;
-}
-.button:hover {
-    background: #ffb535;
-    color: #fff;
-}
-.button.btn--with-icon {
-    padding-right: 20px;
-}
-.button.btn--with-icon i {
-    padding: 0px 30px 0px 15px;
-    margin-right: 10px;
-    height: 50px;
-    line-height: 50px;
-    vertical-align: bottom;
-    color: white;
-    background: #ffb535;
-    clip-path: polygon(0 0, 70% 0, 100% 100%, 0% 100%);
-}
-.button.btn--only-icon {
-    width: 50px;
-}
+    box-sizing: border-box;
+
+  }
+
+  *,
+  ::after,
+  ::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+    background: hsl(210, 36%, 96%);
+    color: hsl(209, 61%, 16%);
+    line-height: 1.5;
+    font-size: 0.875rem;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    letter-spacing: 0.1rem;
+    text-transform: capitalize;
+    line-height: 1.25;
+    margin-bottom: 0.75rem;
+  }
+
+  h1 {
+    font-size: 3rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+
+  h4 {
+    font-size: 0.9rem;
+  }
+
+  p {
+    margin-bottom: 1.25rem;
+    color: hsl(210, 22%, 49%);
+  }
+
+  .single-tour {
+    background: #fff;
+    border-radius: 0.25rem;
+    margin: 4rem auto;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s linear;
+    width: 100%;
+  }
+
+  .single-tour:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .single-tour img {
+    width: 100%;
+    height: 20rem;
+    object-fit: cover;
+    border-top-right-radius: 0.25rem;
+    border-top-left-radius: 0.25rem;
+  }
+
+  .tour-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .tour-info h4 {
+    margin-bottom: 0;
+    font-weight: bold;
+  }
+
+  .single-tour a {
+    background: transparent;
+    border-color: transparent;
+    text-transform: capitalize;
+    color: hsl(205, 78%, 60%);
+    font-size: 1rem;
+    padding-left: 0.25rem;
+    text-decoration: none;
+  }
+
+  .single-tour footer {
+    padding: 1.5rem 2rem;
+  }
+
+  @media screen and (min-width: 800px) {
+    .single-tour {
+      width: 60%;
+    }
+
+    h1 {
+      font-size: 4rem;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+    }
+
+    h3 {
+      font-size: 1.75rem;
+    }
+
+    h4 {
+      font-size: 1rem;
+    }
+
+    body {
+      font-size: 1rem;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      line-height: 1;
+    }
+  }
+
+  /*  global classes */
+
+  /* section */
+
+  @media screen and (min-width: 992px) {
+    .single-tour {
+      width: 60%;
+    }
+  }

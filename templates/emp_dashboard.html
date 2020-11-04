@@ -148,7 +148,9 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
+                                {% if total_notifications %}
                                 <span class="badge badge-danger badge-counter">{{total_notifications}}</span>
+                                {% endif %}
                             </a>
                             <!-- Dropdown - Alerts -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -166,39 +168,39 @@
                                     <div>
                                         <div class="small text-gray-500">{{notification.date_of_creation}}</div>
                                         <span class="font-weight-bold">{{notification.title}}</span>
-                                        <div class="small text-gray-500">status:-{{notification.status}}</div>
+                                        <div class="small text-gray-500">status:-My Work</div>
                                     </div>
                                 </div>
                                 {% endfor %}
                                 {% for notification in forward_notifications %}
                                 <div class="dropdown-item d-flex align-items-center">
                                     <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
+                                        <div class="icon-circle bg-success">
+                                            <i class="fas fas fa-copy text-white"></i>
                                         </div>
                                     </div>
                                     <div>
                                         <div class="small text-gray-500">{{notification.date_of_forward}}</div>
                                         <span class="font-weight-bold">{{notification.forward_work.title}}</span>
-                                        <div class="small text-gray-500">status:-{{notification.forward_work.status}}</div>
+                                        <div class="small text-gray-500">status:-forwarded-></div>
                                     </div>
                                 </div>
                                 {% endfor %}
                                 {% for notification in return_notifications %}
                                 <div class="dropdown-item d-flex align-items-center">
                                     <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
+                                        <div class="icon-circle bg-warning">
+                                            <i class="fas fa-exclamation-triangle text-white"></i>
                                         </div>
                                     </div>
                                     <div>
                                         <div class="small text-gray-500">{{notification.return_date}}</div>
                                         <span class="font-weight-bold">{{notification.work.title}}</span>
-                                        <div class="small text-gray-500">status:-{{notification.work.status}}</div>
+                                        <div class="small text-gray-500">status:-returned</div>
                                     </div>
                                 </div>
                                 {% endfor %}
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                
                             </div>
                         </li>
 
@@ -841,7 +843,7 @@
 
                 <div class="modal-body">
                     {% if user.is_adminstrator %}
-                    {% if work.status != "pending..." and work.status != "completed"  %}
+                    {% if work.status != "pending..." and work.status != "completed" and work.status != "forwarded->" and work.status != "returned" %}
                     <div class="col-md-5 float-right">
                         <a href="#" class="float-right work_edit" data-toggle="modal" data-target="#EditModel"
                             id="work{{work.pk}}"><i class="fas fa-edit fa-lg"></i></a>
