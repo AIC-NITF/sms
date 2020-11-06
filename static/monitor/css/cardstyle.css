@@ -33,7 +33,7 @@
 }
 
 .course-preview {
-	background-color: #2A265F;
+	background-color:#4C71DD;
 	color: #fff;
 	padding: 30px;
 	width: 250px;
@@ -58,7 +58,7 @@
 }
 
 .btn1 {
-	background-color: #2A265F;
+	background-color:#4C71DD;
 	border: 0;
 	border-radius: 50px;
 	box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
@@ -76,14 +76,12 @@
 }
 .btn1:hover{
 
-	background-color: #100d2e;
+	background-color:#4C71DD;
 	box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5);
 	color: #fff;
 	text-decoration: none;
 }
 
-<<<<<<< HEAD
-=======
 
 /* media css for  view report  card*/
 @media screen and (max-width: 400px) {
@@ -137,4 +135,3 @@
 	}
 		
 }
->>>>>>> fb9d29cc3a89fb38b03feff9073d60ff51018bcf
