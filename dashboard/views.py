@@ -667,6 +667,28 @@ def new_work_clicked(request):
     }
     return JsonResponse(data)
 
+def forward_work_clicked(request):
+    pk = request.GET.get('pk',None)
+    work = Forward.objects.get(pk=pk)
+    print(pk)
+    work.new_forward = False
+    work.save()
+    data = {
+        'new_work':work.new_forward
+    }
+    return JsonResponse(data)
+
+def return_work_clicked(request):
+    pk = request.GET.get('pk',None)
+    work = Return.objects.get(pk=pk)
+    print(pk)
+    work.new_return = False
+    work.save()
+    data = {
+        'new_work':work.new_return
+    }
+    return JsonResponse(data)
+
 def count_values(request):
     returns = Return.objects.filter(work__new_work = True)
     print(len(returns))

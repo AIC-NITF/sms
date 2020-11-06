@@ -55,4 +55,6 @@ urlpatterns = [
 
     path('new_work_clicked',views.new_work_clicked,name='new_work_clicked'),
     path('count_values',views.count_values,name='count_values'),
+    path('forward_work_clicked',views.forward_work_clicked,name='forward_work_clicked'),
+    path('return_work_clicked',views.return_work_clicked,name='return_work_clicked'),
 ]

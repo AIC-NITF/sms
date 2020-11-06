@@ -197,30 +197,40 @@
                                 {% endfor %}
                                 {% for notification in forward_notifications %}
                                 <div class="dropdown-item d-flex align-items-center">
-                                    <div class="mr-3">
+                                    <div class="mr-3" id="forward_circle{{notification.pk}}">
                                         <div class="icon-circle bg-primary">
                                             <i class="fas fa-file-alt text-white"></i>
                                         </div>
                                     </div>
-                                    <div>
+                                    <div id="forward_text{{notification.pk}}">
+                                        <a class="send_work_link"
+                                                            id="work3{{notification.pk}}" href=""
+                                                            data-toggle="modal"
+                                                            data-target="#DisplayMode2{{notification.pk}}"
+                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">
                                         <div class="small text-gray-500">{{notification.date_of_forward}}</div>
                                         <span class="font-weight-bold">{{notification.forward_work.title}}</span>
-                                        <div class="small text-gray-500">status:-{{notification.forward_work.status}}</div>
+                                        <div class="small text-gray-500">status:-{{notification.forward_work.status}}</div></a>
                                     </div>
                                 </div>
                                 {% endfor %}
                                 {% for notification in return_notifications %}
                                 <div class="dropdown-item d-flex align-items-center">
-                                    <div class="mr-3">
+                                    <div class="mr-3" id="return_circle{{notification.pk}}">
                                         <div class="icon-circle bg-primary">
                                             <i class="fas fa-file-alt text-white"></i>
                                         </div>
                                     </div>
-                                    <div >
+                                    <a class="return_work_link"
+                                                            id="work8{{notification.pk}}" href=""
+                                                            data-toggle="modal"
+                                                            data-target="#DisplayModel8{{notification.pk}}"
+                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">
+                                    <div id="return_text{{notification.pk}}">
                                         <div class="small text-gray-500">{{notification.return_date}}</div>
                                         <span class="font-weight-bold">{{notification.work.title}}</span>
                                         <div class="small text-gray-500">status:-{{notification.work.status}}</div>
-                                    </div>
+                                    </div></a>
                                 </div>
                                 {% endfor %}
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
@@ -1806,6 +1816,9 @@
                         total = document.getElementById('total_notification').innerText;
                         
                         new_total = parseInt(total) - 1;
+                        if (new_total < 0){
+                            new_total = 0
+                        }
                         
                         document.getElementById('total_notification').innerText = new_total;
                     }
@@ -1814,7 +1827,79 @@
         });
 
 
-     
+
+        $('.send_work_link').on('click',function(){
+            id = this.id;
+            pk = id.slice(5,);
+            console.log(pk);
+            $("#pk_val1").val(pk);
+            $("#work_pk").val(pk);
+            $.ajax({
+                url:'{% url "forward_work_clicked" %}',
+                data:{
+                    'pk':pk
+                },
+                dataType:'json',
+                success: function(data){
+                    if (data.new_work){
+                        console.log('I am clicked.. pk');
+                    }
+                    else{
+                        id = '#new_work' + pk;
+                        work_circle = '#forward_circle' + pk;
+                        work_text = '#forward_text' + pk;
+                        $(id).hide();
+                        $(work_circle).hide();
+                        $(work_text).hide();
+                        total = document.getElementById('total_notification').innerText;
+                        
+                        new_total = parseInt(total) - 1;
+                        if (new_total < 0){
+                            new_total = 0
+                        }
+                        
+                        document.getElementById('total_notification').innerText = new_total;
+                    }
+                }
+            })
+        });
+
+        $('.return_work_link').on('click',function(){
+            id = this.id;
+            pk = id.slice(5,);
+            console.log(pk);
+            $("#pk_val1").val(pk);
+            $("#work_pk").val(pk);
+            $.ajax({
+                url:'{% url "return_work_clicked" %}',
+                data:{
+                    'pk':pk
+                },
+                dataType:'json',
+                success: function(data){
+                    if (data.new_work){
+                        console.log('I am clicked.. pk');
+                    }
+                    else{
+                        
+                        return_circle = '#return_circle' + pk;
+                        return_text = '#return_text' + pk;
+                        
+                        $(return_circle).hide();
+                        $(return_text).hide();
+                        total = document.getElementById('total_notification').innerText;
+                        
+                        new_total = parseInt(total) - 1;
+                        if (new_total < 0){
+                            new_total = 0
+                        }
+                        
+                        document.getElementById('total_notification').innerText = new_total;
+                    }
+                }
+            })
+        });
+
 
 
 
