@@ -290,6 +290,10 @@ class WorkGenerator(models.Model):
 	def __str__(self):
 		return self.title
 
+	def make_new_work(self):
+		self.new_work = True
+		self.save()
+
 	def update_work(self,title,work_description,suggestions,remarks):
 		self.title = title
 		self.work_description = work_description

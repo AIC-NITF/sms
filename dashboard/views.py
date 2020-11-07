@@ -612,11 +612,16 @@ def reassign(request):
         suggestions = request.POST['suggestions']
         rk_val = request.POST['rk_val']
         print(to,"/////////////////////////////////////////")
+        print(work_pk,"/////////////////////////////////////////")
         
         obj = Admin.objects.get(pk=int(to))
+        print(obj,"/////////////////////////////////////////")
         work_obj = WorkGenerator.objects.get(pk=int(work_pk))
+        print(work_obj,"/////////////////////////////////////////")
         ret = Return.objects.get(pk=int(rk_val))
+        print(ret,"/////////////////////////////////////////")
         work_obj.update_to(to=obj)
+        work_obj.make_new_work()
         work_obj.change_status(status="Not Started..")
         ret.delete()
         return redirect('dashboard')
@@ -662,6 +667,28 @@ def new_work_clicked(request):
     work.save()
     data = {
         'new_work':work.new_work
+    }
+    return JsonResponse(data)
+
+def forward_work_clicked(request):
+    pk = request.GET.get('pk',None)
+    work = Forward.objects.get(pk=pk)
+    print(pk)
+    work.new_forward = False
+    work.save()
+    data = {
+        'new_work':work.new_forward
+    }
+    return JsonResponse(data)
+
+def return_work_clicked(request):
+    pk = request.GET.get('pk',None)
+    work = Return.objects.get(pk=pk)
+    print(pk)
+    work.new_return = False
+    work.save()
+    data = {
+        'new_work':work.new_return
     }
     return JsonResponse(data)
 
