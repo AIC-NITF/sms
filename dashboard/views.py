@@ -669,8 +669,9 @@ def new_work_clicked(request):
 
 def forward_work_clicked(request):
     pk = request.GET.get('pk',None)
+    print('Hey ',pk)
     work = Forward.objects.get(pk=pk)
-    print(pk)
+    print('I am a pk : ',pk)
     work.new_forward = False
     work.save()
     data = {
@@ -704,3 +705,11 @@ def download(request, path):
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
             return response
     raise Http404
+
+
+def verify_uname(request):
+    uname = request.GET.get('uname',None)
+    data = {
+        'exist': Account.objects.filter(username = uname).exists(),
+    }
+    return JsonResponse(data)

@@ -203,8 +203,8 @@
                                         </div>
                                     </div>
                                     <div id="forward_text{{notification.pk}}">
-                                        <a class="send_work_link"
-                                                            id="work3{{notification.pk}}" href=""
+                                        <a class="ford_work_link {{notification.pk}}"
+                                                            id="work2{{notification.pk}}" href=""
                                                             data-toggle="modal"
                                                             data-target="#DisplayMode2{{notification.pk}}"
                                                             style="text-decoration: none; color: #6f6f70; font-weight: bold;">
@@ -510,7 +510,7 @@
                                                         <a class="pending_link" id="work4{{pending.pk}}" href=""
                                                             data-toggle="modal"
                                                             data-target="#DisplayModel4{{pending.pk}}"
-                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{pending.title}}</a>
+                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{pending.title}}  </a>
                                                     </td>
                                                     <td>{{pending.from_user}}</td>
                                                     <td>{{pending.to.account.fullname}}</td>
@@ -623,7 +623,7 @@
                                                         <a class="pending_link" id="work7{{completed.forward_work.pk}}"
                                                             href="" data-toggle="modal"
                                                             data-target="#DisplayModel7{{completed.forward_work.pk}}"
-                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{completed.forward_work.title}}</a>
+                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{completed.forward_work.title}} </a>
                                                     </td>
                                                     <td>{{completed.from_user}}</td>
                                                     <td>{{completed.to.account.fullname}}</td>
@@ -668,7 +668,7 @@
                                                         <a class="reassign" id="work8{{ret_obj.work.pk}}" href=""
                                                             data-toggle="modal"
                                                             data-target="#DisplayModel8{{ret_obj.pk}}"
-                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{ret_obj.work.title}}</a>
+                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{ret_obj.work.title}} {% if ret_obj.new_return %}<span id="new_return{{ret_obj.pk}}"><b style="color: red;" class="glow"> New</b></span>{% endif %}</a>
                                                     </td>
                                                     <td>{{ret_obj.from_user}}</td>
                                                     <td>{{ret_obj.to.account.fullname}}</td>
@@ -699,11 +699,11 @@
                                                 {% for assigned_msg in assigned_work %}
                                                 <tr>
                                                     <th scope="row">{{forloop.counter}}</th>
-                                                    <td><a class="ford_work_link {{assigned_msg.pk}}"
-                                                            id="work2{{assigned_msg.forward_work.pk}}" href=""
+                                                    <td><a class="ford_work_link"
+                                                            id="work2{{assigned_msg.pk}}" href=""
                                                             data-toggle="modal"
-                                                            data-target="#DisplayMode2{{assigned_msg.forward_work.pk}}"
-                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{assigned_msg.forward_work.title}}</a>
+                                                            data-target="#DisplayMode2{{assigned_msg.pk}}"
+                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{assigned_msg.forward_work.title}} {% if assigned_msg.new_forward %}<span id="new_assigned{{assigned_msg.pk}}"><b style="color: red;" class="glow"> New</b></span>{% endif %}</a>
                                                     </td>
                                                     <td>{{assigned_msg.from_user}}</td>
                                                     <td>{{assigned_msg.to.account.fullname}}</td>
@@ -737,7 +737,7 @@
                                                 {% for from_work in from_works %}
                                                 <tr>
                                                     <th scope="row">{{forloop.counter}}</th>
-                                                    <td><a class="send_work_link"
+                                                    <td><a class="ford_work_link"
                                                             id="work3{{from_work.forward_work.pk}}" href=""
                                                             data-toggle="modal"
                                                             data-target="#DisplayMode3{{from_work.forward_work.pk}}"
@@ -937,7 +937,7 @@
 
     <!-- assigned work display Modal -->
     {% for assigned_msg in assigned_work %}
-    <div class="modal fade" id="DisplayMode2{{assigned_msg.forward_work.pk}}" data-backdrop="static"
+    <div class="modal fade" id="DisplayMode2{{assigned_msg.pk}}" data-backdrop="static"
         data-keyboard="false" tabindex="-2" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -1829,9 +1829,10 @@
 
 
         $('.send_work_link').on('click',function(){
+            console.log('Clicking...');
             id = this.id;
             pk = id.slice(5,);
-            console.log(pk);
+            console.log('pk '+pk);
             $("#pk_val1").val(pk);
             $("#work_pk").val(pk);
             $.ajax({
@@ -1845,7 +1846,7 @@
                         console.log('I am clicked.. pk');
                     }
                     else{
-                        id = '#new_work' + pk;
+                        id = '#new_assigned' + pk;
                         work_circle = '#forward_circle' + pk;
                         work_text = '#forward_text' + pk;
                         $(id).hide();
@@ -1881,10 +1882,10 @@
                         console.log('I am clicked.. pk');
                     }
                     else{
-                        
+                        id = '#new_return' + pk;
                         return_circle = '#return_circle' + pk;
                         return_text = '#return_text' + pk;
-                        
+                        $(id).hide();
                         $(return_circle).hide();
                         $(return_text).hide();
                         total = document.getElementById('total_notification').innerText;
@@ -1920,15 +1921,53 @@
 
 
         $(".ford_work_link").on("click", function () {
+            console.log('Clicking here');
+            // id = this.id;
+            // pk = id.slice(5,);
+            // cls = this.className;
+            // cls_pk = cls.slice(15,);
+            // console.log(cls_pk);
+            // console.log(pk);
+            // $("#pk_val1").val(pk);
+            // $("#work_pk").val(pk);
+            // $("#ford_work_pk").val(cls_pk);
+
+            console.log('Clicking...');
             id = this.id;
             pk = id.slice(5,);
-            cls = this.className;
-            cls_pk = cls.slice(15,);
-            console.log(cls_pk);
-            console.log(pk);
+            console.log('pk '+pk);
             $("#pk_val1").val(pk);
             $("#work_pk").val(pk);
-            $("#ford_work_pk").val(cls_pk);
+            $.ajax({
+                url:'{% url "forward_work_clicked" %}',
+                data:{
+                    'pk':pk
+                },
+                dataType:'json',
+                success: function(data){
+                    if (data.new_work){
+                        console.log('I am clicked.. pk');
+                    }
+                    else{
+                        console.log('I am reaching here');
+                        id = '#new_assigned' + pk;
+                        work_circle = '#forward_circle' + pk;
+                        work_text = '#forward_text' + pk;
+                        $(id).hide();
+                        $(work_circle).hide();
+                        $(work_text).hide();
+                        total = document.getElementById('total_notification').innerText;
+                        
+                        new_total = parseInt(total) - 1;
+                        if (new_total < 0){
+                            new_total = 0
+                        }
+                        
+                        document.getElementById('total_notification').innerText = new_total;
+                    }
+                }
+            })
+
         });
         $(".forward_key").on("click", function () {
             id = this.id;
