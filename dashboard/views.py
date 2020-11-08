@@ -549,7 +549,7 @@ def forward_work(request):
         from_obj = Account.objects.get(pk=int(from_user))
         print(from_obj.fullname)
         obj = Admin.objects.get(pk=int(to))
-        print(forward_pk,"=====================")
+        print(pk,"=====================")
         work_obj = WorkGenerator.objects.get(pk=int(pk))
         print(work_obj,"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         work = Forward.objects.create(from_user=from_obj.fullname,to=obj,forward_work=work_obj,suggestions=suggestions,from_user_pk=from_user,forward_pk=forward_pk)
@@ -584,6 +584,7 @@ def return_work(request):
         to_obj = obj.admin_set.all()[0]
         print(to_obj,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
         work_obj = WorkGenerator.objects.get(pk=int(work_pk))
+        print(work_obj,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
 
         return_obj = Return.objects.create(from_user=from_obj.fullname,to=to_obj,work=work_obj,message=suggestions)
 
@@ -672,8 +673,9 @@ def new_work_clicked(request):
 
 def forward_work_clicked(request):
     pk = request.GET.get('pk',None)
+    print('Hey ',pk)
     work = Forward.objects.get(pk=pk)
-    print(pk)
+    print('I am a pk : ',pk)
     work.new_forward = False
     work.save()
     data = {
@@ -707,3 +709,11 @@ def download(request, path):
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
             return response
     raise Http404
+
+
+def verify_uname(request):
+    uname = request.GET.get('uname',None)
+    data = {
+        'exist': Account.objects.filter(username = uname).exists(),
+    }
+    return JsonResponse(data)

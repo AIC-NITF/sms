@@ -222,9 +222,10 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
                             </div>
-                            <input type="text" class="form-control" name="username" placeholder="Username"
+                            <input type="text" id="uname_input" class="form-control" name="username" placeholder="Username"
                                 aria-label="Username" aria-describedby="basic-addon1">
                         </div>
+                        <span id="uname_error" style="font-weight: bold;color: red;"></span>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-lock"></i></span>
@@ -495,6 +496,8 @@
         }
     </script>
     <!--jQuery js-->
+
+
     <script src="{% static 'assets/js/jquery-3.3.1.min.js' %}"></script>
     <!--proper js-->
     <script src="{% static 'assets/js/popper.min.js' %}"></script>
@@ -512,6 +515,35 @@
     <script src="{% static 'assets/js/validator.min.js' %}"></script>
     <!--main js-->
     <script src="{% static 'assets/js/custom.js' %}"></script>
+
+
+
+    
+    <script>
+        $('#uname_input').change(function(){
+            uname = this.value;
+            $.ajax({
+                url : "{% url 'verify_uname' %}",
+                data:{
+                    'uname':uname,
+                },
+                dataType:'json',
+                success:function(data){
+                    if (data.exist){
+                        console.log('Username exist');
+                        
+                    }
+                    else{
+                        console.log('Username doesnt exist');
+                        document.getElementById('uname_error').innerText = "Username doesn't exist...";
+                    }
+                }
+            })
+        });
+    </script>
+
+
+
 </body>
 
 
