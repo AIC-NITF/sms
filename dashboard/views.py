@@ -3,6 +3,8 @@ from django.http import HttpResponse,Http404,JsonResponse
 from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Return,TractionSheet,MoM,BlogPost
 from .forms import StartUpForm,MonitorSheetEditForm,TractionSheetEditForm
 
+from django.contrib.auth.models import auth
+
 
 # Create your views here.
 def dashboard(request):
@@ -711,5 +713,22 @@ def verify_uname(request):
     uname = request.GET.get('uname',None)
     data = {
         'exist': Account.objects.filter(username = uname).exists(),
+    }
+    return JsonResponse(data)
+
+def uname_pwd_check(request):
+    uname = request.GET.get('uname',None)
+    pwd = request.GET.get('pwd',None)
+    user = auth.authenticate(request,username=uname,password=pwd)
+    exist = False
+    if user is not None:
+        exist = True
+    
+    else:
+        exist = False
+
+    print(exist)
+    data = {
+        'exist':exist
     }
     return JsonResponse(data)

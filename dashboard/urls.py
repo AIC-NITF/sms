@@ -59,4 +59,6 @@ urlpatterns = [
     path('return_work_clicked',views.return_work_clicked,name='return_work_clicked'),
 
     path('verify_uname',views.verify_uname,name='verify_uname'),
+
+    path('uname_pwd_check',views.uname_pwd_check,name='uname_pwd_check'),
 ]

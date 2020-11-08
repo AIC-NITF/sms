@@ -216,14 +216,14 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="POST" action="{% url 'login' %}">{% csrf_token %}
+                <form method="POST" action="{% url 'login' %}" name="login_form" id="login_form">{% csrf_token %}
                     <div class="modal-body">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
                             </div>
                             <input type="text" id="uname_input" class="form-control" name="username" placeholder="Username"
-                                aria-label="Username" aria-describedby="basic-addon1">
+                                aria-label="Username" aria-describedby="basic-addon1" required>
                         </div>
                         <span id="uname_error" style="font-weight: bold;color: red;"></span>
                         <div class="input-group mb-3">
@@ -231,13 +231,14 @@
                                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-lock"></i></span>
                             </div>
                             <input type="password" id="pw_input" class="form-control" name="password" placeholder="Password"
-                                aria-label="Password" aria-describedby="basic-addon1">
+                                aria-label="Password" aria-describedby="basic-addon1" required>
                                 <span id="pwd_error"></span>
                         </div>
                     </div>
+                    <span id="error_check"></span>
                     <div class="modal-footer">
                         <div class="hero-btn">
-                            <button type="submit" style="margin : 0 10px;" class="btn">Log in</button><br>
+                            <button type="button" style="margin : 0 10px;" class="btn" id="login_submit" >Log in</button><br>
                             <a href="#">Forget password</a>
                         </div>
                     </div>
@@ -246,6 +247,21 @@
         </div>
     </div>
     <!--model end-->
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Invalid Username or Password</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            
+          </div>
+        </div>
+      </div>
 
     <!--start testimonial area-->
     <section id="testi-area" data-scroll-index="2">
@@ -508,22 +524,51 @@
                 success:function(data){
                     if (data.exist){
                         console.log('Username exist');
+                        document.getElementById('uname_error').innerText = " ";
+                        
                         
                     }
                     else{
                         console.log('Username doesnt exist');
+                        
                         document.getElementById('uname_error').innerText = "Username doesn't exist...";
                     }
                 }
             })
         });
-    </script>
 
+       
+        $('#login_submit').on('click',function(e){
+            uname = document.getElementById('uname_input').value;
+            password = document.getElementById('pw_input').value;
+            setTimeout(location.reload.bind(location), 60000);
+            $.ajax({
+                
+                url:"{% url 'uname_pwd_check' %}",
+                data:{
+                    'uname':uname,
+                    'pwd':password
+                },
+                dataType:'json',
+                success:function(data){
+                    if (data.exist){
+                        $('#login_form').submit();
+                    }
+                    else{
+                        console.log('Invalid username or password');
+                        $("#exampleModal").modal('show');
+                        
+                    }
+                },
+            })
+            
+        });
+
+    </script>
 
 
 </body>
 
 
-<!-- Mirrored from themehoster.com/tm/emexso/demo/ by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 07 Sep 2020 14:53:08 GMT -->
 
 </html>
