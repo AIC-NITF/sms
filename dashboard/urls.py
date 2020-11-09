@@ -61,4 +61,10 @@ urlpatterns = [
     path('verify_uname',views.verify_uname,name='verify_uname'),
 
     path('uname_pwd_check',views.uname_pwd_check,name='uname_pwd_check'),
+
+    path('forget_username',views.forget_username,name='forget_username'),
+
+    path('forget_email_sending',views.forget_email_sending,name='forget_email_sending'),
+
+    path('set_password',views.set_password,name='set_password'),
 ]

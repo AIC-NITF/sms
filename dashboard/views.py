@@ -5,7 +5,8 @@ from .forms import StartUpForm,MonitorSheetEditForm,TractionSheetEditForm
 from django.core.mail import send_mail
 
 from django.contrib.auth.models import auth
-
+import random
+from django.core.mail import send_mail
 
 # Create your views here.
 def dashboard(request):
@@ -741,3 +742,57 @@ def uname_pwd_check(request):
         'exist':exist
     }
     return JsonResponse(data)
+
+def forget_username(request):
+    uname = request.GET.get('uname',None)
+    user = Account.objects.filter(username=uname).first()
+    if user is not None:
+        if user.is_admin:
+            admin = user.admin_set.first()
+            email = admin.email
+        if user.is_startup:
+            startup = user.startup_set.first()
+            email = startup.email
+    else:
+        email = None
+    data = {
+        'is_exist': Account.objects.filter(username=uname).exists(),
+        'email':email
+    }
+    
+
+    return JsonResponse(data)
+
+
+def forget_email_sending(request):
+    email = request.GET.get('email',None)
+    num_list = ['1','2','3','4','5','6','7','8','9']
+    otp = random.sample(num_list,4)
+    str_otp = ''.join(otp)
+    
+    send_mail(
+    'Password Reset OTP',
+    'Your one time password to reset AICNITF account is :{0}'.format(str_otp),
+    'support@aicnalanda.com',
+    [email],
+    fail_silently=False,
+    )
+    data = {
+        'correct_otp':str_otp
+    }
+    return JsonResponse(data)
+
+
+def set_password(request):
+    password = request.GET.get('password',None)
+    uname = request.GET.get('username',None)
+    user = Account.objects.get(username=uname)
+   
+    user.set_password(password)
+    user.save()
+    data = {
+        'uname':uname
+    }
+    return JsonResponse(data)
+
+

@@ -245,7 +245,7 @@
                     <div class="modal-footer">
                         <div class="hero-btn">
                             <button type="button" style="margin : 0 10px;" class="btn" id="login_submit" >Log in</button><br>
-                            <a href="#">Forget password</a>
+                            <a href="#" id="forget_pwd">Forget password !!</a>
                         </div>
                     </div>
                 </form>
@@ -265,6 +265,100 @@
               </button>
             </div>
             
+          </div>
+        </div>
+      </div>
+
+
+      <div class="modal fade" id="forget_uname_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Forget Password</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="forget_uname_input" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" required>
+            </div>
+            <h6 style="text-align: center;color: chocolate;" id="forget_username_msg"></h6>
+           
+            <h6 style="text-align:center;">An OTP will be send to the email associated with this username..</h6>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" id="send_email_btn" class="btn btn-primary" disabled>Send E-mail</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="modal fade" id="otp_input_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">OTP </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="forget_otp_input" class="form-control" placeholder="Enter 4 digit OTP" aria-label="Username" aria-describedby="basic-addon1" required>
+            </div>
+            
+            <h6 id="otp_error_msg" style="text-align: center;"></h6>
+           <input type="hidden" id="correct_otp_hidden">
+            <h6 style="text-align:center;">Enter the OTP you have received on your mail <span id="otp_email" style="font-weight: bold;color: green;"></span></h6>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" id="reset_pwd_btn" class="btn btn-primary" disabled>Reset Password</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="password_set_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Reset Password </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <input type="password" id="reset_forget_password" class="form-control" placeholder="Enter new password" aria-label="Username" aria-describedby="basic-addon1" required>
+                <br>
+                <input type="password" id="reset_confirm_forget_password" class="form-control" placeholder="Enter confirm password" aria-label="Username" aria-describedby="basic-addon1" required>
+            </div>
+            <input type="hidden" id="username_hidden_field">
+            
+            <h6 id="password_match_msg" style="text-align: center;"></h6>
+           
+            <!-- <h6 style="text-align:center;">Enter the OTP you have received on your mail <span id="otp_email" style="font-weight: bold;color: green;"></span></h6> -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" id="update_pwd_btn" class="btn btn-primary" disabled>Update Password</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="modal fade" id="password_success_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Password Updated Successfylly !!</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
           </div>
         </div>
       </div>
@@ -550,13 +644,13 @@
                 dataType:'json',
                 success:function(data){
                     if (data.exist){
-                        console.log('Username exist');
+                        
                         document.getElementById('uname_error').innerText = " ";
                         
                         
                     }
                     else{
-                        console.log('Username doesnt exist');
+                        
                         
                         document.getElementById('uname_error').innerText = "Username doesn't exist...";
                     }
@@ -591,6 +685,113 @@
             
         });
 
+    </script>
+    <script>
+       
+        $('#forget_uname_input').keyup(function(){
+            uname = $('#forget_uname_input').val();
+            document.getElementById('username_hidden_field').innerText = uname;
+            
+            $.ajax({
+                url:"{% url 'forget_username' %}",
+                data:{
+                    'uname':uname
+                },
+                dataType:'json',
+                success:function(data){
+                    if (data.is_exist){
+                        document.getElementById('forget_username_msg').style.color = 'green';
+                        document.getElementById('forget_username_msg').innerText = data.email;
+                        document.getElementById('otp_email').innerText = data.email;
+                        $('#send_email_btn').prop('disabled',false);
+                        $.ajax({
+                            url:"{% url 'forget_email_sending' %}",
+                            data:{
+                                'email':data.email
+                            },
+                            dataType:'json',
+                            success:function(data){
+                                document.getElementById('correct_otp_hidden').innerText = data.correct_otp
+                                
+                            }
+                        })
+                    }
+                    else{
+                        document.getElementById('forget_username_msg').innerText = "Username doesn't exist !!";
+                        $('#send_email_btn').prop('disabled',true);
+                    }
+                }
+            })
+            
+        });
+
+
+        $('#forget_pwd').on('click',function(){
+            $('#exampleModalCenter').modal('hide');
+            $('#forget_uname_modal').modal('show');
+        });
+
+
+        $('#send_email_btn').on('click',function(){
+            $('#forget_uname_modal').modal('hide');
+            $('#otp_input_modal').modal('show');
+        });
+
+        $('#forget_otp_input').keyup(function(){
+            correct_otp = document.getElementById('correct_otp_hidden').innerText;
+            current_otp = $('#forget_otp_input').val();
+            
+            if (current_otp === correct_otp){
+                document.getElementById('otp_error_msg').style.color = 'green';
+                document.getElementById('otp_error_msg').innerText = 'OTP Matched';
+                $('#reset_pwd_btn').prop('disabled',false);
+            }
+            else{
+                document.getElementById('otp_error_msg').style.color = 'red';
+                document.getElementById('otp_error_msg').innerText = 'OTP not Matched';
+                $('#reset_pwd_btn').prop('disabled',true);
+
+            }
+        });
+
+        $('#reset_pwd_btn').on('click',function(){
+            $('#otp_input_modal').modal('hide');
+            $('#password_set_modal').modal('show');
+        });
+
+        $('#reset_confirm_forget_password').keyup(function(){
+            password = $('#reset_forget_password').val();
+            cpassword = $('#reset_confirm_forget_password').val();
+            if (password === cpassword){
+                document.getElementById('password_match_msg').style.color = 'green';
+                document.getElementById('password_match_msg').innerText = 'Password Matched';
+                $('#update_pwd_btn').prop('disabled',false);
+            }
+            else{
+                document.getElementById('password_match_msg').style.color = 'red';
+                document.getElementById('password_match_msg').innerText = "Password Doesn't Matched";
+                $('#update_pwd_btn').prop('disabled',true);
+            }
+        });
+
+
+        $('#update_pwd_btn').on('click',function(){
+            password =  $('#reset_forget_password').val();
+            uname = document.getElementById('username_hidden_field').innerText;
+            
+            $.ajax({
+                url:"{% url 'set_password' %}",
+                data:{
+                    'password':password,
+                    'username':uname
+                },
+                dataType:'json',
+                success:function(data){
+                    $('#password_success_modal').modal('show');
+                    $('#password_set_modal').modal('hide');
+                }
+            })
+        });
     </script>
 
 
