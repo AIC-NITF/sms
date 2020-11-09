@@ -87,7 +87,7 @@
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item check">
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+                    <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
                         role="tab" aria-controls="v-pills-profile" aria-selected="true"><i
                             class="fas fa-fw fa-user-circle"></i> Profile</a>
                     <hr class="sidebar-divider">
@@ -96,7 +96,7 @@
                     </div>
 
 
-                    <a class="nav-link" id="v-pills-monitor-tab" data-toggle="pill" href="#v-pills-monitor" role="tab"
+                    <a class="nav-link active" id="v-pills-monitor-tab" data-toggle="pill" href="#v-pills-monitor" role="tab"
                         aria-controls="v-pills-monitor" aria-selected="false"><i class="fas fa-fw fa-briefcase"></i> Work
                         Status</a>
                 </div>
@@ -188,8 +188,8 @@
                                 {% for notification in return_notifications %}
                                 <div class="dropdown-item d-flex align-items-center">
                                     <div class="mr-3" id="return_circle{{notification.pk}}">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
+                                        <div class="icon-circle bg-danger">
+                                            <i class="fas fa-undo-alt text-white"></i>
                                         </div>
                                     </div>
                                     <a class="return_work_link"
@@ -248,7 +248,7 @@
                 <div class="container-fluid">
 
                     <div class="tab-content" id="v-pills-tabContent">
-                        <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel"
+                        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
                             aria-labelledby="v-pills-profile-tab">
                             <!-- content   -->
                             <!-- <div id="preloder">
@@ -273,7 +273,7 @@
                                 <!-- Hero section start -->
                                 <section class="hero-section">
                                     <div class="container-fluid text-center">
-                                        <img class="rounded-circle" src="{{value.admin_img.url}}" alt="">
+                                        <img class="rounded-circle" width="250" height="250" src="{{value.admin_img.url}}" alt="">
                                         <div class="hero-text">
                                             <h2>{{value.account.fullname}}</h2>
                                         </div>
@@ -311,7 +311,7 @@
                             </div>
                         </div>
                         <!--monitor sheet -->
-                        <div class="tab-pane fade" id="v-pills-monitor" role="tabpanel"
+                        <div class="tab-pane fade show active" id="v-pills-monitor" role="tabpanel"
                             aria-labelledby="v-pills-monitor-tab">
                             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                                 <h1>Work Status</h1>
@@ -429,7 +429,7 @@
                                                     <td>
                                                         <a class="pending_link" id="work4{{pending.pk}}" href=""
                                                             data-toggle="modal"
-                                                            data-target="#DisplayModel4{{pending.pk}}"
+                                                            data-target="#PendingModel1{{pending.pk}}"
                                                             style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{pending.title}}  </a>
                                                     </td>
                                                     <td>{{pending.from_user}}</td>
@@ -735,22 +735,22 @@
                         </div>
                         <div class="form-group">
                             <label for="inputTitle4">Work Title</label>
-                            <input type="text" name="title" class="form-control" id="inputTitle4"
+                            <input required type="text" name="title" class="form-control" id="inputTitle4"
                                 placeholder="Work title" required>
                         </div>
                         <div class="form-group">
                             <label for="inputWorkDescription">Work Description</label>
-                            <textarea class="form-control" name="work_description" id="inputWorkDescription" rows="3"
+                            <textarea required class="form-control" name="work_description" id="inputWorkDescription" rows="3"
                                 placeholder="Work Description"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="inputSuggestions">Suggestions</label>
-                            <textarea class="form-control" name="suggestions" id="inputSuggestions" rows="3"
+                            <textarea required class="form-control" name="suggestions" id="inputSuggestions" rows="3"
                                 placeholder="suggestions"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="inputRemarks">Remarks/Comments</label>
-                            <input type="text" name="remarks" class="form-control" id="inputRemarks"
+                            <input required type="text" name="remarks" class="form-control" id="inputRemarks"
                                 placeholder="Remarks/Comments">
                         </div>
 
@@ -1476,7 +1476,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="inputTo2">To</label>
-                                <select id="inputTo2" name="to" class="form-control">
+                                <select required id="inputTo2" name="to" class="form-control">
                                     <option selected>Choose...</option>
                                     {% for account in accounts %}
                                     {% if account.is_superadmin == False and account.pk != user.pk%}
@@ -1491,7 +1491,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="inputsuggestions2">Remarks/suggations</label>
-                                <textarea class="form-control" name="suggestions" id="inputsuggestions2" rows="3"
+                                <textarea required class="form-control" name="suggestions" id="inputsuggestions2" rows="3"
                                     placeholder="Work Description"></textarea>
                             </div>
                         </div>
@@ -1530,9 +1530,9 @@
                                 <input type="text" id="inputTo12" name="to" hidden value="">
                             </div>
                             <div class="form-group">
-                                <label for="inputSuggestions12">Suggestions</label>
-                                <textarea class="form-control" name="suggestions" id="inputSuggestions12" rows="3"
-                                    placeholder="suggestions"></textarea>
+                                <label for="inputSuggestions12">Message</label>
+                                <textarea required class="form-control" name="suggestions" id="inputSuggestions12" rows="3"
+                                    placeholder="Message"></textarea>
                             </div>
                         </div>
 
@@ -1585,11 +1585,11 @@
                                     {% endfor %}
                                 </select>
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="inputsuggestions8">Remarks/suggations</label>
                                 <textarea class="form-control" name="suggestions" id="inputsuggestions8" rows="3"
                                     placeholder="Work Description"></textarea>
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="modal-footer">

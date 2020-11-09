@@ -162,7 +162,7 @@
                     <a class="nav-link" id="v-pills-minute-tab" data-toggle="pill" href="#v-pills-minute" role="tab"
                         aria-controls="v-pills-minute" aria-selected="false"><i class="fas fa-fw fa-handshake"></i>
                         Minute Of Meeting</a>
-                    {% if user.is_superadmin != True%}
+                    {% if user.is_superadmin != True and user.is_admin != True%}
                     <a class="nav-link" id="v-pills-blogPost-tab" data-toggle="pill" href="#v-pills-blogPost" role="tab"
                         aria-controls="v-pills-blogPost" aria-selected="false"><i class="fas fa-fw fa-blog"></i>
                         Blog Post</a>
@@ -398,7 +398,8 @@
 
                                     </div>
                                 </section>
-
+                                
+                                <!--add team member-->
                                 <div class="modal fade" id="addnewteam" tabindex="-1" role="dialog"
                                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -417,19 +418,19 @@
                                                 <div class="modal-body">
                                                     <div class="form-group">
                                                         <label for="inputName4">Name</label>
-                                                        <input type="text" name="name" class="form-control"
+                                                        <input required type="text" name="name" class="form-control"
                                                             id="inputName4" placeholder="Name">
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="inputDesignation4">Designation/Post</label>
-                                                        <input type="text" name="designation" class="form-control"
+                                                        <input required type="text" name="designation" class="form-control"
                                                             id="inputDesignation4" placeholder="Designation">
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="inputDIPPRegistration4"
                                                             style="margin-right: 5%;">Gender</label><br>
-                                                        <select name="gender" class="custom-select col-md-12">
-                                                            <option selected="selected" disabled>Choose From below:
+                                                        <select required name="gender" class="custom-select col-md-12">
+                                                            <option  selected="selected" disabled>Choose From below:
                                                             </option>
                                                             <option value="Male">Male</option>
                                                             <option value="Female">Female</option>
@@ -438,12 +439,12 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="inputEmail4">Email</label>
-                                                        <input type="text" name="email" class="form-control"
+                                                        <input required type="text" name="email" class="form-control"
                                                             id="inputEmail4" placeholder="Email">
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="inputContactNo4">Contact No.</label>
-                                                        <input type="text" name="contact" class="form-control"
+                                                        <input required type="text" name="contact" class="form-control"
                                                             id="inputContactNo4" placeholder="Contact No.">
                                                     </div>
                                                 </div>
@@ -592,10 +593,12 @@
                             aria-labelledby="v-pills-minute-tab">
                             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                                 <h3>Minute Of Meeting</h3>
+                                {% if user.is_admin != True %}
                                 <a href="{% url 'traction_form' %}"
                                     class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
                                     data-toggle="modal" data-target="#sendMoM"><i
                                         class="fas fa-download fa-sm text-white-50"></i> Send MoM</a>
+                                {% endif %}
                             </div>
 
                             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -743,17 +746,17 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="inputTitle4">Title</label>
-                                    <input type="text" name="title" class="form-control" id="inputTitle4"
+                                    <input required type="text" name="title" class="form-control" id="inputTitle4"
                                         placeholder="Work title">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputWorkDescription">Description</label>
-                                    <textarea class="form-control" name="description" id="inputWorkDescription" rows="3"
+                                    <textarea required class="form-control" name="description" id="inputWorkDescription" rows="3"
                                         placeholder="Description"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleFormDocument">Upload File</label>
-                                    <input type="file" name="document" class="form-control-file"
+                                    <input required type="file" name="document" class="form-control-file"
                                         id="exampleFormDocument">
                                 </div>
 

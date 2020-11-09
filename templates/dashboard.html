@@ -81,6 +81,7 @@
                     <span>Create Start-Up</span>
                 </a>
             </li>
+            {% endif %}
 
             <li id="blogPost" class="nav-item check">
                 <a class="nav-link collapsed" href="{% url 'blogPost' %}" data-target="#collapseUtilities"
@@ -89,7 +90,7 @@
                     <span>Blog Post</span>
                 </a>
             </li>
-            {% endif %}
+            
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>

@@ -576,8 +576,16 @@ def forward_work(request):
             for_obj = Forward.objects.get(pk=int(forward_pk))
             for_obj.forther_forward() 
         status_obj.change_status(status="forwarded->")
-        
         work.save()
+
+        fm_ob = from_obj.admin_set.all()[0]
+        send_mail(
+                'Forwarded Work',
+                'you got a work by work ' +from_obj.fullname ,
+                fm_ob,
+                [obj.email],
+                fail_silently=False,
+            )
         return redirect('dashboard')
 
 def return_work(request):
@@ -613,6 +621,14 @@ def return_work(request):
             work_obj.make_null()
         work_obj.change_status(status="returned")
         return_obj.save()
+        fm_ob = from_obj.admin_set.all()[0] 
+        send_mail(
+                'Return Work',
+                'you receved a return work',
+                fm_ob,
+                [to_obj.email],
+                fail_silently=False,
+            )
         return redirect('dashboard')
 
 def reassign(request):

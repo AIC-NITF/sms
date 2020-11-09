@@ -276,10 +276,10 @@
                 <!--start heading-->
                 <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
                     <div class="sec-heading text-center">
-                        <h6>Testimonials</h6>
-                        <h2>Our Board Members</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic explicabo voluptas nisi iste
-                            reiciendis, tempore commodi necessitatibus, laborum laudantium.</p>
+                        <!-- <h6>Testimonials</h6> -->
+                        <h2>Our Team Members</h2>
+                        <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic explicabo voluptas nisi iste
+                            reiciendis, tempore commodi necessitatibus, laborum laudantium.</p> -->
                     </div>
                 </div>
                 <!--end heading-->
@@ -290,9 +290,9 @@
                     {% for value in values %}
                     <div class="testi-single text-center">
                         <div class="client-comment">
-                            <span class="quote"><i class="icofont-quote-right"></i></span>
-                            <p>"Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci.
-                                Aenean dignissim pellentesque felis."</p>
+                           <!-- <span class="quote"><i class="icofont-quote-right"></i></span>
+                             <p>"Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci.
+                                Aenean dignissim pellentesque felis."</p> -->
                         </div>
                         <div class="client-img">
                             <img src="{{value.admin_img.url}}" class="img-fluid" alt="">
@@ -356,23 +356,26 @@
             </div>
         </div>
     </section>
+    <div style="width: 100%; height: 2px; background-color: white;"></div>
     <!--end facilities area-->
-    <!--start contact area-->
-    <section id="contact-area" data-scroll-index="6">
+    <!-- start contact area-->
+    
+    <!-- <section id="contact-area" data-scroll-index="6">
         <div class="container">
-            <div class="row">
+            <div class="row"> -->
+
                 <!--start heading-->
-                <div class="col-md-8">
+                <!-- <div class="col-md-8">
                     <div class="sec-heading">
                         <h6>Need Help</h6>
                         <h2>Contact with us</h2>
                     </div>
-                </div>
+                </div> -->
                 <!--end heading-->
-            </div>
-            <div class="row">
+            <!-- </div>
+            <div class="row"> -->
                 <!--start contact form-->
-                <div class="col-lg-9 col-md-7">
+                <!-- <div class="col-lg-9 col-md-7">
                     <div class="contact-form">
                         <form id="ajax-contact" action="http://themehoster.com/tm/emexso/demo/contact.php"
                             method="post">{% csrf_token %}
@@ -400,9 +403,9 @@
                             <div class="messages"></div>
                         </form>
                     </div>
-                </div>
+                </div> -->
                 <!--end contact form-->
-                <!--start contact information-->
+                <!--start contact information -->
                 <!-- <div class="col-lg-4 col-md-5">
                     <div class="cont-info">
                         <div class="cont-info-single">
@@ -434,8 +437,8 @@
                         <div class="footer-single">
                             <img src="{% static 'assets/images/aic.png' %}" class="img-fluid" alt=""
                                 style="width:150;" />
-                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat
-                                mattis eros.</p>
+                            <!-- <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat
+                                mattis eros.</p> -->
                         </div>
                     </div>
                     <!--end footer single-->
