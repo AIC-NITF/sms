@@ -27,17 +27,17 @@ def dashboard(request):
             forward_notifications = value.forward_set.filter(new_forward=True).order_by('-date_of_forward')
             return_notifications = Return.objects.filter(to=value,new_return=True).order_by('-return_date')
             total_notifications =  len(forward_notifications) + len(return_notifications)
-            print(ford_status)
+            
             return_obj = Return.objects.filter(to=value).order_by('-return_date')
-            print(return_obj)
+            
             return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'ford_status':ford_status,'pending_status':pending_status,'completed_status':completed_status,'return_obj':return_obj,'forward_notifications':forward_notifications,'return_notifications':return_notifications,'total_notifications':total_notifications})
         else:
             admin_obj = user.admin_set.all()[0]
             works = admin_obj.workgenerator_set.all().order_by('-date_of_creation')
             assigned_work = admin_obj.forward_set.all().order_by('-date_of_forward')
-            print(works,"`````````````````````````")
+            
             from_works = Forward.objects.filter(from_user=request.user.fullname).order_by('-date_of_forward')
-            print(from_works)
+            
             
             pending_status = admin_obj.workgenerator_set.filter(status='pending...').order_by('-date_of_creation')
             completed_status = admin_obj.workgenerator_set.filter(status='completed').order_by('-date_of_creation')
@@ -56,8 +56,7 @@ def dashboard(request):
             forward_notifications = admin_obj.forward_set.filter(new_forward=True).order_by('-date_of_forward')
             return_notifications = Return.objects.filter(to=value,new_return=True).order_by('-return_date')
             total_notifications = len(work_notifications) + len(forward_notifications) + len(return_notifications)
-            print(work_notifications,"======================")
-            print(total_notifications,"`````````````````````")
+            
             return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'pending_status':pending_status,'assign_pending_status':assign_pending_status,'completed_status':completed_status,'assign_completed_status':assign_completed_status,'return_obj':return_obj,'work_notifications':work_notifications,'forward_notifications':forward_notifications,'return_notifications':return_notifications,'total_notifications':total_notifications})        
         
     else:
@@ -70,14 +69,7 @@ def dashboard(request):
         sendings = MoM.objects.filter(from_user=user.fullname,to=account).order_by('-date_of_creation')
         receving = MoM.objects.filter(from_user=account.fullname,to=user).order_by('-date_of_creation')
         posts = BlogPost.objects.all().order_by('-date_of_creation')
-        print(sendings)
-        print(receving)
-        print(account)
-        print(user)
-        print(user.pk)
-        print(startup_obj)
-        print(val2)
-        print(values)
+        
         return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'traction_values':traction_values,'account':account,'sendings':sendings,'receving':receving,'posts':posts})
 
 def visit_startup(request):
@@ -86,17 +78,17 @@ def visit_startup(request):
 
 def visit_employee(request,pk):
     value = Admin.objects.get(pk=pk)
-    print(pk,"-------------------")
+    
     if value.account.is_adminstrator:
         works = WorkGenerator.objects.all().order_by('-date_of_creation')
         ford_status = WorkGenerator.objects.filter(forwarded=True).order_by('-date_of_creation')
-        print(ford_status,"....................................................")
+        
         return render(request,'emp_dashboard.html',{'value':value,'works':works,'ford_status':ford_status})
     else:
         works = value.workgenerator_set.all().order_by('-date_of_creation')
         forwardwork = value.forward_set.all().order_by('-date_of_forward')
         from_works = Forward.objects.filter(from_user=value.account.fullname).order_by('-date_of_forward')
-        print(works,"`````````````````````````")
+        
         return render(request,'emp_dashboard.html',{'value':value,'works':works,'forwardwork':forwardwork,'from_works':from_works})
     
     
@@ -116,33 +108,31 @@ def profile(request,pk):
     sendings = MoM.objects.filter(from_user=request.user.fullname,to=details).order_by('-date_of_creation')
     receving = MoM.objects.filter(from_user=details.fullname,to=request.user).order_by('-date_of_creation')
 
-    
-    print("=====================================================================")
     return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'traction_values':traction_values,'sendings':sendings,'receving':receving})
 
 def startup_profile_edit(request,pk):
-    print("hello guyss",pk)
+    
     content = get_object_or_404(StartUp,pk=pk)
-    print(content)
+    
     if request.method == 'POST':
         form = StartUpForm(request.POST,instance=content)
-        print(form) 
+        
         if form.is_valid():
             content = form.save(commit=False)
             content.save()
             return redirect(dashboard)
     else:
         form = StartUpForm(instance=content)
-        print(form," form")
+        
     return render(request,'startup_edit_form.html',{'form':form})
 
 def delete_employee(request):
     if request.method == 'POST':
         getpk = request.POST['foo']
-        print(getpk)
+        
         details = get_object_or_404(Admin,pk=int(getpk))
         main_account = details.account
-        print(main_account)
+        
         main_account.delete()
         return redirect('dashboard')
 
@@ -179,12 +169,12 @@ def edit_emp_form(request):
 #user profile
 def userprofile(request,pk):
     details = get_object_or_404(Account,pk=pk)
-    print(details)
+    
     if details.is_superadmin:
         return render(request,'user_profile.html',{'value':details})
     elif details.is_admin:
         val = details.admin_set.all()
-        print(val)
+        
         return render(request,'user_profile.html',{'value':val[0]})
     else:
         return redirect('profile',pk=pk)
@@ -208,7 +198,7 @@ def delete_team_member(request):
     if request.method == 'POST':
         user = request.user
         getpk = request.POST['foo']
-        print(getpk)
+        
         details = get_object_or_404(TeamMembers,pk=int(getpk))
         details.delete()
         return redirect('profile',pk=user.pk)
@@ -221,7 +211,7 @@ def edit_team_member(request):
         designation = request.POST['designation']
         email = request.POST['email']
         contact = request.POST['contact']
-        print(pk,"=============================================")
+        
         account = TeamMembers.objects.get(pk=pk)
 
         if designation:
@@ -244,24 +234,24 @@ def edit_team_member(request):
 
 def monitor_report(request,pk):
     monitor_sheet_obj = MonitorSheet.objects.get(pk=pk)
-    print(monitor_sheet_obj,"+++++++++++++++++++++++++++++++++++++")
+    
     return render(request,'monitor_report.html',{'monitor_report':monitor_sheet_obj})
 
 def allowedit(request,pk):
     monitor_report_obj = MonitorSheet.objects.get(pk=pk)
-    print(monitor_report_obj.allow_edit)
+    
     monitor_report_obj.allow_edit_option()
-    print(monitor_report_obj.allow_edit)
+    
     return redirect(monitor_report,pk=pk)
 
 
 
 def monitor_sheet_edit(request,pk):
     content = get_object_or_404(MonitorSheet,pk=pk)
-    print(content)
+    
     if request.method == 'POST':
         form = MonitorSheetEditForm(request.POST,instance=content)
-        print(form) 
+        
         if form.is_valid():
             content = form.save(commit=False)
             content.not_allow_edit_option()
@@ -270,7 +260,7 @@ def monitor_sheet_edit(request,pk):
             return redirect(dashboard)
     else:
         form = MonitorSheetEditForm(instance=content)
-        print(form," form")
+        
     return render(request,'edit_monitor_sheet.html',{'form':form})
 
 
@@ -318,7 +308,7 @@ def monitor_form(request):
         paid_up_capital_amount = request.POST['paid_up_capital_amount']
         
         mou = request.POST['mou']
-        print(mou,"-------------------------------------------------")
+        
         mou_date = request.POST['mou_date']
         incubation_fees = request.POST['incubation_fees']
         chef_monitor_assign = request.POST['chef_monitor_assign']
@@ -364,9 +354,9 @@ def monitor_form(request):
         return render(request,'monitor_form.html')
 
 def send_mom(request):
-    print("helllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllo")
+    
     if request.method == 'POST' or request.FILES['document']:
-        print("helooooooooooooooooooo")
+        
         from_user = request.POST['from']
         to = request.POST['to']
         title = request.POST['title']
@@ -375,7 +365,7 @@ def send_mom(request):
 
         from_obj = Account.objects.get(pk=int(from_user))
         to_obj = Account.objects.get(pk=int(to))
-        print(to_obj)
+        
 
         mom_obj = MoM.objects.create(from_user=from_obj.fullname,to=to_obj,title=title,description=description,document=document)
         mom_obj.save()
@@ -415,7 +405,7 @@ def traction_form(request):
 
 def traction_report(request,pk):
     traction_sheet_obj = TractionSheet.objects.get(pk=pk)
-    print(traction_sheet_obj,"+++++++++++++++++++++++++++++++++++++")
+    
     return render(request,'traction_report.html',{'traction_report':traction_sheet_obj})
 
 def allow_traction_edit(request,pk):
@@ -425,10 +415,10 @@ def allow_traction_edit(request,pk):
 
 def edit_traction_sheet(request,pk):
     content = get_object_or_404(TractionSheet,pk=pk)
-    print(content)
+    
     if request.method == 'POST':
         form = TractionSheetEditForm(request.POST,instance=content)
-        print(form) 
+        
         if form.is_valid():
             content = form.save(commit=False)
             content.not_allow_edit_option()
@@ -437,7 +427,7 @@ def edit_traction_sheet(request,pk):
             return redirect(dashboard)
     else:
         form = TractionSheetEditForm(instance=content)
-        print(form," form")
+        
     return render(request,'edit_traction_sheet.html',{'form':form})
 
 def blogPost(request):
@@ -445,12 +435,12 @@ def blogPost(request):
     return render(request,'blogPost.html',{'posts':posts})
 
 def newBlogPost(request):
-    print("0.0.................0000000000000.000000000000")
+    
     if request.method == "POST":
         title = request.POST['title']
         description = request.POST['description']
         blog_img = request.FILES['blog_img']
-        print(blog_img)
+        
         post = BlogPost.objects.create(title=title,description=description,blog_img=blog_img)
         post.save()
         return redirect('blogPost')
@@ -484,9 +474,9 @@ def generate_work(request):
             document = request.FILES['document']
         
         from_obj = Account.objects.get(pk=int(from_user))
-        print(from_obj.fullname)
+        
         obj = Admin.objects.get(pk=int(to))
-        print(obj,"=====================")
+        
         if checkbox:
             work = WorkGenerator.objects.create(from_user=from_obj.fullname,to=obj,title=title,work_description=work_description,suggestions=suggestions,remarks=remarks,document=document,from_user_pk=from_user)
         else:
@@ -558,14 +548,14 @@ def forward_work(request):
         suggestions = request.POST['suggestions']
 
         from_obj = Account.objects.get(pk=int(from_user))
-        print(from_obj.fullname)
+        
         obj = Admin.objects.get(pk=int(to))
-        print(pk,"=====================")
+        
         work_obj = WorkGenerator.objects.get(pk=int(pk))
-        print(work_obj,"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+        
         work = Forward.objects.create(from_user=from_obj.fullname,to=obj,forward_work=work_obj,suggestions=suggestions,from_user_pk=from_user,forward_pk=forward_pk)
         status_obj = WorkGenerator.objects.get(pk=int(pk))
-        print(obj.account.fullname)
+        
         if status_obj.status == "returned":
             ret_obj = Return.objects.get(pk=int(forward_pk))
             ret_obj.delete()
@@ -595,21 +585,21 @@ def return_work(request):
         work_pk = request.POST['work_pk']
         suggestions = request.POST['suggestions']
         ford_work_pk = request.POST['ford_work_pk']
-        print(ford_work_pk)
-        print(to,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+        
+        
         from_obj = Account.objects.get(pk=int(from_user))
-        print(from_obj,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.")
+        
         obj = Account.objects.get(pk=int(to))
         to_obj = obj.admin_set.all()[0]
-        print(to_obj,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+        
         work_obj = WorkGenerator.objects.get(pk=int(work_pk))
-        print(work_obj,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+        
 
         return_obj = Return.objects.create(from_user=from_obj.fullname,to=to_obj,work=work_obj,message=suggestions)
 
         if work_obj.forwarded:
             ford_obj = Forward.objects.get(pk=int(ford_work_pk))
-            print(ford_obj)
+            
             return_obj.assign_forward_pk(forward_pk=ford_obj.forward_pk)
             if ford_obj.forward_pk:
                 old_ford_obj = Forward.objects.get(pk=ford_obj.forward_pk)
@@ -632,22 +622,21 @@ def return_work(request):
         return redirect('dashboard')
 
 def reassign(request):
-    print(".....................................................................")
+    
     if request.method == 'POST':
         from_user = request.POST['from']
         to = request.POST['to']
         work_pk = request.POST['pk_val']
         suggestions = request.POST['suggestions']
         rk_val = request.POST['rk_val']
-        print(to,"/////////////////////////////////////////")
-        print(work_pk,"/////////////////////////////////////////")
+        
         
         obj = Admin.objects.get(pk=int(to))
-        print(obj,"/////////////////////////////////////////")
+        
         work_obj = WorkGenerator.objects.get(pk=int(work_pk))
-        print(work_obj,"/////////////////////////////////////////")
+        
         ret = Return.objects.get(pk=int(rk_val))
-        print(ret,"/////////////////////////////////////////")
+        
         work_obj.update_to(to=obj)
         work_obj.make_new_work()
         work_obj.change_status(status="Not Started..")
@@ -677,20 +666,11 @@ def delete_work(request,pk):
 
 
 
-# def download(request, path):
-#     file_path = os.path.join(settings.MEDIA_ROOT, path)
-#     if os.path.exists(file_path):
-#         with open(file_path, 'rb') as fh:
-#             response = HttpResponse(fh.read(), content_type="application/document")
-#             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
-#             return response
-#     raise Http404
-
 
 def new_work_clicked(request):
     pk = request.GET.get('pk',None)
     work = WorkGenerator.objects.get(pk=pk)
-    print(pk)
+
     work.new_work = False
     work.save()
     data = {
@@ -700,9 +680,9 @@ def new_work_clicked(request):
 
 def forward_work_clicked(request):
     pk = request.GET.get('pk',None)
-    print('Hey ',pk)
+    
     work = Forward.objects.get(pk=pk)
-    print('I am a pk : ',pk)
+    
     work.new_forward = False
     work.save()
     data = {
@@ -713,7 +693,7 @@ def forward_work_clicked(request):
 def return_work_clicked(request):
     pk = request.GET.get('pk',None)
     work = Return.objects.get(pk=pk)
-    print(pk)
+    
     work.new_return = False
     work.save()
     data = {
@@ -723,7 +703,7 @@ def return_work_clicked(request):
 
 def count_values(request):
     returns = Return.objects.filter(work__new_work = True)
-    print(len(returns))
+    
     data = {
         'returns':len(returns)
     }
@@ -756,7 +736,7 @@ def uname_pwd_check(request):
     else:
         exist = False
 
-    print(exist)
+    
     data = {
         'exist':exist
     }

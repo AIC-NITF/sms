@@ -4,26 +4,18 @@ from .models import Account,Admin,StartUp
 
 # Create your views here.
 def login(request):
-    print("hello")
+    
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
-        print(username)
-        print(password)
-        
         user = auth.authenticate(request,username=username,password=password)
         if user is not None:
-            print(user)
-            print('valid username and password')
             auth.login(request,user)
             return redirect("dashboard")
         else:
-            print(user)
-            print("invalid password or user name")
             return redirect('login')
     else:
         values = Account.objects.filter(is_admin=True)
-        print(values[1:],"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         imp_values = []
         required_val = values[1:]
         for i in required_val:
@@ -32,7 +24,6 @@ def login(request):
 
 
 def logout(request):
-    print('Hey logout')
     auth.logout(request)
     return redirect('index')
 
@@ -43,7 +34,7 @@ def admin_register(request):
         
         username = request.POST['username']
         password = request.POST['password1']
-        print(full_name,username,password)
+        
         user = Account.objects.create_user(fullname=full_name,username=username,is_admin=True)
         user.set_password(password)
         user.save() 
@@ -55,7 +46,7 @@ def admin_register(request):
         identity_proof = request.POST['identity']
 
         admin_img = request.FILES['admin_img']
-        print(admin_img,"====================================================")
+        
 
         admin = Admin.objects.create(account=user,designation=designation,email=email,employee_id=employee_id,contact_no=contact_no,identity_proof=identity_proof,admin_img=admin_img) 
         admin.save()
@@ -68,7 +59,7 @@ def startup_register(request):
         full_name = request.POST['full_name']
         username = request.POST['username']
         password = request.POST['password1']
-        print(full_name,username,password)
+        
         user = Account.objects.create_user(fullname=full_name,username=username,is_startup=True)
         user.set_password(password)
         user.save() 
