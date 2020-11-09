@@ -145,6 +145,7 @@
                                 <h6 class="dropdown-header">
                                     Alerts Center
                                 </h6>
+                                {% if work_notifications %}<h6 style="font-weight: bold;color: gray;margin-left:10px;">New work</h6>{% endif %}
                                 {% for notification in work_notifications %}
                                 <div class="dropdown-item d-flex align-items-center">
                                     <div class="mr-3" id="work_circle{{notification.pk}}">
@@ -163,6 +164,7 @@
                                     </div>
                                 </div>
                                 {% endfor %}
+                                {% if forward_notifications %} <h6 style="font-weight: bold;color: gray;margin-left:10px;">Forwarded work</h6> {% endif %}
                                 {% for notification in forward_notifications %}
                                 <div class="dropdown-item d-flex align-items-center">
                                     <div class="mr-3">
@@ -182,6 +184,7 @@
                                     </div>
                                 </div>
                                 {% endfor %}
+                                {% if return_notifications %} <h6 style="font-weight: bold;color: gray;margin-left:10px;">Return work</h6> {% endif %}
                                 {% for notification in return_notifications %}
                                 <div class="dropdown-item d-flex align-items-center">
                                     <div class="mr-3" id="return_circle{{notification.pk}}">

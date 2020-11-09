@@ -2,6 +2,9 @@ from django.shortcuts import render,get_object_or_404,redirect
 from django.http import HttpResponse,Http404,JsonResponse
 from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Return,TractionSheet,MoM,BlogPost
 from .forms import StartUpForm,MonitorSheetEditForm,TractionSheetEditForm
+from django.core.mail import send_mail
+
+from django.contrib.auth.models import auth
 
 
 # Create your views here.
@@ -489,6 +492,14 @@ def generate_work(request):
         else:
             work = WorkGenerator.objects.create(from_user=from_obj.fullname,to=obj,title=title,work_description=work_description,suggestions=suggestions,remarks=remarks,from_user_pk=from_user)
         work.change_status(status="Not Started..")
+
+        send_mail(
+                'My Work',
+                'You got a new work . Please go checkout at www.aicnitf.in .',
+                'support@aicnalanda.com',
+                [obj.email],
+                fail_silently=False,
+            )
         return redirect('dashboard')
     return redirect('index')
 
@@ -715,5 +726,22 @@ def verify_uname(request):
     uname = request.GET.get('uname',None)
     data = {
         'exist': Account.objects.filter(username = uname).exists(),
+    }
+    return JsonResponse(data)
+
+def uname_pwd_check(request):
+    uname = request.GET.get('uname',None)
+    pwd = request.GET.get('pwd',None)
+    user = auth.authenticate(request,username=uname,password=pwd)
+    exist = False
+    if user is not None:
+        exist = True
+    
+    else:
+        exist = False
+
+    print(exist)
+    data = {
+        'exist':exist
     }
     return JsonResponse(data)
