@@ -8,7 +8,10 @@ import random
 from django.core.mail import send_mail
 from django.contrib import messages
 
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
+@login_required
 def dashboard(request):
     accounts = Account.objects.all()
     user = request.user
@@ -73,16 +76,20 @@ def dashboard(request):
         
         return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'traction_values':traction_values,'account':account,'sendings':sendings,'receving':receving,'posts':posts})
 
+@login_required
 def visit_startup(request):
     accounts = Account.objects.all()
     return render(request,'startup.html',{'accounts':accounts})
-    
+
+@login_required   
 def admin_form(request):
     return render(request,'admin_form.html')
 
+@login_required
 def startup_form(request):
     return render(request,'startup_form.html')
 
+@login_required
 def profile(request,pk): 
     details = get_object_or_404(Account, pk=pk)
     startup_obj = details.startup_set.all()[0]
@@ -94,6 +101,7 @@ def profile(request,pk):
 
     return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'traction_values':traction_values,'sendings':sendings,'receving':receving})
 
+@login_required
 def startup_profile_edit(request,pk):
     
     content = get_object_or_404(StartUp,pk=pk)
@@ -110,6 +118,7 @@ def startup_profile_edit(request,pk):
         
     return render(request,'startup_edit_form.html',{'form':form})
 
+@login_required
 def delete_employee(request):
     if request.method == 'POST':
         getpk = request.POST['foo']
@@ -121,7 +130,7 @@ def delete_employee(request):
         return redirect('dashboard')
 
 
-
+@login_required
 def edit_emp_form(request):
 
     if request.method == "POST":
@@ -151,12 +160,13 @@ def edit_emp_form(request):
     return redirect('dashboard')
     
 #user profile
+@login_required
 def userprofile(request,pk):
     details = get_object_or_404(Account,pk=pk)
     val = details.admin_set.all()
     return render(request,'user_profile.html',{'value':val[0]})
     
-
+@login_required
 def add_new_team_member(request):
     if request.method == 'POST':
         user = request.user
@@ -171,7 +181,7 @@ def add_new_team_member(request):
         team_member.save()
         return redirect('profile',pk=user.pk)
         
-
+@login_required
 def delete_team_member(request):
     if request.method == 'POST':
         user = request.user
@@ -181,6 +191,7 @@ def delete_team_member(request):
         details.delete()
         return redirect('profile',pk=user.pk)
 
+@login_required
 def edit_team_member(request):
 
     if request.method == "POST":
@@ -210,20 +221,19 @@ def edit_team_member(request):
         account.update_team_member(email = email,designation = designation,contact_no = contact)
     return redirect('profile',pk=user.pk)
 
+
 def monitor_report(request,pk):
     monitor_sheet_obj = MonitorSheet.objects.get(pk=pk)
-    
     return render(request,'monitor_report.html',{'monitor_report':monitor_sheet_obj})
 
+@login_required
 def allowedit(request,pk):
     monitor_report_obj = MonitorSheet.objects.get(pk=pk)
-    
     monitor_report_obj.allow_edit_option()
-    
     return redirect(monitor_report,pk=pk)
 
 
-
+@login_required
 def monitor_sheet_edit(request,pk):
     content = get_object_or_404(MonitorSheet,pk=pk)
     
@@ -241,7 +251,7 @@ def monitor_sheet_edit(request,pk):
         
     return render(request,'edit_monitor_sheet.html',{'form':form})
 
-
+@login_required
 def monitor_form(request):
     if request.method == 'POST':
         user = request.user
@@ -319,6 +329,7 @@ def monitor_form(request):
     else:
         return render(request,'monitor_form.html')
 
+@login_required
 def send_mom(request):
     
     if request.method == 'POST' or request.FILES['document']:
@@ -367,6 +378,7 @@ def send_mom(request):
         else:
             return redirect(dashboard)
 
+@login_required
 def traction_form(request):
     if request.method == 'POST':
         user = request.user
@@ -400,16 +412,20 @@ def traction_form(request):
     else:
         return render(request,'traction_form.html')
 
+
 def traction_report(request,pk):
     traction_sheet_obj = TractionSheet.objects.get(pk=pk)
     
     return render(request,'traction_report.html',{'traction_report':traction_sheet_obj})
 
+@login_required
 def allow_traction_edit(request,pk):
     traction_report_obj = TractionSheet.objects.get(pk=pk)
     traction_report_obj.allow_edit_option()
     return redirect(traction_report,pk=pk)
 
+
+@login_required
 def edit_traction_sheet(request,pk):
     content = get_object_or_404(TractionSheet,pk=pk)
     
@@ -427,10 +443,12 @@ def edit_traction_sheet(request,pk):
         
     return render(request,'edit_traction_sheet.html',{'form':form})
 
+
 def blogPost(request):
     posts = BlogPost.objects.all().order_by('-date_of_creation')
     return render(request,'blogPost.html',{'posts':posts})
 
+@login_required
 def newBlogPost(request):
     
     if request.method == "POST":
@@ -446,6 +464,7 @@ def newBlogPost(request):
 
     return redirect('blogPost')
 
+@login_required
 def generate_work(request):
     
     if request.method == 'POST':
@@ -481,6 +500,7 @@ def generate_work(request):
         return redirect('dashboard')
     return redirect('index')
 
+@login_required
 def edit_work(request):
     if request.method == "POST":
         pk = request.POST['pk_val']
@@ -515,18 +535,20 @@ def edit_work(request):
     return redirect('dashboard')
 
 
-
+@login_required
 def start(request,pk):
     work_obj = WorkGenerator.objects.get(pk=pk)
     work_obj.change_status(status="pending...")
     return redirect('dashboard')
 
+@login_required
 def completed(request,pk):
     work_obj = WorkGenerator.objects.get(pk=pk)
     work_obj.change_status(status="completed")
     work_obj.update_date()
     return redirect('dashboard')
 
+@login_required
 def forward_work(request):
     if request.method == 'POST':
         from_user = request.POST['from']
@@ -567,6 +589,7 @@ def forward_work(request):
         messages.add_message(request, messages.INFO, 'Work Forwarded successfully.')
         return redirect('dashboard')
 
+@login_required
 def return_work(request):
     if request.method == 'POST':
         from_user = request.POST['from']
@@ -611,6 +634,7 @@ def return_work(request):
         messages.add_message(request, messages.INFO, 'Work Returned successfully.')
         return redirect('dashboard')
 
+@login_required
 def reassign(request):
     
     if request.method == 'POST':
@@ -640,6 +664,7 @@ def reassign(request):
         messages.add_message(request, messages.INFO, 'Work Reassigned successfully.')
         return redirect('dashboard')
 
+@login_required
 def return_start(request,pk):
     ret_obj = Return.objects.get(pk=pk)
     if ret_obj.forward_pk:
@@ -653,6 +678,7 @@ def return_start(request,pk):
     ret_obj.delete()
     return redirect('dashboard')
 
+@login_required
 def delete_work(request,pk):
     ret_obj = Return.objects.get(pk=pk)
     if request.user.is_adminstrator and ret_obj.work.forwarded == False:
@@ -663,7 +689,7 @@ def delete_work(request,pk):
 
 
 
-
+@login_required
 def new_work_clicked(request):
     pk = request.GET.get('pk',None)
     work = WorkGenerator.objects.get(pk=pk)
@@ -698,6 +724,7 @@ def return_work_clicked(request):
     }
     return JsonResponse(data)
 
+
 def count_values(request):
     returns = Return.objects.filter(work__new_work = True)
     
@@ -705,6 +732,8 @@ def count_values(request):
         'returns':len(returns)
     }
     return JsonResponse(data)
+
+
 def download(request, path):
     file_path = os.path.join(settings.MEDIA_ROOT, path)
     if os.path.exists(file_path):

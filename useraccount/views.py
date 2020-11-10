@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.models import auth
 from .models import Account,Admin,StartUp
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 def login(request):
     
@@ -27,7 +28,7 @@ def logout(request):
     auth.logout(request)
     return redirect('index')
 
-
+@login_required
 def admin_register(request):
     if request.method == 'POST' and request.FILES['admin_img']:
         full_name = request.POST['full_name']
@@ -55,6 +56,7 @@ def admin_register(request):
         return redirect('dashboard')
     return redirect('dashboard')
 
+@login_required
 def startup_register(request):
     if request.method == 'POST':
         full_name = request.POST['full_name']
