@@ -30,9 +30,11 @@
 
 
     <style>
-        .course-preview h6,.course-preview h2 {
-                color: white;
+        .course-preview h6,
+        .course-preview h2 {
+            color: white;
         }
+
         @media screen and (max-width: 400px) {
             .course-preview {
                 height: 100px;
@@ -206,7 +208,7 @@
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
-                        
+
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -255,6 +257,17 @@
 
                             <div class="home-five-style">
                                 <!-- Header section start -->
+
+
+                                {% for message in messages %}
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>{{message}}</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% endfor %}
+
                                 <header class="header-section">
                                     <div class="container-fluid">
                                         <div class="row">
@@ -398,7 +411,7 @@
 
                                     </div>
                                 </section>
-                                
+
                                 <!--add team member-->
                                 <div class="modal fade" id="addnewteam" tabindex="-1" role="dialog"
                                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -423,14 +436,15 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="inputDesignation4">Designation/Post</label>
-                                                        <input required type="text" name="designation" class="form-control"
-                                                            id="inputDesignation4" placeholder="Designation">
+                                                        <input required type="text" name="designation"
+                                                            class="form-control" id="inputDesignation4"
+                                                            placeholder="Designation">
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="inputDIPPRegistration4"
                                                             style="margin-right: 5%;">Gender</label><br>
                                                         <select required name="gender" class="custom-select col-md-12">
-                                                            <option  selected="selected" disabled>Choose From below:
+                                                            <option selected="selected" disabled>Choose From below:
                                                             </option>
                                                             <option value="Male">Male</option>
                                                             <option value="Female">Female</option>
@@ -593,11 +607,11 @@
                             aria-labelledby="v-pills-minute-tab">
                             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                                 <h3>Minute Of Meeting</h3>
-                                {% if user.is_admin != True %}
+                                {% if user.is_superadmin == True or user.is_startup %}
                                 <a href="{% url 'traction_form' %}"
-                                    class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-                                    data-toggle="modal" data-target="#sendMoM"><i
-                                        class="fas fa-download fa-sm text-white-50"></i> Send MoM</a>
+                                    class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
+                                    data-target="#sendMoM"><i class="fas fa-download fa-sm text-white-50"></i> Send
+                                    MoM</a>
                                 {% endif %}
                             </div>
 
@@ -751,8 +765,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="inputWorkDescription">Description</label>
-                                    <textarea required class="form-control" name="description" id="inputWorkDescription" rows="3"
-                                        placeholder="Description"></textarea>
+                                    <textarea required class="form-control" name="description" id="inputWorkDescription"
+                                        rows="3" placeholder="Description"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleFormDocument">Upload File</label>
@@ -920,11 +934,11 @@
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
                 integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
                 crossorigin="anonymous"></script>
-            <script src="{% static 'dashboard/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+            <!-- <script src="{% static 'dashboard/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script> -->
 
 
             <!-- Core plugin JavaScript-->
-            <script src="{% static 'dashboard/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+            <!-- <script src="{% static 'dashboard/vendor/jquery-easing/jquery.easing.min.js' %}"></script> -->
 
             <!-- Custom scripts for all pages-->
             <script src="{% static 'dashboard/js/sb-admin-2.min.js' %}"></script>
@@ -940,7 +954,7 @@
 
                     des_id = "#designation" + pk;
                     designation = $(des_id).text();
-                    console.log(designation);
+                    
                     $("#inputDesignation14").val(designation);
                     email_id = "#email" + pk;
                     email = $(email_id).text();
@@ -952,9 +966,9 @@
                     $("#pk_val").val(pk);
                 });
                 $('.delete_btn').on('click', function () {
-                    console.log('clicked');
+                    
                     var idstr = this.id.slice(6,);
-                    console.log(idstr);
+                    
                     $('#foo').val(idstr)
                 });
             </script>

@@ -313,6 +313,16 @@
                         <!--monitor sheet -->
                         <div class="tab-pane fade show active" id="v-pills-monitor" role="tabpanel"
                             aria-labelledby="v-pills-monitor-tab">
+                            {% for message in messages %}
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>{{message}}</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              {% endfor %}
+
+
                             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                                 <h1>Work Status</h1>
                                 {% if user.is_adminstrator %}
@@ -1683,12 +1693,12 @@
         $('#file_upload').prop('disabled', true);
         $('input[type="checkbox"]').click(function () {
             if ($(this).prop("checked") == true) {
-                console.log("Checkbox is checked.");
+         
                 $('#file_upload_div').show();
                 $('#file_upload').prop('disabled', false);
             }
             else if ($(this).prop("checked") == false) {
-                console.log("Checkbox is unchecked.");
+       
                 $('#file_upload_div').hide();
                 $('#file_upload').prop('disabled', true);
             }
@@ -1705,14 +1715,14 @@
             pk = id.slice(4,);
 
             title_id = "#workingtitle" + pk;
-            console.log(title_id);
+            
             updateTitle = $(title_id).text();
-            console.log(updateTitle);
+            
             $("#updateTitle1").val(updateTitle);
 
             description_id = "#WorkDescription" + pk;
             updateWorkDescription = $(description_id).text();
-            console.log(updateWorkDescription);
+            
             $("#updateWorkDescription1").val(updateWorkDescription);
 
             suggestion_id = "#Suggestions" + pk;
@@ -1731,7 +1741,7 @@
 
             id = this.id;
             pk = id.slice(5,);
-            console.log(pk);
+            
             $("#pk_val1").val(pk);
             $("#work_pk").val(pk);
             $.ajax({
@@ -1767,10 +1777,10 @@
 
 
         $('.send_work_link').on('click',function(){
-            console.log('Clicking...');
+            
             id = this.id;
             pk = id.slice(5,);
-            console.log('pk '+pk);
+            
             $("#pk_val1").val(pk);
             $("#work_pk").val(pk);
             $.ajax({
@@ -1806,7 +1816,7 @@
         $('.return_work_link').on('click',function(){
             id = this.id;
             pk = id.slice(5,);
-            console.log(pk);
+            
             $("#pk_val1").val(pk);
             $("#work_pk").val(pk);
             $.ajax({
@@ -1851,7 +1861,7 @@
                 dataType: 'json',
                 success: function (data) {
                     $('#returned_total').val(data.returns);
-                    console.log(data.returns);
+                    
                 }
 
             })
@@ -1860,21 +1870,12 @@
 
 
         $(".ford_work_link").on("click", function () {
-            console.log('Clicking here');
-            // id = this.id;
-            // pk = id.slice(5,);
-            // cls = this.className;
-            // cls_pk = cls.slice(15,);
-            // console.log(cls_pk);
-            // console.log(pk);
-            // $("#pk_val1").val(pk);
-            // $("#work_pk").val(pk);
-            // $("#ford_work_pk").val(cls_pk);
+            
 
-            console.log('Clicking...');
+           
             id = this.id;
             pk = id.slice(5,);
-            console.log('pk '+pk);
+            
             cls = this.className;
             cls_pk = cls.slice(15,);
             $("#ford_work_pk").val(cls_pk);
@@ -1891,7 +1892,7 @@
                         console.log('I am clicked.. pk');
                     }
                     else{
-                        console.log('I am reaching here');
+                       
                         id = '#new_assigned' + pk;
                         work_circle = '#forward_circle' + pk;
                         work_text = '#forward_text' + pk;
@@ -1914,13 +1915,13 @@
         $(".forward_key").on("click", function () {
             id = this.id;
             pk = id.slice(10,);
-            console.log(pk);
+           
             $("#pk_val2").val(pk);
         });
         $(".return").on("click", function () {
             id = this.id;
             pk = id.slice(2,);
-            console.log(pk);
+           
             $("#inputTo12").val(pk);
 
         });
@@ -1928,9 +1929,9 @@
         $(".reassign").on("click", function () {
 
             id = this.id;
-            console.log(id);
+            
             pk = id.slice(5,);
-            console.log(pk);
+            
             $("#work_id").val(pk);
             $("#pk_val1").val(pk);
             $("#work_pk").val(pk);
@@ -1939,18 +1940,10 @@
         $(".return_class").on("click", function () {
             id = this.id;
             pk = id.slice(2,);
-            console.log(pk)
+            
             $("#return_id").val(pk);
         });
 
-
-
-        /* $('.delete_btn').on('click', function () {
-            console.log('clicked');
-            var idstr = this.id.slice(6,);
-            console.log(idstr);
-            $('#foo').val(idstr)
-        }); */
     </script>
 
 

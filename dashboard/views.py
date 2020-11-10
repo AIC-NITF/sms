@@ -2,11 +2,11 @@ from django.shortcuts import render,get_object_or_404,redirect
 from django.http import HttpResponse,Http404,JsonResponse
 from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Return,TractionSheet,MoM,BlogPost
 from .forms import StartUpForm,MonitorSheetEditForm,TractionSheetEditForm
-from django.core.mail import send_mail
 
 from django.contrib.auth.models import auth
 import random
 from django.core.mail import send_mail
+from django.contrib import messages
 
 # Create your views here.
 def dashboard(request):
@@ -64,8 +64,8 @@ def dashboard(request):
         user = request.user
         startup_obj = user.startup_set.all()[0]
         val2 = startup_obj.teammembers_set.all()
-        values = startup_obj.monitorsheet_set.all()
-        traction_values = startup_obj.tractionsheet_set.all()
+        values = startup_obj.monitorsheet_set.all().order_by('-date_of_filling')
+        traction_values = startup_obj.tractionsheet_set.all().order_by('-generated_date')
         account = Account.objects.filter(is_superadmin=True)[0]
         sendings = MoM.objects.filter(from_user=user.fullname,to=account).order_by('-date_of_creation')
         receving = MoM.objects.filter(from_user=account.fullname,to=user).order_by('-date_of_creation')
@@ -76,24 +76,7 @@ def dashboard(request):
 def visit_startup(request):
     accounts = Account.objects.all()
     return render(request,'startup.html',{'accounts':accounts})
-
-def visit_employee(request,pk):
-    value = Admin.objects.get(pk=pk)
     
-    if value.account.is_adminstrator:
-        works = WorkGenerator.objects.all().order_by('-date_of_creation')
-        ford_status = WorkGenerator.objects.filter(forwarded=True).order_by('-date_of_creation')
-        
-        return render(request,'emp_dashboard.html',{'value':value,'works':works,'ford_status':ford_status})
-    else:
-        works = value.workgenerator_set.all().order_by('-date_of_creation')
-        forwardwork = value.forward_set.all().order_by('-date_of_forward')
-        from_works = Forward.objects.filter(from_user=value.account.fullname).order_by('-date_of_forward')
-        
-        return render(request,'emp_dashboard.html',{'value':value,'works':works,'forwardwork':forwardwork,'from_works':from_works})
-    
-    
-
 def admin_form(request):
     return render(request,'admin_form.html')
 
@@ -170,15 +153,9 @@ def edit_emp_form(request):
 #user profile
 def userprofile(request,pk):
     details = get_object_or_404(Account,pk=pk)
+    val = details.admin_set.all()
+    return render(request,'user_profile.html',{'value':val[0]})
     
-    if details.is_superadmin:
-        return render(request,'user_profile.html',{'value':details})
-    elif details.is_admin:
-        val = details.admin_set.all()
-        
-        return render(request,'user_profile.html',{'value':val[0]})
-    else:
-        return redirect('profile',pk=pk)
 
 def add_new_team_member(request):
     if request.method == 'POST':
@@ -265,28 +242,6 @@ def monitor_sheet_edit(request,pk):
     return render(request,'edit_monitor_sheet.html',{'form':form})
 
 
-
-
-
-
-def monitor_sheet(request):
-    user = request.user
-    if user.is_startup:
-        startup_obj = user.startup_set.all()[0]
-        values = startup_obj.monitorsheet_set.all()
-        return render(request,'monitor_sheet.html',{'values':values})
-    return render(request,'traction_sheet.html')
-
-def traction_sheet(request):
-    return render(request,'traction_sheet.html')
-
-
-def minute_of_meeting(request):
-    return render(request,'minute_of_meeting.html')
-
-
-
-
 def monitor_form(request):
     if request.method == 'POST':
         user = request.user
@@ -350,6 +305,16 @@ def monitor_form(request):
                                                       ipr_status=ipr_status,sales=sales,revenue=revenue,pipeline=pipeline,current_client=current_client,profit_earned=profit_earned,new_team_member=new_team_member,no_of_employees=no_of_employees,problem_faced=problem_faced,option=option,marketing=marketing,helped=helped,remarks=remarks,
                                                        name_date=name_date,feture_plan=feture_plan,action=action,required_help=required_help)
         monitor_report.save()
+        super_admin = Account.objects.filter(is_superadmin=True)[0]
+        obj = super_admin.admin_set.all()[0]
+        send_mail(
+                'Monitor Report',
+                'Monitor report submitted by '+startup_obj.startup_name,
+                'support@aicnalanda.com',
+                [obj.email],
+                fail_silently=False,
+            )
+        messages.add_message(request, messages.INFO, 'Monitor Form submitted successfully.')
         return redirect('dashboard')
     else:
         return render(request,'monitor_form.html')
@@ -371,9 +336,30 @@ def send_mom(request):
         mom_obj = MoM.objects.create(from_user=from_obj.fullname,to=to_obj,title=title,description=description,document=document)
         mom_obj.save()
 
+        
+
         if request.user.is_superadmin:
+            obj = to_obj.startup_set.all()[0]
+            send_mail(
+                'Minute of Meeting',
+                'You receved a MoM by AIC-NITF',
+                'support@aicnalanda.com',
+                [obj.email],
+                fail_silently=False,
+            )
+            messages.add_message(request, messages.INFO, 'MoM send successfully.')
             return redirect(profile,int(to))
         else:
+            name = from_obj.startup_set.all()[0]
+            obj = to_obj.admin_set.all()[0]
+            send_mail(
+                'Minute of Meeting',
+                'MoM submitted by '+name.startup_name,
+                'support@aicnalanda.com',
+                [obj.email],
+                fail_silently=False,
+            )
+            messages.add_message(request, messages.INFO, 'MoM send successfully.')
             return redirect(dashboard)
     else:
         if request.user.is_superadmin:
@@ -399,6 +385,16 @@ def traction_form(request):
         profit = request.POST['profit']
 
         traction_report = TractionSheet.objects.create(connect_startup=startup_obj,total_order=total_order,average_packet_size=average_packet_size,total_revenue_of_month=total_revenue_of_month,total_customers_served=total_customers_served,total_expense=total_expense,market_outreach=market_outreach,repeate_customers=repeate_customers,total_revenue=total_revenue,direct_job_created=direct_job_created,indirect_job_created=indirect_job_created,profit=profit)
+        super_admin = Account.objects.filter(is_superadmin=True)[0]
+        obj = super_admin.admin_set.all()[0]
+        send_mail(
+                'Traction Report',
+                'Traction report submitted by '+startup_obj.startup_name,
+                'support@aicnalanda.com',
+                [obj.email],
+                fail_silently=False,
+            )
+        messages.add_message(request, messages.INFO, 'Traction form submitted successfully.')
         return redirect('dashboard')
     
     else:
@@ -444,6 +440,7 @@ def newBlogPost(request):
         
         post = BlogPost.objects.create(title=title,description=description,blog_img=blog_img)
         post.save()
+        messages.add_message(request, messages.INFO, 'Blog posted successfully.')
         return redirect('blogPost')
     
 
@@ -452,17 +449,6 @@ def newBlogPost(request):
 def generate_work(request):
     
     if request.method == 'POST':
-
-        # fs = FileSystemStorage()
-        # if request.FILES['document']:
-        #     doc = request.FILES['document']
-        #     file_name = fs.save(doc.name,doc)
-        #     file_url = fs.url(file_name)
-        
-        # if file_name:
-        #     pass
-        # else:
-        #     file_name = ''
         
         from_user = request.POST['from']
         to = request.POST['to']
@@ -491,6 +477,7 @@ def generate_work(request):
                 [obj.email],
                 fail_silently=False,
             )
+        messages.add_message(request, messages.INFO, 'Work Generatedc successfully.')
         return redirect('dashboard')
     return redirect('index')
 
@@ -577,6 +564,7 @@ def forward_work(request):
                 [obj.email],
                 fail_silently=False,
             )
+        messages.add_message(request, messages.INFO, 'Work Forwarded successfully.')
         return redirect('dashboard')
 
 def return_work(request):
@@ -620,6 +608,7 @@ def return_work(request):
                 [to_obj.email],
                 fail_silently=False,
             )
+        messages.add_message(request, messages.INFO, 'Work Returned successfully.')
         return redirect('dashboard')
 
 def reassign(request):
@@ -628,7 +617,6 @@ def reassign(request):
         from_user = request.POST['from']
         to = request.POST['to']
         work_pk = request.POST['pk_val']
-        suggestions = request.POST['suggestions']
         rk_val = request.POST['rk_val']
         
         
@@ -642,6 +630,14 @@ def reassign(request):
         work_obj.make_new_work()
         work_obj.change_status(status="Not Started..")
         ret.delete()
+        send_mail(
+                'My Work',
+                'You got a new work . Please go checkout at www.aicnitf.in .',
+                'support@aicnalanda.com',
+                [obj.email],
+                fail_silently=False,
+            )
+        messages.add_message(request, messages.INFO, 'Work Reassigned successfully.')
         return redirect('dashboard')
 
 def return_start(request,pk):

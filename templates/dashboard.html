@@ -90,12 +90,12 @@
                     <span>Blog Post</span>
                 </a>
             </li>
-            
+
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
-            
+
 
         </ul>
         <!-- End of Sidebar -->
@@ -120,10 +120,10 @@
                     <ul class="navbar-nav ml-auto">
 
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        
+
 
                         <!-- Nav Item - Alerts -->
-                        
+
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -133,8 +133,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{user.username}}</span>
                                 {% for imgsrc in  user.admin_set.all %}
-                                <img class="img-profile rounded-circle"
-                                    src="{{imgsrc.admin_img.url}}">
+                                <img class="img-profile rounded-circle" src="{{imgsrc.admin_img.url}}">
                                 {% endfor %}
                             </a>
                             <!-- Dropdown - User Information -->
@@ -156,6 +155,15 @@
 
                 </nav>
                 <!-- End of Topbar -->
+
+                {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>{{message}}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endfor %}
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
@@ -226,13 +234,6 @@
             <!-- Custom scripts for all pages-->
             <script src="{% static 'dashboard/js/sb-admin-2.min.js' %}"></script>
 
-            <!-- Page level plugins -->
-            <script src="{% static 'dashboard/vendor/chart.js/Chart.min.js' %}"></script>
-
-            <!-- Page level custom scripts -->
-            <script src="{% static 'dashboard/js/demo/chart-area-demo.js' %}"></script>
-            <script src="{% static 'dashboard/js/demo/chart-pie-demo.js' %}"></script>
-
             <script>
                 /* $(document).on('click', 'ul li', function(){
                     $(this).addClass('active').siblings().removeClass('active')
@@ -240,12 +241,12 @@
                 var value = {}
                 $(".check").click(function () {
                     var colorClass = $(this).attr('id');
-                    console.log(colorClass);
-                    localStorage.setItem('val',colorClass);  
+                    
+                    localStorage.setItem('val', colorClass);
                 });
                 value = localStorage.getItem('val');
                 var act = document.getElementById(value);
-                if (value == 'admin'){
+                if (value == 'admin') {
                     var act1 = document.getElementById("dashboard");
                     var act2 = document.getElementById("startup");
                     var act3 = document.getElementById("blogPost");
@@ -255,7 +256,7 @@
                     act3.classList.remove("active");
                     localStorage.clear()
                 }
-                else if(value == 'startup'){
+                else if (value == 'startup') {
                     var act1 = document.getElementById("dashboard");
                     var act2 = document.getElementById("admin");
                     var act3 = document.getElementById("blogPost");
@@ -265,7 +266,7 @@
                     act3.classList.remove("active");
                     localStorage.clear()
                 }
-                else if(value == 'dashboard'){
+                else if (value == 'dashboard') {
                     var act1 = document.getElementById("admin");
                     var act2 = document.getElementById("startup");
                     var act3 = document.getElementById("blogPost");
@@ -275,7 +276,7 @@
                     act3.classList.remove("active");
                     localStorage.clear()
                 }
-                else if(value == 'blogPost'){
+                else if (value == 'blogPost') {
                     var act1 = document.getElementById("admin");
                     var act2 = document.getElementById("startup");
                     var act3 = document.getElementById("dashboard");

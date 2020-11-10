@@ -368,4 +368,13 @@ class Return(models.Model):
 		self.forward_pk = forward_pk
 		self.save()
 
-	 
+
+class Query(models.Model):
+	name				= models.CharField(max_length=100,null=True,blank=True)
+	about				= models.CharField(max_length=100,null=True,blank=True)
+	email				= models.CharField(max_length=100,null=True,blank=True)
+	message				= models.CharField(max_length=1000,null=True,blank=True)
+	submitted_date		= models.DateTimeField(verbose_name='submitted date', auto_now_add=True,null=True,blank=True)
+
+	def __str__(self):
+		return self.email

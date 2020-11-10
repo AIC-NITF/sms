@@ -30,6 +30,14 @@
 </head>
 
 <body>
+    {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{{message}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
     <!--start header-->
     <header id="header">
         <!--start header top-->
@@ -59,6 +67,7 @@
         </div> -->
         <!--end header top-->
         <!--start mainmenu-->
+        
         <div class="mainmenu">
             <div class="container">
                 <nav class="navbar navbar-expand-lg">
@@ -111,6 +120,7 @@
     </header>
     <!--end header-->
     <!--start hero area-->
+
     <section id="hero-area" class="hero-three" data-scroll-index="0">
         <div class="slider owl-carousel">
             <!--start slide single-->
@@ -131,10 +141,6 @@
                                                 class="fa fa-long-arrow-right"></i></a> -->
 
                                         <!-- Button trigger modal -->
-                                        <button type="button" class="btn bg" data-toggle="modal"
-                                            data-target="#exampleModalCenter">
-                                            Log in<i class="fa fa-long-arrow-right"></i>
-                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -160,10 +166,10 @@
                                         <!-- <a class="bg" href="#product-area-three">Log in<i
                                                 class="fa fa-long-arrow-right"></i></a> -->
                                         <!-- Button trigger modal -->
-                                        <button type="button" class="btn bg" data-toggle="modal"
+                                        <!-- <button type="button" class="btn bg" data-toggle="modal"
                                             data-target="#exampleModalCenter">
                                             Log in<i class="fa fa-long-arrow-right"></i>
-                                        </button>
+                                        </button> -->
                                     </div>
                                 </div>
                             </div>
@@ -189,10 +195,10 @@
                                         <!-- <a class="bg" href="#product-area-three">Log in<i
                                                 class="fa fa-long-arrow-right"></i></a> -->
                                         <!-- Button trigger modal -->
-                                        <button type="button" class="btn bg" data-toggle="modal"
+                                        <!-- <button type="button" class="btn bg" data-toggle="modal"
                                             data-target="#exampleModalCenter">
                                             Log in<i class="fa fa-long-arrow-right"></i>
-                                        </button>
+                                        </button> -->
                                     </div>
                                 </div>
                             </div>
@@ -222,17 +228,17 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
                             </div>
-                            <input type="text" id="uname_input" class="form-control" name="username" placeholder="Username"
-                                aria-label="Username" aria-describedby="basic-addon1" required>
+                            <input type="text" id="uname_input" class="form-control" name="username"
+                                placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" required>
                         </div>
                         <span id="uname_error" style="font-weight: bold;color: red;"></span>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-lock"></i></span>
                             </div>
-                            <input type="password" id="pw_input" class="form-control" name="password" placeholder="Password"
-                                aria-label="Password" aria-describedby="basic-addon1">
-                                <span id="pwd_error"></span>
+                            <input type="password" id="pw_input" class="form-control" name="password"
+                                placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
+                            <span id="pwd_error"></span>
                             <div class="input-group-append">
                                 <span class="input-group-text" onclick="myFunction()">
                                     <i id="hide1" style="display: none;" class="fa fa-eye"></i>
@@ -244,7 +250,8 @@
                     <span id="error_check"></span>
                     <div class="modal-footer">
                         <div class="hero-btn">
-                            <button type="button" style="margin : 0 10px;" class="btn" id="login_submit" >Log in</button><br>
+                            <button type="button" style="margin : 0 10px;" class="btn" id="login_submit">Log
+                                in</button><br>
                             <a href="#" id="forget_pwd">Forget password !!</a>
                         </div>
                     </div>
@@ -255,113 +262,124 @@
     <!--model end-->
 
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Invalid Username or Password</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Invalid Username or Password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
             </div>
-            
-          </div>
         </div>
-      </div>
+    </div>
 
 
-      <div class="modal fade" id="forget_uname_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="forget_uname_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Forget Password</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Forget Password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="forget_uname_input" class="form-control" placeholder="Username"
+                        aria-label="Username" aria-describedby="basic-addon1" required>
+                </div>
+                <h6 style="text-align: center;color: chocolate;" id="forget_username_msg"></h6>
+
+                <h6 style="text-align:center;">An OTP will be send to the email associated with this username..</h6>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="send_email_btn" class="btn btn-primary" disabled>Send E-mail</button>
+                </div>
             </div>
-            <div class="modal-body">
-                <input type="text" id="forget_uname_input" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" required>
-            </div>
-            <h6 style="text-align: center;color: chocolate;" id="forget_username_msg"></h6>
-           
-            <h6 style="text-align:center;">An OTP will be send to the email associated with this username..</h6>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" id="send_email_btn" class="btn btn-primary" disabled>Send E-mail</button>
-            </div>
-          </div>
         </div>
-      </div>
+    </div>
 
 
-      <div class="modal fade" id="otp_input_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="otp_input_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">OTP </h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-                <input type="text" id="forget_otp_input" class="form-control" placeholder="Enter 4 digit OTP" aria-label="Username" aria-describedby="basic-addon1" required>
-            </div>
-            
-            <h6 id="otp_error_msg" style="text-align: center;"></h6>
-           <input type="hidden" id="correct_otp_hidden">
-            <h6 style="text-align:center;">Enter the OTP you have received on your mail <span id="otp_email" style="font-weight: bold;color: green;"></span></h6>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" id="reset_pwd_btn" class="btn btn-primary" disabled>Reset Password</button>
-            </div>
-          </div>
-        </div>
-      </div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">OTP </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="forget_otp_input" class="form-control" placeholder="Enter 4 digit OTP"
+                        aria-label="Username" aria-describedby="basic-addon1" required>
+                </div>
 
-      <div class="modal fade" id="password_set_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <h6 id="otp_error_msg" style="text-align: center;"></h6>
+                <input type="hidden" id="correct_otp_hidden">
+                <h6 style="text-align:center;">Enter the OTP you have received on your mail <span id="otp_email"
+                        style="font-weight: bold;color: green;"></span></h6>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="reset_pwd_btn" class="btn btn-primary" disabled>Reset Password</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="password_set_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Reset Password </h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Reset Password </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="password" id="reset_forget_password" class="form-control"
+                        placeholder="Enter new password" aria-label="Username" aria-describedby="basic-addon1" required>
+                    <br>
+                    <input type="password" id="reset_confirm_forget_password" class="form-control"
+                        placeholder="Enter confirm password" aria-label="Username" aria-describedby="basic-addon1"
+                        required>
+                </div>
+                <input type="hidden" id="username_hidden_field">
+
+                <h6 id="password_match_msg" style="text-align: center;"></h6>
+
+                <!-- <h6 style="text-align:center;">Enter the OTP you have received on your mail <span id="otp_email" style="font-weight: bold;color: green;"></span></h6> -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="update_pwd_btn" class="btn btn-primary" disabled>Update Password</button>
+                </div>
             </div>
-            <div class="modal-body">
-                <input type="password" id="reset_forget_password" class="form-control" placeholder="Enter new password" aria-label="Username" aria-describedby="basic-addon1" required>
-                <br>
-                <input type="password" id="reset_confirm_forget_password" class="form-control" placeholder="Enter confirm password" aria-label="Username" aria-describedby="basic-addon1" required>
-            </div>
-            <input type="hidden" id="username_hidden_field">
-            
-            <h6 id="password_match_msg" style="text-align: center;"></h6>
-           
-            <!-- <h6 style="text-align:center;">Enter the OTP you have received on your mail <span id="otp_email" style="font-weight: bold;color: green;"></span></h6> -->
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" id="update_pwd_btn" class="btn btn-primary" disabled>Update Password</button>
-            </div>
-          </div>
         </div>
-      </div>
+    </div>
 
 
 
-      <div class="modal fade" id="password_success_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="password_success_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Password Updated Successfylly !!</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Password Updated Successfylly !!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-          </div>
         </div>
-      </div>
+    </div>
 
     <!--start testimonial area-->
     <section id="testi-area" data-scroll-index="2">
@@ -384,7 +402,7 @@
                     {% for value in values %}
                     <div class="testi-single text-center">
                         <div class="client-comment">
-                           <!-- <span class="quote"><i class="icofont-quote-right"></i></span>
+                            <!-- <span class="quote"><i class="icofont-quote-right"></i></span>
                              <p>"Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci.
                                 Aenean dignissim pellentesque felis."</p> -->
                         </div>
@@ -450,33 +468,39 @@
             </div>
         </div>
     </section>
-    <div style="width: 100%; height: 2px; background-color: white;"></div>
+    <!-- <div style="width: 100%; height: 2px; background-color: white;"></div> -->
     <!--end facilities area-->
     <!-- start contact area-->
-    
-    <!-- <section id="contact-area" data-scroll-index="6">
+
+    <section id="contact-area" data-scroll-index="6">
         <div class="container">
-            <div class="row"> -->
+            <div class="row">
 
                 <!--start heading-->
-                <!-- <div class="col-md-8">
+                <div class="col-md-8">
                     <div class="sec-heading">
-                        <h6>Need Help</h6>
+                        <h6>Need Help / For Any QUERY</h6>
                         <h2>Contact with us</h2>
                     </div>
-                </div> -->
+                </div>
                 <!--end heading-->
-            <!-- </div>
-            <div class="row"> -->
+            </div>
+            <div class="row">
                 <!--start contact form-->
-                <!-- <div class="col-lg-9 col-md-7">
+                <div class="col-lg-9 col-md-7">
                     <div class="contact-form">
-                        <form id="ajax-contact" action="http://themehoster.com/tm/emexso/demo/contact.php"
-                            method="post">{% csrf_token %}
+                        <form method="post" action="{% url 'query_message' %}">{% csrf_token %}
                             <div class="form-group">
                                 <label for="name">Name*</label>
                                 <input type="text" class="form-control" id="name" name="name" placeholder="Name*"
                                     required="required" data-error="name is required.">
+                                <div class="help-block with-errors"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="name">About You*</label>
+                                <input type="text" class="form-control" id="about" name="about"
+                                    placeholder="Startup/Employee/student/Investor...." required="required"
+                                    data-error="About You is required.">
                                 <div class="help-block with-errors"></div>
                             </div>
                             <div class="form-group">
@@ -497,7 +521,7 @@
                             <div class="messages"></div>
                         </form>
                     </div>
-                </div> -->
+                </div>
                 <!--end contact form-->
                 <!--start contact information -->
                 <!-- <div class="col-lg-4 col-md-5">
@@ -592,20 +616,20 @@
     </footer>
     <!--end footer-->
     <script>
-        function myFunction(){
+        function myFunction() {
             var x = document.getElementById("pw_input");
             var y = document.getElementById("hide1");
             var z = document.getElementById("hide2");
 
-            if(x.type === "password"){
+            if (x.type === "password") {
                 x.type = "text";
-                y.style.display='block';
-                z.style.display='none';
+                y.style.display = 'block';
+                z.style.display = 'none';
             }
-            else{
+            else {
                 x.type = "password";
-                y.style.display='none';
-                z.style.display='block';
+                y.style.display = 'none';
+                z.style.display = 'block';
             }
         }
     </script>
@@ -632,161 +656,161 @@
 
 
 
-    
+
     <script>
-        $('#uname_input').change(function(){
+        $('#uname_input').change(function () {
             uname = this.value;
             $.ajax({
-                url : "{% url 'verify_uname' %}",
-                data:{
-                    'uname':uname,
+                url: "{% url 'verify_uname' %}",
+                data: {
+                    'uname': uname,
                 },
-                dataType:'json',
-                success:function(data){
-                    if (data.exist){
-                        
+                dataType: 'json',
+                success: function (data) {
+                    if (data.exist) {
+
                         document.getElementById('uname_error').innerText = " ";
-                        
-                        
+
+
                     }
-                    else{
-                        
-                        
+                    else {
+
+
                         document.getElementById('uname_error').innerText = "Username doesn't exist...";
                     }
                 }
             })
         });
 
-       
-        $('#login_submit').on('click',function(e){
+
+        $('#login_submit').on('click', function (e) {
             uname = document.getElementById('uname_input').value;
             password = document.getElementById('pw_input').value;
             setTimeout(location.reload.bind(location), 60000);
             $.ajax({
-                
-                url:"{% url 'uname_pwd_check' %}",
-                data:{
-                    'uname':uname,
-                    'pwd':password
+
+                url: "{% url 'uname_pwd_check' %}",
+                data: {
+                    'uname': uname,
+                    'pwd': password
                 },
-                dataType:'json',
-                success:function(data){
-                    if (data.exist){
+                dataType: 'json',
+                success: function (data) {
+                    if (data.exist) {
                         $('#login_form').submit();
                     }
-                    else{
-                        console.log('Invalid username or password');
-                        $("#exampleModal").modal('show');
+                    else {
                         
+                        $("#exampleModal").modal('show');
+
                     }
                 },
             })
-            
+
         });
 
     </script>
     <script>
-       
-        $('#forget_uname_input').keyup(function(){
+
+        $('#forget_uname_input').keyup(function () {
             uname = $('#forget_uname_input').val();
             document.getElementById('username_hidden_field').innerText = uname;
-            
+
             $.ajax({
-                url:"{% url 'forget_username' %}",
-                data:{
-                    'uname':uname
+                url: "{% url 'forget_username' %}",
+                data: {
+                    'uname': uname
                 },
-                dataType:'json',
-                success:function(data){
-                    if (data.is_exist){
+                dataType: 'json',
+                success: function (data) {
+                    if (data.is_exist) {
                         document.getElementById('forget_username_msg').style.color = 'green';
                         document.getElementById('forget_username_msg').innerText = data.email;
                         document.getElementById('otp_email').innerText = data.email;
-                        $('#send_email_btn').prop('disabled',false);
+                        $('#send_email_btn').prop('disabled', false);
                         $.ajax({
-                            url:"{% url 'forget_email_sending' %}",
-                            data:{
-                                'email':data.email
+                            url: "{% url 'forget_email_sending' %}",
+                            data: {
+                                'email': data.email
                             },
-                            dataType:'json',
-                            success:function(data){
+                            dataType: 'json',
+                            success: function (data) {
                                 document.getElementById('correct_otp_hidden').innerText = data.correct_otp
-                                
+
                             }
                         })
                     }
-                    else{
+                    else {
                         document.getElementById('forget_username_msg').innerText = "Username doesn't exist !!";
-                        $('#send_email_btn').prop('disabled',true);
+                        $('#send_email_btn').prop('disabled', true);
                     }
                 }
             })
-            
+
         });
 
 
-        $('#forget_pwd').on('click',function(){
+        $('#forget_pwd').on('click', function () {
             $('#exampleModalCenter').modal('hide');
             $('#forget_uname_modal').modal('show');
         });
 
 
-        $('#send_email_btn').on('click',function(){
+        $('#send_email_btn').on('click', function () {
             $('#forget_uname_modal').modal('hide');
             $('#otp_input_modal').modal('show');
         });
 
-        $('#forget_otp_input').keyup(function(){
+        $('#forget_otp_input').keyup(function () {
             correct_otp = document.getElementById('correct_otp_hidden').innerText;
             current_otp = $('#forget_otp_input').val();
-            
-            if (current_otp === correct_otp){
+
+            if (current_otp === correct_otp) {
                 document.getElementById('otp_error_msg').style.color = 'green';
                 document.getElementById('otp_error_msg').innerText = 'OTP Matched';
-                $('#reset_pwd_btn').prop('disabled',false);
+                $('#reset_pwd_btn').prop('disabled', false);
             }
-            else{
+            else {
                 document.getElementById('otp_error_msg').style.color = 'red';
                 document.getElementById('otp_error_msg').innerText = 'OTP not Matched';
-                $('#reset_pwd_btn').prop('disabled',true);
+                $('#reset_pwd_btn').prop('disabled', true);
 
             }
         });
 
-        $('#reset_pwd_btn').on('click',function(){
+        $('#reset_pwd_btn').on('click', function () {
             $('#otp_input_modal').modal('hide');
             $('#password_set_modal').modal('show');
         });
 
-        $('#reset_confirm_forget_password').keyup(function(){
+        $('#reset_confirm_forget_password').keyup(function () {
             password = $('#reset_forget_password').val();
             cpassword = $('#reset_confirm_forget_password').val();
-            if (password === cpassword){
+            if (password === cpassword) {
                 document.getElementById('password_match_msg').style.color = 'green';
                 document.getElementById('password_match_msg').innerText = 'Password Matched';
-                $('#update_pwd_btn').prop('disabled',false);
+                $('#update_pwd_btn').prop('disabled', false);
             }
-            else{
+            else {
                 document.getElementById('password_match_msg').style.color = 'red';
                 document.getElementById('password_match_msg').innerText = "Password Doesn't Matched";
-                $('#update_pwd_btn').prop('disabled',true);
+                $('#update_pwd_btn').prop('disabled', true);
             }
         });
 
 
-        $('#update_pwd_btn').on('click',function(){
-            password =  $('#reset_forget_password').val();
+        $('#update_pwd_btn').on('click', function () {
+            password = $('#reset_forget_password').val();
             uname = document.getElementById('username_hidden_field').innerText;
-            
+
             $.ajax({
-                url:"{% url 'set_password' %}",
-                data:{
-                    'password':password,
-                    'username':uname
+                url: "{% url 'set_password' %}",
+                data: {
+                    'password': password,
+                    'username': uname
                 },
-                dataType:'json',
-                success:function(data){
+                dataType: 'json',
+                success: function (data) {
                     $('#password_success_modal').modal('show');
                     $('#password_set_modal').modal('hide');
                 }

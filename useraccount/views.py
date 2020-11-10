@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import auth
 from .models import Account,Admin,StartUp
-
+from django.contrib import messages
 # Create your views here.
 def login(request):
     
@@ -50,6 +50,7 @@ def admin_register(request):
 
         admin = Admin.objects.create(account=user,designation=designation,email=email,employee_id=employee_id,contact_no=contact_no,identity_proof=identity_proof,admin_img=admin_img) 
         admin.save()
+        messages.add_message(request, messages.INFO, 'Employee created successfully.')
 
         return redirect('dashboard')
     return redirect('dashboard')
@@ -90,6 +91,7 @@ def startup_register(request):
 
         startup = StartUp.objects.create(account=user,startup_name=startup_name,email=email,legal_entity=legal_entity,founders_designation=founders_designation,city=city,website=website,sector=sector,team_members=team_members,location=location,contact_no=contact_no,comp_identification_no=comp_identification_no,inubatee_level=inubatee_level,operational_model=operational_model,type_of_incubatee=type_of_incubatee,women_led_startup=women_led_startup,gov_program=gov_program,msme_registered=msme_registered,dspp_registered=dspp_registered,legal_entity_register=legal_entity_register,founder_img=founder_img,startup_img=startup_img) 
         startup.save()
+        messages.add_message(request, messages.INFO, 'Startup created successfully.')
 
         return redirect('dashboard')
     return redirect('dashboard') 

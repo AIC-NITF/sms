@@ -6,8 +6,7 @@ urlpatterns = [
     path('startup_form/',views.startup_form,name='startup_form'),
     path('profile/<int:pk>/',views.profile,name='profile'),
     path('profile/<int:pk>/edit_startup/',views.startup_profile_edit,name='startup_profile_edit'),
-    #path('profile/<int:pk>/edit_employee/',views.employee_profile_edit,name='employee_profile_edit'),
-    #path('profile/<int:pk>/delete_employee/',views.delete_employee,name='delete_employee'),
+    
     path('edit_emp_form',views.edit_emp_form,name='edit_emp_form'),
     path('profile/delete_employee/',views.delete_employee,name='delete_employee'),
     path('edit_emp_form',views.edit_emp_form,name='edit_emp_form'),
@@ -16,10 +15,6 @@ urlpatterns = [
     
     path('delete_team_member',views.delete_team_member,name='delete_team_member'),
     path('edit_team_member',views.edit_team_member,name='edit_team_member'),
-
-    path('monitor_sheet/',views.monitor_sheet,name='monitor_sheet'),
-    path('traction_sheet/',views.traction_sheet,name='traction_sheet'),
-    path('minute_of_meeting/',views.minute_of_meeting,name='minute_of_meeting'),
 
     path('monitor_form/',views.monitor_form,name='monitor_form'),
     path('monitor_report/<int:pk>/',views.monitor_report,name='monitor_report'),
@@ -40,7 +35,6 @@ urlpatterns = [
     path('visit_startup/',views.visit_startup,name='visit_startup'),
     path('generate_work/',views.generate_work,name='generate_work'),
     path('edit_work/',views.edit_work,name='edit_work'),
-    path('visit_employee/<int:pk>/',views.visit_employee,name='visit_employee'),
 
     path('start/<int:pk>/',views.start,name='start'),
     path('completed/<int:pk>/',views.completed,name='completed'),
@@ -51,7 +45,7 @@ urlpatterns = [
     path('return_start/<int:pk>/',views.return_start,name='return_start'),
 
     path('delete_work/<int:pk>',views.delete_work,name='delete_work'),
-    #url(r'^download/(?P<path>.*)$', serve, {'document root': settings.MEDIA_ROOT}),
+    
 
     path('new_work_clicked',views.new_work_clicked,name='new_work_clicked'),
     path('count_values',views.count_values,name='count_values'),
