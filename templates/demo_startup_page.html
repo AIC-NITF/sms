@@ -565,10 +565,10 @@
                                 <div class="course">
                                     <div class="course-preview">
                                         <h2>Month {{ forloop.counter }}</h2>
-                                        <h6>{{value.date_of_filling}}</h6>
                                     </div>
                                     <div class="course-info">
                                         <h2>Monitor Sheet{{ forloop.counter }}</h2>
+                                        <h6>{{value.date_of_filling}}</h6>
                                         <a href="{% url 'monitor_report' pk=value.pk %}" class="btn1">View Report</a>
                                     </div>
                                 </div>
@@ -592,10 +592,10 @@
                                 <div class="course">
                                     <div class="course-preview">
                                         <h2>Month {{ forloop.counter }}</h2>
-                                        <h6>{{value.generated_date}}</h6>
                                     </div>
                                     <div class="course-info">
                                         <h2>Traction Sheet{{ forloop.counter }}</h2>
+                                        <h6>{{value.generated_date}}</h6>
                                         <a href="{% url 'traction_report' pk=value.pk %}" class="btn1">View Report</a>
                                     </div>
                                 </div>

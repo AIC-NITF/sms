@@ -1,6 +1,6 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.http import HttpResponse,Http404,JsonResponse
-from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Return,TractionSheet,MoM,BlogPost
+from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Return,TractionSheet,MoM,BlogPost,Query
 from .forms import StartUpForm,MonitorSheetEditForm,TractionSheetEditForm
 
 from django.contrib.auth.models import auth
@@ -112,6 +112,7 @@ def startup_profile_edit(request,pk):
         if form.is_valid():
             content = form.save(commit=False)
             content.save()
+            messages.add_message(request, messages.INFO, 'Edited successfully.')
             return redirect(dashboard)
     else:
         form = StartUpForm(instance=content)
@@ -127,6 +128,7 @@ def delete_employee(request):
         main_account = details.account
         
         main_account.delete()
+        messages.add_message(request, messages.INFO, 'Deleted successfully.')
         return redirect('dashboard')
 
 
@@ -157,6 +159,7 @@ def edit_emp_form(request):
             contact = ' '
 
         account.update_admin(email = email,designation = designation,contact_no = contact)
+        messages.add_message(request, messages.INFO, 'Edited successfully.')
     return redirect('dashboard')
     
 #user profile
@@ -179,6 +182,7 @@ def add_new_team_member(request):
 
         team_member = TeamMembers.objects.create(startup=startup_obj,name=name,gender=gender,email=email,contact_no=contact_no,designation=designation)
         team_member.save()
+        messages.add_message(request, messages.INFO, 'One team member added successfully.')
         return redirect('profile',pk=user.pk)
         
 @login_required
@@ -189,6 +193,7 @@ def delete_team_member(request):
         
         details = get_object_or_404(TeamMembers,pk=int(getpk))
         details.delete()
+        messages.add_message(request, messages.INFO, 'Deleted successfully.')
         return redirect('profile',pk=user.pk)
 
 @login_required
@@ -219,6 +224,7 @@ def edit_team_member(request):
             contact = ' '
 
         account.update_team_member(email = email,designation = designation,contact_no = contact)
+        messages.add_message(request, messages.INFO, 'Edited successfully.')
     return redirect('profile',pk=user.pk)
 
 
@@ -245,6 +251,7 @@ def monitor_sheet_edit(request,pk):
             content.not_allow_edit_option()
             content.update_date()
             content.save()
+            messages.add_message(request, messages.INFO, 'Monitor report edited successfully.')
             return redirect(dashboard)
     else:
         form = MonitorSheetEditForm(instance=content)
@@ -437,6 +444,7 @@ def edit_traction_sheet(request,pk):
             content.not_allow_edit_option()
             content.update_date()
             content.save()
+            messages.add_message(request, messages.INFO, 'Traction report edited successfully.')
             return redirect(dashboard)
     else:
         form = TractionSheetEditForm(instance=content)
@@ -463,6 +471,49 @@ def newBlogPost(request):
     
 
     return redirect('blogPost')
+
+@login_required
+def delete_blogPost(request):
+    if request.method == 'POST':
+        getpk = request.POST['foo']
+        details = get_object_or_404(BlogPost,pk=int(getpk))
+        details.delete()
+        messages.add_message(request, messages.INFO, 'Blog deleted')
+    return redirect('blogPost')
+
+@login_required
+def edit_blogPost(request):
+
+    if request.method == "POST":
+        getpk = request.POST['pk_val']
+        title = request.POST['title']
+        description = request.POST['description']
+        details = get_object_or_404(BlogPost,pk=int(getpk))
+        if title:
+            title = title
+        else:
+            title = ' '
+        
+        if description:
+            description = description
+        else:
+            description = ' '
+
+        details.update_blogPost(title = title,description = description)
+    return redirect('blogPost')
+
+def queries(request):
+    values = Query.objects.all().order_by('-submitted_date')
+    return render(request,'query.html',{'values':values})
+
+@login_required
+def delete_query(request):
+    if request.method == 'POST':
+        getpk = request.POST['foo']
+        details = get_object_or_404(Query,pk=int(getpk))
+        details.delete()
+    return redirect('queries')
+
 
 @login_required
 def generate_work(request):
@@ -496,7 +547,7 @@ def generate_work(request):
                 [obj.email],
                 fail_silently=False,
             )
-        messages.add_message(request, messages.INFO, 'Work Generatedc successfully.')
+        messages.add_message(request, messages.INFO, 'Work Generated successfully.')
         return redirect('dashboard')
     return redirect('index')
 
@@ -532,6 +583,7 @@ def edit_work(request):
             remarks = ' '
 
         work_obj.update_work(title = title,work_description = work_description,suggestions = suggestions,remarks=remarks)
+        messages.add_message(request, messages.INFO, 'Work Edited successfully.')
     return redirect('dashboard')
 
 

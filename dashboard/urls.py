@@ -61,4 +61,8 @@ urlpatterns = [
     path('forget_email_sending',views.forget_email_sending,name='forget_email_sending'),
 
     path('set_password',views.set_password,name='set_password'),
+    path('delete_blogPost',views.delete_blogPost,name='delete_blogPost'),
+    path('edit_blogPost',views.edit_blogPost,name='edit_blogPost'),
+    path('queries',views.queries,name='queries'),
+    path('delete_query',views.delete_query,name='delete_query'),
 ]

@@ -266,6 +266,12 @@ class BlogPost(models.Model):
 	def __str__(self):
 		return self.title
 
+	def update_blogPost(self,title,description):
+		self.title = title
+		self.description = description
+		self.date_of_creation = timezone.now()
+		self.save()
+
 
 
 class WorkGenerator(models.Model):

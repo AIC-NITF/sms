@@ -90,6 +90,15 @@
                     <span>Blog Post</span>
                 </a>
             </li>
+            {% if user.is_superadmin %}
+            <li id="queries" class="nav-item check">
+                <a class="nav-link collapsed" href="{% url 'queries' %}" data-target="#collapseUtilities"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-blog"></i>
+                    <span>Queries</span>
+                </a>
+            </li>
+            {% endif %}
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
@@ -235,9 +244,6 @@
             <script src="{% static 'dashboard/js/sb-admin-2.min.js' %}"></script>
 
             <script>
-                /* $(document).on('click', 'ul li', function(){
-                    $(this).addClass('active').siblings().removeClass('active')
-                }) */
                 var value = {}
                 $(".check").click(function () {
                     var colorClass = $(this).attr('id');
@@ -250,40 +256,61 @@
                     var act1 = document.getElementById("dashboard");
                     var act2 = document.getElementById("startup");
                     var act3 = document.getElementById("blogPost");
+                    var act4 = document.getElementById("queries");
                     act.classList.add("active");
                     act1.classList.remove("active");
                     act2.classList.remove("active");
                     act3.classList.remove("active");
+                    act4.classList.remove("active");
                     localStorage.clear()
                 }
                 else if (value == 'startup') {
                     var act1 = document.getElementById("dashboard");
                     var act2 = document.getElementById("admin");
                     var act3 = document.getElementById("blogPost");
+                    var act4 = document.getElementById("queries");
                     act.classList.add("active");
                     act1.classList.remove("active");
                     act2.classList.remove("active");
                     act3.classList.remove("active");
+                    act4.classList.remove("active");
                     localStorage.clear()
                 }
                 else if (value == 'dashboard') {
                     var act1 = document.getElementById("admin");
                     var act2 = document.getElementById("startup");
                     var act3 = document.getElementById("blogPost");
+                    var act4 = document.getElementById("queries");
                     act.classList.add("active");
                     act1.classList.remove("active");
                     act2.classList.remove("active");
                     act3.classList.remove("active");
+                    act4.classList.remove("active");
                     localStorage.clear()
                 }
                 else if (value == 'blogPost') {
                     var act1 = document.getElementById("admin");
                     var act2 = document.getElementById("startup");
                     var act3 = document.getElementById("dashboard");
+                    var act4 = document.getElementById("queries");
                     act.classList.add("active");
                     act1.classList.remove("active");
                     act2.classList.remove("active");
                     act3.classList.remove("active");
+                    act4.classList.remove("active");
+                    localStorage.clear()
+                }
+
+                else if (value == 'queries') {
+                    var act1 = document.getElementById("admin");
+                    var act2 = document.getElementById("startup");
+                    var act3 = document.getElementById("dashboard");
+                    var act4 = document.getElementById("blogPost");
+                    act.classList.add("active");
+                    act1.classList.remove("active");
+                    act2.classList.remove("active");
+                    act3.classList.remove("active");
+                    act4.classList.remove("active");
                     localStorage.clear()
                 }
             </script>
