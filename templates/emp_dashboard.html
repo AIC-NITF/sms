@@ -65,7 +65,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'login' %}">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'index' %}">
                 <div class="sidebar-brand-icon">
                     <i class="fas fa-home"></i>
                 </div>
@@ -599,7 +599,7 @@
                                                 <tr>
                                                     <th scope="row">{{forloop.counter}}</th>
                                                     <td>
-                                                        <a class="reassign" id="work8{{ret_obj.work.pk}}" href=""
+                                                        <a class="return_work_link" id="work8{{ret_obj.work.pk}}" href=""
                                                             data-toggle="modal"
                                                             data-target="#ReturnModel{{ret_obj.pk}}"
                                                             style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{ret_obj.work.title}} {% if ret_obj.new_return %}<span id="new_return{{ret_obj.pk}}"><b style="color: red;" class="glow"> New</b></span>{% endif %}</a>

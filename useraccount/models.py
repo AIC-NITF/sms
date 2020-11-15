@@ -384,3 +384,6 @@ class Query(models.Model):
 
 	def __str__(self):
 		return self.email
+
+class Gallery(models.Model):
+	gallery_img 		= models.FileField(upload_to='gallery',null=True,blank=True)
