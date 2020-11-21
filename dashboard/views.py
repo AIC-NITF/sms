@@ -594,10 +594,41 @@ def start(request,pk):
     return redirect('dashboard')
 
 @login_required
-def completed(request,pk):
-    work_obj = WorkGenerator.objects.get(pk=pk)
-    work_obj.change_status(status="completed")
-    work_obj.update_date()
+def completed(request):
+    if request.method == 'POST':
+        pk = request.POST['complete_pk']
+        ford_pk = request.POST['ford_complete_pk']
+        end_statement = request.POST['end_statement']
+        checkbox = request.POST.get('upload_checkbox',None)
+        if checkbox: 
+            end_document = request.FILES['end_document']
+        
+        if checkbox:
+            if ford_pk:
+                obj = Forward.objects.get(pk=int(ford_pk))
+                obj.forward_work.update_end_msg(end_statement=end_statement +" (work completed by " +obj.to.account.fullname +")",end_document=end_document)
+                obj.forward_work.change_status(status="completed")
+                obj.forward_work.update_date()
+                return redirect('dashboard')
+            else:
+                work_obj = WorkGenerator.objects.get(pk=int(pk))
+                work_obj.update_end_msg(end_statement=end_statement+" work completed by " +work_obj.to.account.fullname,end_document=end_document)
+                work_obj.change_status(status="completed")
+                work_obj.update_date()
+                return redirect('dashboard')
+        else:
+            if ford_pk:
+                obj = Forward.objects.get(pk=int(ford_pk))
+                obj.forward_work.update_end_msg(end_statement=end_statement +" (work completed by " +obj.to.account.fullname +")")
+                obj.forward_work.change_status(status="completed")
+                obj.forward_work.update_date()
+                return redirect('dashboard')
+            else:
+                work_obj = WorkGenerator.objects.get(pk=int(pk))
+                work_obj.update_end_msg(end_statement=end_statement+" work completed by " +work_obj.to.account.fullname)
+                work_obj.change_status(status="completed")
+                work_obj.update_date()
+                return redirect('dashboard')
     return redirect('dashboard')
 
 @login_required
@@ -608,6 +639,9 @@ def forward_work(request):
         pk = request.POST['pk_val']
         forward_pk = request.POST['pk_val2']
         suggestions = request.POST['suggestions']
+        checkbox = request.POST.get('upload_checkbox',None)
+        if checkbox: 
+            ford_document = request.FILES['ford_document']
 
         from_obj = Account.objects.get(pk=int(from_user))
         
@@ -615,12 +649,16 @@ def forward_work(request):
         
         work_obj = WorkGenerator.objects.get(pk=int(pk))
         
-        work = Forward.objects.create(from_user=from_obj.fullname,to=obj,forward_work=work_obj,suggestions=suggestions,from_user_pk=from_user,forward_pk=forward_pk)
+        if checkbox:
+            work = Forward.objects.create(from_user=from_obj.fullname,to=obj,forward_work=work_obj,suggestions=suggestions,from_user_pk=from_user,forward_pk=forward_pk,ford_document=ford_document)
+        else:
+            work = Forward.objects.create(from_user=from_obj.fullname,to=obj,forward_work=work_obj,suggestions=suggestions,from_user_pk=from_user,forward_pk=forward_pk)
+
         status_obj = WorkGenerator.objects.get(pk=int(pk))
         
-        if status_obj.status == "returned":
-            ret_obj = Return.objects.get(pk=int(forward_pk))
-            ret_obj.delete()
+        # if status_obj.status == "returned":
+        #     ret_obj = Return.objects.get(pk=int(forward_pk))
+        #     ret_obj.delete()
 
         if status_obj.forwarded == False:
             status_obj.forward(from_obj.fullname,obj.account.fullname)
@@ -694,6 +732,7 @@ def reassign(request):
         to = request.POST['to']
         work_pk = request.POST['pk_val']
         rk_val = request.POST['rk_val']
+        print(work_pk,"======================")
         
         
         obj = Admin.objects.get(pk=int(to))
@@ -753,6 +792,7 @@ def new_work_clicked(request):
     }
     return JsonResponse(data)
 
+@login_required
 def forward_work_clicked(request):
     pk = request.GET.get('pk',None)
     
@@ -764,7 +804,7 @@ def forward_work_clicked(request):
         'new_work':work.new_forward
     }
     return JsonResponse(data)
-
+@login_required
 def return_work_clicked(request):
     pk = request.GET.get('pk',None)
     work = Return.objects.get(pk=pk)
@@ -775,6 +815,34 @@ def return_work_clicked(request):
         'new_work':work.new_return
     }
     return JsonResponse(data)
+
+def return_work_status(request):
+    pk = request.GET.get('pk',None)
+    work = Return.objects.get(pk=pk)
+    data = {
+        'new_work':work.new_return
+    }
+    return JsonResponse(data) 
+
+def new_work_status(request):
+    pk = request.GET.get('pk',None)
+    work = WorkGenerator.objects.get(pk=pk)
+    data = {
+        'new_work':work.new_work
+    }
+    return JsonResponse(data)
+
+def forward_work_status(request):
+    pk = request.GET.get('pk',None)
+    work = Forward.objects.get(pk=pk)
+    data = {
+        'new_work':work.new_forward
+    }
+    return JsonResponse(data)
+
+
+
+
 
 
 def count_values(request):

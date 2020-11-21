@@ -291,6 +291,8 @@ class WorkGenerator(models.Model):
 	from_user_pk				 = models.CharField(max_length=500,null=True,blank=True)
 	new_work 					 = models.BooleanField(default=True)
 	
+	end_statement				 = models.CharField(max_length=500,null=True,blank=True)
+	end_document				 = models.FileField(upload_to='files',null=True,blank=True)
 
 
 	def __str__(self):
@@ -309,6 +311,10 @@ class WorkGenerator(models.Model):
 
 	def change_status(self,status):
 		self.status = status
+		self.save()
+	def update_end_msg(self,end_statement,end_document=None):
+		self.end_statement = end_statement
+		self.end_document = end_document
 		self.save()
 	def update_date(self):
 		self.date_of_complition = timezone.now()
@@ -342,6 +348,7 @@ class Forward(models.Model):
 	from_user_pk		    = models.CharField(max_length=500,null=True,blank=True)
 	forward_pk				= models.CharField(max_length=100,null=True,blank=True)
 	new_forward		    	= models.BooleanField(default=True)
+	ford_document			= models.FileField(upload_to='files',null=True,blank=True)
 
 	def forther_forward(self):
 		self.forwarded = True

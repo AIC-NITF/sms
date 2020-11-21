@@ -37,7 +37,7 @@ urlpatterns = [
     path('edit_work/',views.edit_work,name='edit_work'),
 
     path('start/<int:pk>/',views.start,name='start'),
-    path('completed/<int:pk>/',views.completed,name='completed'),
+    path('completed/',views.completed,name='completed'),
 
     path('forward_work/',views.forward_work,name='forward_work'),
     path('return_work/',views.return_work,name='return_work'),
@@ -65,4 +65,8 @@ urlpatterns = [
     path('edit_blogPost',views.edit_blogPost,name='edit_blogPost'),
     path('queries',views.queries,name='queries'),
     path('delete_query',views.delete_query,name='delete_query'),
+
+    path('return_work_status',views.return_work_status,name='return_work_status'),    
+    path('forward_work_status',views.forward_work_status,name='forward_work_status'),
+    path('new_work_status',views.new_work_status,name='new_work_status'),
 ]

@@ -1440,13 +1440,15 @@ p {
 .demo-header-cont a:hover {
     background-color: #e03b0d
 }
+div.client-img > img{   
+    height: 100px;
+}
 @media only screen and (max-width: 768px) {
 
     .dashboard{
         margin-bottom: 10px;
     }
-    
-    #navbarContent > ul.navbar-nav.shop-btn > li > img{margin-bottom: 10px;}
-
-
+    div.client-img > img{   
+        height: 75px;
+    }
 }

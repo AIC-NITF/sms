@@ -80,24 +80,25 @@
                 <a class="nav-link" href="{% url 'visit_startup' %}" data-target="#collapseTwo" aria-expanded="true"
                     aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-rocket"></i>
-                    <span>Visit StartUp</span>
+                    <span>StartUp Portfolio</span>
                 </a>
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item check">
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
-                        role="tab" aria-controls="v-pills-profile" aria-selected="true"><i
-                            class="fas fa-fw fa-user-circle"></i> Profile</a>
+                    <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
+                        aria-controls="v-pills-profile" aria-selected="true"><i class="fas fa-fw fa-user-circle"></i>
+                        Profile</a>
                     <hr class="sidebar-divider">
                     <div class="sidebar-heading">
                         Report
                     </div>
 
 
-                    <a class="nav-link active" id="v-pills-monitor-tab" data-toggle="pill" href="#v-pills-monitor" role="tab"
-                        aria-controls="v-pills-monitor" aria-selected="false"><i class="fas fa-fw fa-briefcase"></i> Work
+                    <a class="nav-link active" id="v-pills-monitor-tab" data-toggle="pill" href="#v-pills-monitor"
+                        role="tab" aria-controls="v-pills-monitor" aria-selected="false"><i
+                            class="fas fa-fw fa-briefcase"></i> Work
                         Status</a>
                 </div>
             </li>
@@ -121,13 +122,13 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
-                   
+
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        
+
 
                         <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
@@ -145,7 +146,8 @@
                                 <h6 class="dropdown-header">
                                     Alerts Center
                                 </h6>
-                                {% if work_notifications %}<h6 style="font-weight: bold;color: gray;margin-left:10px;">New work</h6>{% endif %}
+                                {% if work_notifications %}<h6 style="font-weight: bold;color: gray;margin-left:10px;">
+                                    New work</h6>{% endif %}
                                 {% for notification in work_notifications %}
                                 <div class="dropdown-item d-flex align-items-center">
                                     <div class="mr-3" id="work_circle{{notification.pk}}">
@@ -164,7 +166,9 @@
                                     </div>
                                 </div>
                                 {% endfor %}
-                                {% if forward_notifications %} <h6 style="font-weight: bold;color: gray;margin-left:10px;">Forwarded work</h6> {% endif %}
+                                {% if forward_notifications %} <h6
+                                    style="font-weight: bold;color: gray;margin-left:10px;">Forwarded work</h6>
+                                {% endif %}
                                 {% for notification in forward_notifications %}
                                 <div class="dropdown-item d-flex align-items-center">
                                     <div class="mr-3">
@@ -173,18 +177,17 @@
                                         </div>
                                     </div>
                                     <div id="forward_text{{notification.pk}}">
-                                        <a class="ford_work_link {{notification.pk}}"
-                                                            id="work2{{notification.pk}}" href=""
-                                                            data-toggle="modal"
-                                                            data-target="#DisplayMode2{{notification.pk}}"
-                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">
-                                        <div class="small text-gray-500">{{notification.date_of_forward}}</div>
-                                        <span class="font-weight-bold">{{notification.forward_work.title}}</span>
-                                        <div class="small text-gray-500">status:-forwarded-></div>
+                                        <a class="ford_work_link {{notification.pk}}" id="work2{{notification.pk}}"
+                                            href="" data-toggle="modal" data-target="#DisplayMode2{{notification.pk}}"
+                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">
+                                            <div class="small text-gray-500">{{notification.date_of_forward}}</div>
+                                            <span class="font-weight-bold">{{notification.forward_work.title}}</span>
+                                            <div class="small text-gray-500">status:-forwarded-></div>
                                     </div>
                                 </div>
                                 {% endfor %}
-                                {% if return_notifications %} <h6 style="font-weight: bold;color: gray;margin-left:10px;">Return work</h6> {% endif %}
+                                {% if return_notifications %} <h6
+                                    style="font-weight: bold;color: gray;margin-left:10px;">Return work</h6> {% endif %}
                                 {% for notification in return_notifications %}
                                 <div class="dropdown-item d-flex align-items-center">
                                     <div class="mr-3" id="return_circle{{notification.pk}}">
@@ -192,23 +195,22 @@
                                             <i class="fas fa-undo-alt text-white"></i>
                                         </div>
                                     </div>
-                                    <a class="return_work_link"
-                                                            id="work8{{notification.pk}}" href=""
-                                                            data-toggle="modal"
-                                                            data-target="#ReturnModel{{notification.pk}}"
-                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">
-                                    <div id="return_text{{notification.pk}}">
-                                        <div class="small text-gray-500">{{notification.return_date}}</div>
-                                        <span class="font-weight-bold">{{notification.work.title}}</span>
-                                        <div class="small text-gray-500">status:- returned</div>
-                                    </div></a>
+                                    <a class="return_work_link" id="work8{{notification.pk}}" href=""
+                                        data-toggle="modal" data-target="#ReturnModel{{notification.pk}}"
+                                        style="text-decoration: none; color: #6f6f70; font-weight: bold;">
+                                        <div id="return_text{{notification.pk}}">
+                                            <div class="small text-gray-500">{{notification.return_date}}</div>
+                                            <span class="font-weight-bold">{{notification.work.title}}</span>
+                                            <div class="small text-gray-500">status:- returned</div>
+                                        </div>
+                                    </a>
                                 </div>
                                 {% endfor %}
 
                             </div>
                         </li>
 
-                        
+
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -273,7 +275,8 @@
                                 <!-- Hero section start -->
                                 <section class="hero-section">
                                     <div class="container-fluid text-center">
-                                        <img class="rounded-circle" width="250" height="250" src="{{value.admin_img.url}}" alt="">
+                                        <img class="rounded-circle" width="250" height="250"
+                                            src="{{value.admin_img.url}}" alt="">
                                         <div class="hero-text">
                                             <h2>{{value.account.fullname}}</h2>
                                         </div>
@@ -317,10 +320,10 @@
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 <strong>{{message}}</strong>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
+                                    <span aria-hidden="true">&times;</span>
                                 </button>
-                              </div>
-                              {% endfor %}
+                            </div>
+                            {% endfor %}
 
 
                             <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -354,7 +357,7 @@
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link" id="pills-returned-tab" data-toggle="pill"
                                         href="#pills-returned" role="tab" aria-controls="pills-returned"
-                                        aria-selected="false">returned <span id="returned_total"></span></a>
+                                        aria-selected="false">Returned <span id="returned_total"></span></a>
                                 </li>
 
                                 <li class="nav-item dropdown">
@@ -363,7 +366,7 @@
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item nav-link" id="pills-pending-tab" data-toggle="pill"
                                             href="#pills-pending" role="tab" aria-controls="pills-pending"
-                                            aria-selected="false">pending</a>
+                                            aria-selected="false">Pending</a>
                                         <a class="dropdown-item nav-link" id="pills-closed-tab" data-toggle="pill"
                                             href="#pills-closed" role="tab" aria-controls="pills-closed"
                                             aria-selected="false">Completed</a>
@@ -377,7 +380,7 @@
                                         <table class="table">
                                             <thead class="thead-dark">
                                                 <tr>
-                                                    <th scope="col">slno</th>
+                                                    <th scope="col">SLNO</th>
                                                     <th scope="col">Work Title</th>
                                                     <th scope="col">From</th>
                                                     <th scope="col">To</th>
@@ -420,11 +423,12 @@
                                 <div class="tab-pane fade" id="pills-pending" role="tabpanel"
                                     aria-labelledby="pills-pending-tab">
                                     <div class="table-responsive-lg">
-                                        <h3>My Work Status</h3><h6>pending..</h6>
+                                        <h3>My Work Status</h3>
+                                        <h6>pending..</h6>
                                         <table class="table">
                                             <thead class="thead-dark">
                                                 <tr>
-                                                    <th scope="col">slno</th>
+                                                    <th scope="col">SLNO</th>
                                                     <th scope="col">Work Title</th>
                                                     <th scope="col">From</th>
                                                     <th scope="col">To</th>
@@ -440,7 +444,8 @@
                                                         <a class="pending_link" id="work4{{pending.pk}}" href=""
                                                             data-toggle="modal"
                                                             data-target="#PendingModel1{{pending.pk}}"
-                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{pending.title}}  </a>
+                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{pending.title}}
+                                                        </a>
                                                     </td>
                                                     <td>{{pending.from_user}}</td>
                                                     <td>{{pending.to.account.fullname}}</td>
@@ -463,7 +468,7 @@
                                         <table class="table">
                                             <thead class="thead-dark">
                                                 <tr>
-                                                    <th scope="col">slno</th>
+                                                    <th scope="col">SLNO</th>
                                                     <th scope="col">Work Title</th>
                                                     <th scope="col">From</th>
                                                     <th scope="col">To</th>
@@ -500,7 +505,7 @@
                                         <table class="table">
                                             <thead class="thead-dark">
                                                 <tr>
-                                                    <th scope="col">slno</th>
+                                                    <th scope="col">SLNO</th>
                                                     <th scope="col">Work Title</th>
                                                     <th scope="col">From</th>
                                                     <th scope="col">To</th>
@@ -539,7 +544,7 @@
                                         <table class="table">
                                             <thead class="thead-dark">
                                                 <tr>
-                                                    <th scope="col">slno</th>
+                                                    <th scope="col">SLNO</th>
                                                     <th scope="col">Work Title</th>
                                                     <th scope="col">From</th>
                                                     <th scope="col">To</th>
@@ -554,8 +559,9 @@
                                                     <td>
                                                         <a class="pending_link" id="work7{{completed.forward_work.pk}}"
                                                             href="" data-toggle="modal"
-                                                            data-target="#DisplayModel7{{completed.forward_work.pk}}"
-                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{completed.forward_work.title}} </a>
+                                                            data-target="#CompleteModel2{{completed.forward_work.pk}}"
+                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{completed.forward_work.title}}
+                                                        </a>
                                                     </td>
                                                     <td>{{completed.from_user}}</td>
                                                     <td>{{completed.to.account.fullname}}</td>
@@ -586,7 +592,7 @@
                                         <table class="table">
                                             <thead class="thead-dark">
                                                 <tr>
-                                                    <th scope="col">slno</th>
+                                                    <th scope="col">SLNO</th>
                                                     <th scope="col">Work Title</th>
                                                     <th scope="col">From</th>
                                                     <th scope="col">To</th>
@@ -599,10 +605,13 @@
                                                 <tr>
                                                     <th scope="row">{{forloop.counter}}</th>
                                                     <td>
-                                                        <a class="return_work_link" id="work8{{ret_obj.work.pk}}" href=""
-                                                            data-toggle="modal"
+                                                        <a class="reassign return_work_link"
+                                                            id="work8{{ret_obj.work.pk}}" href="" data-toggle="modal"
                                                             data-target="#ReturnModel{{ret_obj.pk}}"
-                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{ret_obj.work.title}} {% if ret_obj.new_return %}<span id="new_return{{ret_obj.pk}}"><b style="color: red;" class="glow"> New</b></span>{% endif %}</a>
+                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{ret_obj.work.title}}
+                                                            {% if ret_obj.new_return %}<span
+                                                                id="new_return{{ret_obj.pk}}"><b style="color: red;"
+                                                                    class="glow"> New</b></span>{% endif %}</a>
                                                     </td>
                                                     <td>{{ret_obj.from_user}}</td>
                                                     <td>{{ret_obj.to.account.fullname}}</td>
@@ -621,7 +630,7 @@
                                         <table class="table">
                                             <thead class="thead-dark">
                                                 <tr>
-                                                    <th scope="col">slno</th>
+                                                    <th scope="col">SLNO</th>
                                                     <th scope="col">Work Title</th>
                                                     <th scope="col">From</th>
                                                     <th scope="col">To</th>
@@ -637,7 +646,11 @@
                                                             id="work2{{assigned_msg.forward_work.pk}}" href=""
                                                             data-toggle="modal"
                                                             data-target="#DisplayMode2{{assigned_msg.pk}}"
-                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{assigned_msg.forward_work.title}} {% if assigned_msg.new_forward %}<span id="new_assigned{{assigned_msg.pk}}"><b style="color: red;" class="glow"> New</b></span>{% endif %}</a>
+                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{assigned_msg.forward_work.title}}
+                                                            {% if assigned_msg.new_forward %}<span
+                                                                id="new_assigned{{assigned_msg.pk}}"><b
+                                                                    style="color: red;" class="glow">
+                                                                    New</b></span>{% endif %}</a>
                                                     </td>
                                                     <td>{{assigned_msg.from_user}}</td>
                                                     <td>{{assigned_msg.to.account.fullname}}</td>
@@ -659,7 +672,7 @@
                                         <table class="table">
                                             <thead class="thead-dark">
                                                 <tr>
-                                                    <th scope="col">slno</th>
+                                                    <th scope="col">SLNO</th>
                                                     <th scope="col">Work Title</th>
                                                     <th scope="col">From</th>
                                                     <th scope="col">To</th>
@@ -753,17 +766,17 @@
                         </div>
                         <div class="form-group">
                             <label for="inputWorkDescription">Work Description</label>
-                            <textarea required class="form-control" name="work_description" id="inputWorkDescription" rows="3"
-                                placeholder="Work Description"></textarea>
+                            <textarea required class="form-control" name="work_description" id="inputWorkDescription"
+                                rows="3" placeholder="Work Description"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="inputSuggestions">Suggestions</label>
-                            <textarea required class="form-control" name="suggestions" id="inputSuggestions" rows="3"
+                            <textarea class="form-control" name="suggestions" id="inputSuggestions" rows="3"
                                 placeholder="suggestions"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="inputRemarks">Remarks/Comments</label>
-                            <input required type="text" name="remarks" class="form-control" id="inputRemarks"
+                            <input type="text" name="remarks" class="form-control" id="inputRemarks"
                                 placeholder="Remarks/Comments">
                         </div>
 
@@ -848,6 +861,23 @@
                     </div>
                     {% endif %}
 
+                    {% if work.end_statement %}
+                    <div class="form-group">
+                        <label for="inputRemarks" style="font-weight: bold; color: #63F700;">Work Completed on
+                            {{work.date_of_complition}}</label>
+                        <textarea class="form-control" type="text" name="end_statement" disabled
+                            rows="3">{{work.end_statement}}</textarea>
+
+                    </div>
+                    {% if work.end_document %}
+                    <div class="form-group">
+                        <label for="exampleFormDocument">{{work.end_document.url}}</label><br>
+                        <a href="{{work.end_document.url}}" class="btn btn-primary"
+                            download="{{work.end_document.url}}">download</a>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+
                     {% if user.is_superadmin == False and user.is_adminstrator == False %}
                     {% if work.status != "completed" and work.forwarded != True %}
                     {% if work.status != "pending..." %}
@@ -856,7 +886,8 @@
                         data-target="#reply">Return</a>
                     <a href="" class="btn btn-warning" data-toggle="modal" data-target="#forward">Forward</a>
                     {% else %}
-                    <a href="{% url 'completed' pk=work.pk %}" class="btn btn-success">Completed</a>
+                    <a class="btn btn-success workcomplete" id="complete{{work.pk}}" href="" data-toggle="modal"
+                        data-target="#endStatement">Completed</a>
                     {% endif %}
                     {% endif %}
                     {% endif %}
@@ -873,8 +904,8 @@
 
     <!-- assigned work display Modal -->
     {% for assigned_msg in assigned_work %}
-    <div class="modal fade" id="DisplayMode2{{assigned_msg.pk}}" data-backdrop="static"
-        data-keyboard="false" tabindex="-2" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="DisplayMode2{{assigned_msg.pk}}" data-backdrop="static" data-keyboard="false"
+        tabindex="-2" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header" style="display: inline-block; padding-bottom: 0; ">
@@ -932,6 +963,30 @@
                             id="Suggestions{{assigned_msg.pk}}" rows="3"
                             placeholder="suggestions">{{assigned_msg.suggestions}}</textarea>
                     </div>
+                    {% if assigned_msg.ford_document %}
+                    <div class="form-group">
+                        <label for="exampleFormDocument">{{assigned_msg.ford_document.url}}</label><br>
+                        <a href="{{assigned_msg.ford_document.url}}" class="btn btn-primary"
+                            download="{{assigned_msg.ford_document.url}}">download</a>
+                    </div>
+                    {% endif %}
+
+                    {% if assigned_msg.forward_work.end_statement %}
+                    <div class="form-group">
+                        <label for="inputRemarks" style="font-weight: bold; color: #63F700;">Work Completed on
+                            {{assigned_msg.forward_work.date_of_complition}}</label>
+                        <textarea class="form-control" type="text" name="end_statement" disabled
+                            rows="3">{{assigned_msg.forward_work.end_statement}}</textarea>
+                    </div>
+                    {% if assigned_msg.forward_work.end_document %}
+                    <div class="form-group">
+                        <label for="exampleFormDocument">{{assigned_msg.forward_work.end_document.url}}</label><br>
+                        <a href="{{assigned_msg.forward_work.end_document.url}}" class="btn btn-primary"
+                            download="{{assigned_msg.forward_work.end_document.url}}">download</a>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+
                     {% if user.is_superadmin == False %}
                     {% if user.fullname != assigned_msg.from_user %}
                     {% if assigned_msg.forward_work.status != "completed" and assigned_msg.forwarded != True %}
@@ -942,8 +997,8 @@
                     <a href="" class="btn btn-warning forward_key" id="forwardval{{assigned_msg.pk}}"
                         data-toggle="modal" data-target="#forward">Forward</a>
                     {% else %}
-                    <a href="{% url 'completed' pk=assigned_msg.forward_work.pk %}"
-                        class="btn btn-success">Completed</a>
+                    <a class="btn btn-success workcomplete wo{{assigned_msg.pk}}" id="complete{{work.pk}}" href=""
+                        data-toggle="modal" data-target="#endStatement">Completed</a>
                     {% endif %}
                     {% endif %}
                     {% endif %}
@@ -1018,6 +1073,28 @@
                             id="Suggestions{{from_work.pk}}" rows="3"
                             placeholder="suggestions">{{from_work.suggestions}}</textarea>
                     </div>
+                    {% if from_work.ford_document %}
+                    <div class="form-group">
+                        <label for="exampleFormDocument">{{from_work.ford_document.url}}</label><br>
+                        <a href="{{from_work.ford_document.url}}" class="btn btn-primary"
+                            download="{{from_work.ford_document.url}}">download</a>
+                    </div>
+                    {% endif %}
+                    {% if from_work.forward_work.end_statement %}
+                    <div class="form-group">
+                        <label for="inputRemarks" style="font-weight: bold; color: #63F700;">Work Completed on
+                            {{from_work.forward_work.date_of_complition}}</label>
+                        <textarea class="form-control" type="text" name="end_statement" disabled
+                            rows="3">{{from_work.forward_work.end_statement}}</textarea>
+                    </div>
+                    {% if from_work.forward_work.end_document %}
+                    <div class="form-group">
+                        <label for="exampleFormDocument">{{from_work.forward_work.end_document.url}}</label><br>
+                        <a href="{{from_work.forward_work.end_document.url}}" class="btn btn-primary"
+                            download="{{from_work.forward_work.end_document.url}}">download</a>
+                    </div>
+                    {% endif %}
+                    {% endif %}
                     <!-- {% if user.is_superadmin == False and user.is_adminstrator == False %}
                     {% if user.fullname != assigned_msg.from_user %}
                     {% if assigned_msg.forward_work.status != "completed" and assigned_msg.forwarded != True %}
@@ -1098,13 +1175,14 @@
                     <a href="" class="btn btn-danger" data-toggle="modal" data-target="#reply">Return</a>
                     <a href="" class="btn btn-warning" data-toggle="modal" data-target="#forward">Forward</a>
                     {% else %}
-                    <a href="{% url 'completed' pk=pending.pk %}" class="btn btn-success">Completed</a>
+                    <a class="btn btn-success workcomplete" id="complete{{pending.pk}}" href="" data-toggle="modal"
+                        data-target="#endStatement"">Completed</a>
                     {% endif %}
                     {% endif %}
                     {% endif %}
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <div class=" modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -1173,6 +1251,13 @@
                             id="Suggestions5{{pending.pk}}" rows="3"
                             placeholder="suggestions">{{pending.suggestions}}</textarea>
                     </div>
+                    {% if pending.ford_document %}
+                    <div class="form-group">
+                        <label for="exampleFormDocument">{{pending.ford_document.url}}</label><br>
+                        <a href="{{pending.ford_document.url}}" class="btn btn-primary"
+                            download="{{pending.ford_document.url}}">download</a>
+                    </div>
+                    {% endif %}
                     {% if user.is_superadmin == False %}
                     {% if user.fullname != assigned_msg.from_user %}
                     {% if pending.forward_work.status != "completed" and pending.forwarded != True %}
@@ -1182,7 +1267,8 @@
                     <a href="" class="btn btn-warning forward_key" id="forwardval{{assigned_msg.pk}}"
                         data-toggle="modal" data-target="#forward">Forward</a>
                     {% else %}
-                    <a href="{% url 'completed' pk=pending.forward_work.pk %}" class="btn btn-success">Completed</a>
+                    <a class="btn btn-success workcomplete wo{{pending.pk}}" id="complete{{work.pk}}" href=""
+                        data-toggle="modal" data-target="#endStatement">Completed</a>
                     {% endif %}
                     {% endif %}
                     {% endif %}
@@ -1208,8 +1294,8 @@
                     <h5 style="margin-bottom: 0; font-weight:bold;color:tomato;" id="staticBackdropLabel">Completed My
                         Work</h5>
                     {% if completed.forwarded %}
-                    <h6 style="color: rgb(146, 146, 146);">forwarded from {{completed.from_user}} to
-                        {{completed.to.account.fullname}} </h6>
+                    <h6 style="color: rgb(146, 146, 146);">forwarded from {{completed.forwarded_from}} to
+                        {{completed.forwarded_to}} </h6>
                     {% else %}
                     <h6 style="color: rgb(146, 146, 146);"> generated by {{completed.from_user}} </h6>
                     {% endif %}
@@ -1251,6 +1337,21 @@
                             download="{{completed.document.url}}">download</a>
                     </div>
                     {% endif %}
+                    {% if completed.end_statement %}
+                    <div class="form-group">
+                        <label for="inputRemarks" style="font-weight: bold; color: #63F700;">Work Completed on
+                            {{completed.date_of_complition}}</label>
+                        <textarea class="form-control" type="text" name="end_statement" disabled
+                            rows="3">{{completed.end_statement}}</textarea>
+                    </div>
+                    {% if completed.end_document %}
+                    <div class="form-group">
+                        <label for="exampleFormDocument">{{completed.end_document.url}}</label><br>
+                        <a href="{{completed.end_document.url}}" class="btn btn-primary"
+                            download="{{completed.end_document.url}}">download</a>
+                    </div>
+                    {% endif %}
+                    {% endif %}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -1263,8 +1364,8 @@
 
     <!--completed_status of ASSIGNED work display Modal-->
     {% for completed in assign_completed_status %}
-    <div class="modal fade" id="CompleteModel2{{completed.forward_work.pk}}" data-backdrop="static" data-keyboard="false"
-        tabindex="-2" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="CompleteModel2{{completed.forward_work.pk}}" data-backdrop="static"
+        data-keyboard="false" tabindex="-2" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header" style="display: inline-block; padding-bottom: 0;">
@@ -1323,6 +1424,29 @@
                             id="Suggestions7{{completed.pk}}" rows="3"
                             placeholder="suggestions">{{completed.suggestions}}</textarea>
                     </div>
+                    {% if completed.ford_document %}
+                    <div class="form-group">
+                        <label for="exampleFormDocument">{{completed.ford_document.url}}</label><br>
+                        <a href="{{completed.ford_document.url}}" class="btn btn-primary"
+                            download="{{completed.ford_document.url}}">download</a>
+                    </div>
+                    {% endif %}
+                    {% if completed.forward_work.end_statement %}
+                    <div class="form-group">
+                        <label for="inputRemarks" style="font-weight: bold; color: #63F700;">Work Completed on
+                            {{completed.forward_work.date_of_complition}}</label>
+                        <textarea class="form-control" type="text" name="end_statement" disabled
+                            rows="3">{{completed.forward_work.end_statement}}</textarea>
+
+                    </div>
+                    {% if completed.forward_work.end_document %}
+                    <div class="form-group">
+                        <label for="exampleFormDocument">{{completed.forward_work.end_document.url}}</label><br>
+                        <a href="{{completed.forward_work.end_document.url}}" class="btn btn-primary"
+                            download="{{completed.forward_work.end_document.url}}">download</a>
+                    </div>
+                    {% endif %}
+                    {% endif %}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -1504,8 +1628,21 @@
                             </div>
                             <div class="form-group">
                                 <label for="inputsuggestions2">Remarks/suggations</label>
-                                <textarea required class="form-control" name="suggestions" id="inputsuggestions2" rows="3"
-                                    placeholder="Work Description"></textarea>
+                                <textarea required class="form-control" name="suggestions" id="inputsuggestions2"
+                                    rows="3" placeholder="Work Description"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="switch">
+                                    <input type="checkbox" id="upload_chkbox" name="upload_checkbox">
+                                    <span class="slider round"> Check the box to attach file</span>
+                                </label>
+                            </div>
+
+                            <div class="form-group" id="file_upload_div3">
+                                <label for="exampleFormDocument">Choose File To Upload</label>
+                                <input type="file" name="ford_document" class="form-control-file" id="file_upload3"
+                                    required>
                             </div>
                         </div>
 
@@ -1544,8 +1681,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="inputSuggestions12">Message</label>
-                                <textarea required class="form-control" name="suggestions" id="inputSuggestions12" rows="3"
-                                    placeholder="Message"></textarea>
+                                <textarea required class="form-control" name="suggestions" id="inputSuggestions12"
+                                    rows="3" placeholder="Message"></textarea>
                             </div>
                         </div>
 
@@ -1664,9 +1801,60 @@
         </div>
     </div>
 
+    <!--end statement of employee -->
+    <!--complete model -->
+    <div class="modal fade" id="endStatement" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" style="font-weight:bold;color:tomato;" id="staticBackdropLabel">End
+                        Statement</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'completed' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <input type="text" hidden id="complete_pk" name="complete_pk" value="">
+                            <input type="text" hidden id="ford_complete_pk" name="ford_complete_pk" value="">
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-    
+                            <div class="form-group">
+                                <label for="inputend_statement">Complete Message</label>
+                                <textarea required class="form-control" name="end_statement" id="inputend_statement"
+                                    rows="3" placeholder="Message"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="switch">
+                                    <input type="checkbox" id="upload_chkbox" name="upload_checkbox">
+                                    <span class="slider round"> Check the box to attach file</span>
+                                </label>
+                            </div>
+
+                            <div class="form-group" id="file_upload_div2">
+                                <label for="exampleFormDocument">Choose File To Upload</label>
+                                <input type="file" name="end_document" class="form-control-file" id="file_upload2"
+                                    required>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Completed</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -1696,14 +1884,44 @@
         $('#file_upload').prop('disabled', true);
         $('input[type="checkbox"]').click(function () {
             if ($(this).prop("checked") == true) {
-         
+
                 $('#file_upload_div').show();
                 $('#file_upload').prop('disabled', false);
             }
             else if ($(this).prop("checked") == false) {
-       
+
                 $('#file_upload_div').hide();
                 $('#file_upload').prop('disabled', true);
+            }
+        });
+
+        $('#file_upload_div2').hide();
+        $('#file_upload2').prop('disabled', true);
+        $('input[type="checkbox"]').click(function () {
+            if ($(this).prop("checked") == true) {
+
+                $('#file_upload_div2').show();
+                $('#file_upload2').prop('disabled', false);
+            }
+            else if ($(this).prop("checked") == false) {
+
+                $('#file_upload_div2').hide();
+                $('#file_upload2').prop('disabled', true);
+            }
+        });
+
+        $('#file_upload_div3').hide();
+        $('#file_upload3').prop('disabled', true);
+        $('input[type="checkbox"]').click(function () {
+            if ($(this).prop("checked") == true) {
+
+                $('#file_upload_div3').show();
+                $('#file_upload3').prop('disabled', false);
+            }
+            else if ($(this).prop("checked") == false) {
+
+                $('#file_upload_div3').hide();
+                $('#file_upload3').prop('disabled', true);
             }
         });
     </script>
@@ -1718,14 +1936,14 @@
             pk = id.slice(4,);
 
             title_id = "#workingtitle" + pk;
-            
+
             updateTitle = $(title_id).text();
-            
+
             $("#updateTitle1").val(updateTitle);
 
             description_id = "#WorkDescription" + pk;
             updateWorkDescription = $(description_id).text();
-            
+
             $("#updateWorkDescription1").val(updateWorkDescription);
 
             suggestion_id = "#Suggestions" + pk;
@@ -1739,16 +1957,80 @@
             $("#pk_val").val(pk);
         });
 
+        $(".workcomplete").on("click", function () {
+            id = this.id;
+            pk = id.slice(8,);
+
+            $("#complete_pk").val(pk);
+            cls = this.className;
+            cls_pk = cls.slice(31,);
+
+            $("#ford_complete_pk").val(cls_pk);
+
+        });
 
         $(".work_link").on("click", function () {
 
             id = this.id;
             pk = id.slice(5,);
-            
+
+            $("#pk_val1").val(pk);
+            $("#work_pk").val(pk);
+
+            $.ajax({
+                url: '{% url "new_work_status" %}',
+                data: {
+                    'pk': pk
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.new_work) {
+                        $.ajax({
+                            url: '{% url "new_work_clicked" %}',
+                            data: {
+                                'pk': pk
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.new_work) {
+                                    console.log('I am clicked.. pk');
+                                }
+                                else {
+                                    id = '#new_work' + pk;
+                                    work_circle = '#work_circle' + pk;
+                                    work_text = '#work_text' + pk;
+                                    $(id).hide();
+                                    $(work_circle).hide();
+                                    $(work_text).hide();
+                                    total = document.getElementById('total_notification').innerText;
+
+                                    new_total = parseInt(total) - 1;
+                                    if (new_total < 0) {
+                                        new_total = 0
+                                    }
+
+                                    document.getElementById('total_notification').innerText = new_total;
+                                }
+                            }
+                        })
+                    }
+                }
+            })
+
+
+        });
+
+
+
+        $('.send_work_link').on('click', function () {
+
+            id = this.id;
+            pk = id.slice(5,);
+
             $("#pk_val1").val(pk);
             $("#work_pk").val(pk);
             $.ajax({
-                url: '{% url "new_work_clicked" %}',
+                url: '{% url "forward_work_clicked" %}',
                 data: {
                     'pk': pk
                 },
@@ -1758,45 +2040,6 @@
                         console.log('I am clicked.. pk');
                     }
                     else {
-                        id = '#new_work' + pk;
-                        work_circle = '#work_circle' + pk;
-                        work_text = '#work_text' + pk;
-                        $(id).hide();
-                        $(work_circle).hide();
-                        $(work_text).hide();
-                        total = document.getElementById('total_notification').innerText;
-
-                        new_total = parseInt(total) - 1;
-                        if (new_total < 0){
-                            new_total = 0
-                        }
-                        
-                        document.getElementById('total_notification').innerText = new_total;
-                    }
-                }
-            })
-        });
-
-
-
-        $('.send_work_link').on('click',function(){
-            
-            id = this.id;
-            pk = id.slice(5,);
-            
-            $("#pk_val1").val(pk);
-            $("#work_pk").val(pk);
-            $.ajax({
-                url:'{% url "forward_work_clicked" %}',
-                data:{
-                    'pk':pk
-                },
-                dataType:'json',
-                success: function(data){
-                    if (data.new_work){
-                        console.log('I am clicked.. pk');
-                    }
-                    else{
                         id = '#new_assigned' + pk;
                         work_circle = '#forward_circle' + pk;
                         work_text = '#forward_text' + pk;
@@ -1804,54 +2047,66 @@
                         $(work_circle).hide();
                         $(work_text).hide();
                         total = document.getElementById('total_notification').innerText;
-                        
+
                         new_total = parseInt(total) - 1;
-                        if (new_total < 0){
+                        if (new_total < 0) {
                             new_total = 0
                         }
-                        
+
                         document.getElementById('total_notification').innerText = new_total;
                     }
                 }
             })
         });
 
-        $('.return_work_link').on('click',function(){
+        $('.return_work_link').on('click', function () {
             id = this.id;
             pk = id.slice(5,);
-            
+
             $("#pk_val1").val(pk);
             $("#work_pk").val(pk);
+
             $.ajax({
-                url:'{% url "return_work_clicked" %}',
-                data:{
-                    'pk':pk
+                url: '{% url "return_work_status" %}',
+                data: {
+                    'pk': pk
                 },
-                dataType:'json',
-                success: function(data){
-                    if (data.new_work){
-                        console.log('I am clicked.. pk');
-                    }
-                    else{
-                        id = '#new_return' + pk;
-                        return_circle = '#return_circle' + pk;
-                        return_text = '#return_text' + pk;
-                        $(id).hide();
-                        $(return_circle).hide();
-                        $(return_text).hide();
-                        total = document.getElementById('total_notification').innerText;
-                        
-                        new_total = parseInt(total) - 1;
-                        if (new_total < 0){
-                            new_total = 0
-                        }
-                        
-                        document.getElementById('total_notification').innerText = new_total;
+                dataType: 'json',
+                success: function (data) {
+                    if (data.new_work) {
+                        $.ajax({
+                            url: '{% url "return_work_clicked" %}',
+                            data: {
+                                'pk': pk
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.new_work) {
+                                    console.log('I am clicked.. pk');
+                                }
+                                else {
+                                    id = '#new_return' + pk;
+                                    return_circle = '#return_circle' + pk;
+                                    return_text = '#return_text' + pk;
+                                    $(id).hide();
+                                    $(return_circle).hide();
+                                    $(return_text).hide();
+                                    total = document.getElementById('total_notification').innerText;
+
+                                    new_total = parseInt(total) - 1;
+                                    if (new_total < 0) {
+                                        new_total = 0
+                                    }
+
+                                    document.getElementById('total_notification').innerText = new_total;
+                                }
+                            }
+                        })
                     }
                 }
             })
-        });
 
+        });
 
 
 
@@ -1864,7 +2119,7 @@
                 dataType: 'json',
                 success: function (data) {
                     $('#returned_total').val(data.returns);
-                    
+
                 }
 
             })
@@ -1873,58 +2128,72 @@
 
 
         $(".ford_work_link").on("click", function () {
-            
+            console.log('Clicking here');
 
-           
+
             id = this.id;
             pk = id.slice(5,);
-            
             cls = this.className;
             cls_pk = cls.slice(15,);
             $("#ford_work_pk").val(cls_pk);
             $("#pk_val1").val(pk);
             $("#work_pk").val(pk);
+
+
             $.ajax({
-                url:'{% url "forward_work_clicked" %}',
-                data:{
-                    'pk':pk
+                url: '{% url "forward_work_status" %}',
+                data: {
+                    'pk': pk
                 },
-                dataType:'json',
-                success: function(data){
-                    if (data.new_work){
-                        console.log('I am clicked.. pk');
-                    }
-                    else{
-                       
-                        id = '#new_assigned' + pk;
-                        work_circle = '#forward_circle' + pk;
-                        work_text = '#forward_text' + pk;
-                        $(id).hide();
-                        $(work_circle).hide();
-                        $(work_text).hide();
-                        total = document.getElementById('total_notification').innerText;
-                        
-                        new_total = parseInt(total) - 1;
-                        if (new_total < 0){
-                            new_total = 0
-                        }
-                        
-                        document.getElementById('total_notification').innerText = new_total;
+                dataType: 'json',
+                success: function (data) {
+                    if (data.new_work) {
+                        $.ajax({
+                            url: '{% url "forward_work_clicked" %}',
+                            data: {
+                                'pk': pk
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.new_work) {
+                                    console.log('I am clicked.. pk');
+                                }
+                                else {
+
+                                    id = '#new_assigned' + pk;
+                                    work_circle = '#forward_circle' + pk;
+                                    work_text = '#forward_text' + pk;
+                                    $(id).hide();
+                                    $(work_circle).hide();
+                                    $(work_text).hide();
+                                    total = document.getElementById('total_notification').innerText;
+
+                                    new_total = parseInt(total) - 1;
+                                    if (new_total < 0) {
+                                        new_total = 0
+                                    }
+
+                                    document.getElementById('total_notification').innerText = new_total;
+                                }
+                            }
+                        })
                     }
                 }
             })
+
+
 
         });
         $(".forward_key").on("click", function () {
             id = this.id;
             pk = id.slice(10,);
-           
+
             $("#pk_val2").val(pk);
         });
         $(".return").on("click", function () {
             id = this.id;
             pk = id.slice(2,);
-           
+
             $("#inputTo12").val(pk);
 
         });
@@ -1932,9 +2201,9 @@
         $(".reassign").on("click", function () {
 
             id = this.id;
-            
+
             pk = id.slice(5,);
-            
+
             $("#work_id").val(pk);
             $("#pk_val1").val(pk);
             $("#work_pk").val(pk);
@@ -1943,7 +2212,7 @@
         $(".return_class").on("click", function () {
             id = this.id;
             pk = id.slice(2,);
-            
+
             $("#return_id").val(pk);
         });
 
