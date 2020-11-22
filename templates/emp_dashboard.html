@@ -137,7 +137,7 @@
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
                                 {% if total_notifications %}
-                                <span class="badge badge-danger badge-counter">{{total_notifications}}</span>
+                                <span id="total_notification" class="badge badge-danger badge-counter">{{total_notifications}}</span>
                                 {% endif %}
                             </a>
                             <!-- Dropdown - Alerts -->
@@ -178,7 +178,7 @@
                                     </div>
                                     <div id="forward_text{{notification.pk}}">
                                         <a class="ford_work_link {{notification.pk}}" id="work2{{notification.pk}}"
-                                            href="" data-toggle="modal" data-target="#DisplayMode2{{notification.pk}}"
+                                            href="" data-toggle="modal" data-workpk="{{notification.forward_work.pk}}" data-target="#DisplayMode2{{notification.pk}}"
                                             style="text-decoration: none; color: #6f6f70; font-weight: bold;">
                                             <div class="small text-gray-500">{{notification.date_of_forward}}</div>
                                             <span class="font-weight-bold">{{notification.forward_work.title}}</span>
@@ -196,7 +196,7 @@
                                         </div>
                                     </div>
                                     <a class="return_work_link" id="work8{{notification.pk}}" href=""
-                                        data-toggle="modal" data-target="#ReturnModel{{notification.pk}}"
+                                        data-toggle="modal" data-pk="{{notification.work.pk}}" data-target="#ReturnModel{{notification.pk}}"
                                         style="text-decoration: none; color: #6f6f70; font-weight: bold;">
                                         <div id="return_text{{notification.pk}}">
                                             <div class="small text-gray-500">{{notification.return_date}}</div>
@@ -605,8 +605,8 @@
                                                 <tr>
                                                     <th scope="row">{{forloop.counter}}</th>
                                                     <td>
-                                                        <a class="reassign return_work_link"
-                                                            id="work8{{ret_obj.work.pk}}" href="" data-toggle="modal"
+                                                        <a class="return_work_link"
+                                                            id="work8{{ret_obj.pk}}" href="" data-pk="{{ret_obj.work.pk}}" data-toggle="modal"
                                                             data-target="#ReturnModel{{ret_obj.pk}}"
                                                             style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{ret_obj.work.title}}
                                                             {% if ret_obj.new_return %}<span
@@ -643,8 +643,8 @@
                                                 <tr>
                                                     <th scope="row">{{forloop.counter}}</th>
                                                     <td><a class="ford_work_link {{assigned_msg.pk}}"
-                                                            id="work2{{assigned_msg.forward_work.pk}}" href=""
-                                                            data-toggle="modal"
+                                                            id="work2{{assigned_msg.pk}}" href=""
+                                                            data-toggle="modal" data-workpk="{{assigned_msg.forward_work.pk}}"
                                                             data-target="#DisplayMode2{{assigned_msg.pk}}"
                                                             style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{assigned_msg.forward_work.title}}
                                                             {% if assigned_msg.new_forward %}<span
@@ -2021,44 +2021,6 @@
         });
 
 
-
-        $('.send_work_link').on('click', function () {
-
-            id = this.id;
-            pk = id.slice(5,);
-
-            $("#pk_val1").val(pk);
-            $("#work_pk").val(pk);
-            $.ajax({
-                url: '{% url "forward_work_clicked" %}',
-                data: {
-                    'pk': pk
-                },
-                dataType: 'json',
-                success: function (data) {
-                    if (data.new_work) {
-                        console.log('I am clicked.. pk');
-                    }
-                    else {
-                        id = '#new_assigned' + pk;
-                        work_circle = '#forward_circle' + pk;
-                        work_text = '#forward_text' + pk;
-                        $(id).hide();
-                        $(work_circle).hide();
-                        $(work_text).hide();
-                        total = document.getElementById('total_notification').innerText;
-
-                        new_total = parseInt(total) - 1;
-                        if (new_total < 0) {
-                            new_total = 0
-                        }
-
-                        document.getElementById('total_notification').innerText = new_total;
-                    }
-                }
-            })
-        });
-
         $('.return_work_link').on('click', function () {
             id = this.id;
             pk = id.slice(5,);
@@ -2133,11 +2095,12 @@
 
             id = this.id;
             pk = id.slice(5,);
+            var workpk = $(this).data('workpk');
             cls = this.className;
             cls_pk = cls.slice(15,);
             $("#ford_work_pk").val(cls_pk);
-            $("#pk_val1").val(pk);
-            $("#work_pk").val(pk);
+            $("#pk_val1").val(workpk);
+            $("#work_pk").val(workpk);
 
 
             $.ajax({
@@ -2198,11 +2161,13 @@
 
         });
 
-        $(".reassign").on("click", function () {
+        $(".return_work_link").on("click", function () {
 
-            id = this.id;
+            // id = this.id;
 
-            pk = id.slice(5,);
+            // pk = id.slice(5,);
+            var pk = $(this).data('pk');
+            
 
             $("#work_id").val(pk);
             $("#pk_val1").val(pk);
