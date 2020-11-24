@@ -1,12 +1,29 @@
 {% extends 'dashboard.html' %}
 
+{% block css %}
+<style>
+    .startup-image{
+    width: 150px; 
+    height: 150px;
+    }
+    @media only screen and (max-width: 768px) {
+    .startup-image{
+    width: 100px; 
+    height: 100px;
+    }
+    .startup-name{
+        font-size: 1.5rem;
+    }
+    }
+</style>
+{% endblock %}
 {% block content %}
 {% load static %}
 <section id="team">
     <div class="container my-3 py-5 text-center">
         <div class="row mb-5 startup">
             <div class="col mb-4">
-                <h1>Start up</h1>
+                <h1 class="startup-name">StartUps</h1>
             </div>
         </div>
 
@@ -19,9 +36,8 @@
                     <div class="card-body">
                         {% for val in account.startup_set.all %}
                         <img src="{{val.startup_img.url}}" alt="#"
-                            class="img-fluid rounded-circle mb-3">
+                            class="img-fluid rounded-circle mb-3 startup-image">
                         <h3>{{val.startup_name}}</h3>
-                        <h5>lead writert</h5>
                         {% endfor %}
                         <div class="d-flex flex-row justify-content-center">
                             <div class="btn-container">

@@ -30,9 +30,22 @@
 
 
     <style>
+        .specific-img{
+            width:250px;
+            height: 250px;
+        }
         .course-preview h6,
         .course-preview h2 {
             color: white;
+        }
+        @media only screen and (max-width: 768px) {
+            .specific-img{
+            width:150px;
+            height: 150px;
+        }
+        #v-pills-profile > div > section.hero-section > div > div > h2{
+            font-size: 2rem;
+        }
         }
 
         @media screen and (max-width: 400px) {
@@ -297,7 +310,7 @@
                                 <!-- Hero section start -->
                                 <section class="hero-section">
                                     <div class="container-fluid text-center">
-                                        <img src="{{value.startup_img.url}}" width="250" height="250" alt="">
+                                        <img class="specific-img" src="{{value.startup_img.url}}" alt="">
                                         <div class="hero-text">
                                             <h2>{{value.startup_name}}</h2>
                                         </div>
