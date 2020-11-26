@@ -17,7 +17,14 @@ def dashboard(request):
     user = request.user
     admins = Admin.objects.all()
     if user.is_superadmin:
-        return render(request,'startup.html',{'accounts':accounts})
+        lis = []
+        lists = Account.objects.filter(is_admin=True)
+        lists = list(lists)
+        for account in lists:
+            if account.is_superadmin == False and account.is_adminstrator == False:
+                lis.append(account)
+        print(lis,"................................")
+        return render(request,'startup.html',{'accounts':accounts,'lists':lis})
     elif user.is_admin:
         value = user.admin_set.all()[0]
         if user.is_adminstrator:
