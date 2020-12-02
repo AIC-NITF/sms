@@ -23,7 +23,6 @@ def dashboard(request):
         for account in lists:
             if account.is_superadmin == False and account.is_adminstrator == False:
                 lis.append(account)
-        print(lis,"................................")
         return render(request,'startup.html',{'accounts':accounts,'lists':lis})
     elif user.is_admin:
         value = user.admin_set.all()[0]
@@ -86,7 +85,13 @@ def dashboard(request):
 @login_required
 def visit_startup(request):
     accounts = Account.objects.all()
-    return render(request,'startup.html',{'accounts':accounts})
+    lis = []
+    lists = Account.objects.filter(is_admin=True)
+    lists = list(lists)
+    for account in lists:
+        if account.is_superadmin == False and account.is_adminstrator == False:
+            lis.append(account)
+    return render(request,'startup.html',{'accounts':accounts,'lists':lis})
 
 @login_required   
 def admin_form(request):
@@ -632,7 +637,7 @@ def completed(request):
                 return redirect('dashboard')
             else:
                 work_obj = WorkGenerator.objects.get(pk=int(pk))
-                work_obj.update_end_msg(end_statement=end_statement+" work completed by " +work_obj.to.account.fullname)
+                work_obj.update_end_msg(end_statement=end_statement+" (work completed by " +work_obj.to.account.fullname +")")
                 work_obj.change_status(status="completed")
                 work_obj.update_date()
                 return redirect('dashboard')
@@ -739,7 +744,6 @@ def reassign(request):
         to = request.POST['to']
         work_pk = request.POST['pk_val']
         rk_val = request.POST['rk_val']
-        print(work_pk,"======================")
         
         
         obj = Admin.objects.get(pk=int(to))
@@ -793,9 +797,11 @@ def new_work_clicked(request):
     work = WorkGenerator.objects.get(pk=pk)
 
     work.new_work = False
+    work.alert = False
     work.save()
     data = {
-        'new_work':work.new_work
+        'new_work':work.new_work,
+        'alert':work.alert
     }
     return JsonResponse(data)
 
@@ -806,9 +812,11 @@ def forward_work_clicked(request):
     work = Forward.objects.get(pk=pk)
     
     work.new_forward = False
+    work.alert = False
     work.save()
     data = {
-        'new_work':work.new_forward
+        'new_work':work.new_forward,
+        'alert':work.alert
     }
     return JsonResponse(data)
 @login_required
@@ -835,7 +843,8 @@ def new_work_status(request):
     pk = request.GET.get('pk',None)
     work = WorkGenerator.objects.get(pk=pk)
     data = {
-        'new_work':work.new_work
+        'new_work':work.new_work,
+        'alert':work.alert
     }
     return JsonResponse(data)
 
@@ -843,11 +852,36 @@ def forward_work_status(request):
     pk = request.GET.get('pk',None)
     work = Forward.objects.get(pk=pk)
     data = {
-        'new_work':work.new_forward
+        'new_work':work.new_forward,
+        'alert':work.alert
     }
     return JsonResponse(data)
 
+def alert(request,pk):
+    work_obj = WorkGenerator.objects.get(pk=pk)
+    work_obj.update_alert()
+    send_mail(
+                'Alert Message',
+                'you got a Reminder from (Adminstrator) complete your work in given time.' ,
+                'support@aicnalanda.com',
+                [work_obj.to.email],
+                fail_silently=False,
+            )
+    messages.add_message(request, messages.INFO, 'Reminder sended successfully.')
+    return redirect('dashboard')
 
+def forward_alert(request,pk):
+    ford_work_obj = Forward.objects.get(pk=pk)
+    ford_work_obj.update_alert()
+    send_mail(
+                'Alert Message',
+                'you got a Reminder from ' +ford_work_obj.from_user +' complete your work in given time.' ,
+                'support@aicnalanda.com',
+                [ford_work_obj.to.email],
+                fail_silently=False,
+            )
+    messages.add_message(request, messages.INFO, 'Reminder sended successfully.')
+    return redirect('dashboard')
 
 
 

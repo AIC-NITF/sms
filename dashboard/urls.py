@@ -69,4 +69,7 @@ urlpatterns = [
     path('return_work_status',views.return_work_status,name='return_work_status'),    
     path('forward_work_status',views.forward_work_status,name='forward_work_status'),
     path('new_work_status',views.new_work_status,name='new_work_status'),
+
+    path('alert/<int:pk>',views.alert,name='alert'),
+    path('forward_alert/<int:pk>',views.forward_alert,name='forward_alert'),
 ]

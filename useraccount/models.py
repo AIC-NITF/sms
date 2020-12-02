@@ -294,9 +294,15 @@ class WorkGenerator(models.Model):
 	end_statement				 = models.CharField(max_length=500,null=True,blank=True)
 	end_document				 = models.FileField(upload_to='files',null=True,blank=True)
 
+	alert						 = models.BooleanField(default=False)
+
 
 	def __str__(self):
 		return self.title
+
+	def update_alert(self):
+		self.alert = True
+		self.save()
 
 	def make_new_work(self):
 		self.new_work = True
@@ -349,6 +355,12 @@ class Forward(models.Model):
 	forward_pk				= models.CharField(max_length=100,null=True,blank=True)
 	new_forward		    	= models.BooleanField(default=True)
 	ford_document			= models.FileField(upload_to='files',null=True,blank=True)
+
+	alert					= models.BooleanField(default=False)
+
+	def update_alert(self):
+		self.alert = True
+		self.save()
 
 	def forther_forward(self):
 		self.forwarded = True

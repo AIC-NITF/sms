@@ -392,6 +392,7 @@
                                                 {% for work in works %}
                                                 <tr>
                                                     <th scope="row">{{forloop.counter}}</th>
+                                                    {% if not user.is_adminstrator %}
                                                     <td class="new_work"><a class="work_link " id="work1{{work.pk}}"
                                                             href="" data-toggle="modal"
                                                             data-target="#DisplayModel{{work.pk}}"
@@ -399,8 +400,19 @@
                                                             {% if work.new_work %}{% if not user.is_adminstrator %}
                                                             <span id="new_work{{work.pk}}"><b style="color: red;"
                                                                     class="glow"> New</b></span>{% endif %}
-                                                            {% endif %}</a>
+                                                            {% endif %}
+                                                            {% if work.alert %}{% if not user.is_adminstrator %}
+                                                            <span id="reminder{{work.pk}}"><b style="color: red;"
+                                                                class="glow"> Alert<i style="margin-left: 10px;" class="fas fa-stopwatch fa-lg"></i></b></span>
+                                                            {% endif %}{% endif %}
+                                                        </a>
                                                     </td>
+                                                    {% else %}
+                                                    <td><a href="" data-toggle="modal" data-target="#DisplayModel{{work.pk}}"
+                                                        style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{work.title}}
+                                                    </a>
+                                                </td>
+                                                    {% endif %}
                                                     {% if user.is_adminstrator %}
                                                     <td>{{user.fullname}}</td>
                                                     {% else %}
@@ -650,7 +662,13 @@
                                                             {% if assigned_msg.new_forward %}<span
                                                                 id="new_assigned{{assigned_msg.pk}}"><b
                                                                     style="color: red;" class="glow">
-                                                                    New</b></span>{% endif %}</a>
+                                                                    New</b></span>{% endif %}
+                                                            
+                                                            {% if assigned_msg.alert %}<span
+                                                                    id="reminder1{{assigned_msg.pk}}"><b
+                                                                        style="color: red;" class="glow">
+                                                                         Alert<i style="margin-left: 10px;" class="fas fa-stopwatch fa-lg"></i></b></span>{% endif %}
+                                                                </a>
                                                     </td>
                                                     <td>{{assigned_msg.from_user}}</td>
                                                     <td>{{assigned_msg.to.account.fullname}}</td>
@@ -824,12 +842,20 @@
 
                 <div class="modal-body">
                     {% if user.is_adminstrator %}
-                    {% if work.status != "pending..." and work.status != "completed" and work.status != "forwarded->" and work.status != "returned" %}
                     <div class="col-md-5 float-right">
-                        <a href="#" class="float-right work_edit" data-toggle="modal" data-target="#EditModel"
+                        {% if work.status != "completed" %}
+                        {% if work.to != None and work.alert == False %}
+                        <a href="{% url 'alert' pk=work.pk %}" style="color: tomato;" class="float-right work_edit"><i class="fas fa-business-time fa-lg"></i></a>
+                        {% endif %}
+                        {% endif %}
+
+                        {% if work.status != "pending..." and work.status != "completed" and work.status != "forwarded->" and work.status != "returned" %}
+                    
+                        <a href="#" style="margin-right: 15px;" class="float-right work_edit" data-toggle="modal" data-target="#EditModel"
                             id="work{{work.pk}}"><i class="fas fa-edit fa-lg"></i></a>
+                        {% endif %}
                     </div>
-                    {% endif %}
+                    
                     {% endif %}
                     <div class="form-group">
                         <label for="inputTitle4">Work Title</label>
@@ -1034,6 +1060,13 @@
                 </div>
 
                 <div class="modal-body">
+                    {% if from_work.forward_work.status != "completed" %}
+                    {% if from_work.alert == False %}
+                    <div class="col-md-5 float-right">
+                        <a href="{% url 'forward_alert' pk=from_work.pk %}" style="color: tomato;" class="float-right work_edit"><i class="fas fa-business-time fa-lg"></i></a>
+                    </div>
+                    {% endif %}
+                    {% endif %}
                     <div class="form-group">
                         <label for="inputTitle4">Work Title</label>
                         <label hidden
@@ -2014,6 +2047,24 @@
                             }
                         })
                     }
+                    if (data.alert){
+                        $.ajax({
+                            url: '{% url "new_work_clicked" %}',
+                            data: {
+                                'pk': pk
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.alert) {
+                                    console.log('I am clicked.. pk');
+                                }
+                                else {
+                                    id = '#reminder' + pk;
+                                    $(id).hide();
+                                }
+                            }
+                        })
+                    }
                 }
             })
 
@@ -2137,6 +2188,24 @@
                                     }
 
                                     document.getElementById('total_notification').innerText = new_total;
+                                }
+                            }
+                        })
+                    }
+                    if (data.alert) {
+                        $.ajax({
+                            url: '{% url "forward_work_clicked" %}',
+                            data: {
+                                'pk': pk
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.alert) {
+                                    console.log('I am clicked.. pk');
+                                }
+                                else {
+                                    id = '#reminder1' + pk;
+                                    $(id).hide();
                                 }
                             }
                         })
