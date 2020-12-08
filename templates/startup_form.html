@@ -30,13 +30,24 @@
     </div>
     <div class="form-group col-md-6">
       <label for="inputIncubateeLevel4">Current level of Incubatee :</label>
-      <input required type="text" name="inubatee_level" class="form-control" id="inputIncubateeLevel4"
-        placeholder="incubatee_level">
+        <select name="inubatee_level" class="custom-select col-md-12" required>
+          <option selected="selected" disabled>Choose From below:</option>
+          <option value="Ideation">Ideation</option>
+          <option value="POC">POC</option>
+          <option value="Prototype">Prototype</option>
+          <option value="Minimum Viable product">Minimum Viable product</option>
+          <option value="Commercialized">Commercialized</option>
+        </select>
     </div>
     <div class="form-group col-md-6">
       <label for="inputOperationalModel4">Operational Model : </label>
-      <input required type="text" name="operational_model" class="form-control" id="inputOperationalModel4"
-        placeholder="Operational Model">
+        <select name="operational_model" class="custom-select col-md-12" required>
+          <option selected="selected" disabled>Choose From below:</option>
+          <option value="Product Manufacturing">Product Manufacturing</option>
+          <option value="Service Delivery">Service Delivery</option>
+          <option value="Aggregation Platform">Aggregation Platform</option>
+          <option value="Other">Other</option>
+        </select>
     </div>
     <div class="form-group col-md-6">
       <label for="inputLegalEntity4">Name Of Legal Entity :</label>
@@ -59,7 +70,14 @@
     </div>
     <div class="form-group col-md-6">
       <label for="inputSector4">Sector :</label>
-      <input required type="text" name="sector" class="form-control" id="inputSector4" placeholder="sector">
+      <select name="sector" id="inputSector4" class="custom-select col-md-12" required>
+        <option selected="selected" disabled>Choose From below:</option>
+        <option value="Agriculture and Allied Fields">Agriculture and Allied Fields</option>
+        <option value="Electricity, New and Renewable energy and Environment sustainability">Electricity, New and Renewable energy and Environment sustainability</option>
+        <option value="Education">Education</option>
+        <option value="Health and Pharmaceuticals">Health and Pharmaceuticals</option>
+        <option value="Water Sanitation and Solid waste management">Water Sanitation and Solid waste management</option>
+      </select>
     </div>
     <div class="form-group col-md-6">
       <label for="inputDateofJoin4">Start Date of the Incubation :</label>
@@ -95,8 +113,15 @@
 
     <div class="form-group col-md-6">
       <label for="inputGovtProgram4">Startup working towards any of the flagship government programmes :</label>
-      <input required type="text" name="gov_program" class="form-control" id="inputGovtProgram4"
-        placeholder="government programmes">
+        <select name="gov_program" class="custom-select col-md-12" required>
+          <option selected="selected" disabled>Choose From below:</option>
+          <option value="Women Empowerment ">Women Empowerment </option>
+          <option value="Make In India">Make In India</option>
+          <option value="Swachh Bharat ">Swachh Bharat </option>
+          <option value="Startup India">Startup India</option>
+          <option value="Beti Bachao Beti padhao">Beti Bachao Beti padhao</option>
+          <option value="None the above">None the above</option>
+        </select>
     </div>
 
     <div class="form-group col-md-6">
