@@ -11,7 +11,7 @@ def index(request):
         imp_values.append(i.admin_set.all()[0])
     gal_val = Gallery.objects.all()
     user = request.user
-    print(user,"--------------------------------------------------")
+
     if request.user.is_authenticated:
         if user.is_admin:
             profile_img_obj = user.admin_set.all()[0]

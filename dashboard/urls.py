@@ -72,4 +72,10 @@ urlpatterns = [
 
     path('alert/<int:pk>',views.alert,name='alert'),
     path('forward_alert/<int:pk>',views.forward_alert,name='forward_alert'),
+
+    path('apply_leave',views.apply_leave,name='apply_leave'),
+    path('accept_or_reject',views.accept_or_reject,name='accept_or_reject'),
+
+    path('leave_app_status',views.leave_app_status,name='leave_app_status'),
+    path('leave_app_clicked',views.leave_app_clicked,name='leave_app_clicked'),
 ]

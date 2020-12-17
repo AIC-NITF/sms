@@ -72,6 +72,8 @@ class Admin(models.Model):
 	employee_id				= models.CharField(max_length=100,null=True,blank=True)
 	contact_no				= models.CharField(max_length=100,null=True,blank=True)
 	identity_proof			= models.CharField(max_length=100,null=True,blank=True)
+	cl						= models.CharField(max_length=100,null=True,blank=True)
+	sl						= models.CharField(max_length=100,null=True,blank=True)
 	admin_img				= models.ImageField(upload_to='images/',null=True,blank=True)
 
 	
@@ -79,10 +81,12 @@ class Admin(models.Model):
 	def __str__(self):
 		return self.designation
 
-	def update_admin(self,email,designation,contact_no):
+	def update_admin(self,email,designation,contact_no,cl,sl):
 		self.email = email
 		self.designation = designation
 		self.contact_no = contact_no
+		self.cl = cl
+		self.sl = sl
 		self.save()
 
 class StartUp(models.Model):
@@ -406,3 +410,30 @@ class Query(models.Model):
 
 class Gallery(models.Model):
 	gallery_img 		= models.FileField(upload_to='gallery',null=True,blank=True)
+
+class LeaveApplication(models.Model):
+	from_user 			= models.ForeignKey(Admin,null=True,blank=True, on_delete=models.CASCADE)
+	from_user_name 		= models.CharField(max_length=100,null=True,blank=True) 
+	to 					= models.CharField(max_length=100,null=True,blank=True) 
+	subject 			= models.CharField(max_length=100,null=True,blank=True)
+	body				= models.CharField(max_length=1000,null=True,blank=True)
+	status				= models.CharField(max_length=100,null=True,blank=True)
+	applied_date		= models.DateTimeField(verbose_name='applied date', auto_now_add=True,null=True,blank=True)
+	message				= models.CharField(max_length=1000,null=True,blank=True)
+	cl_or_sl			= models.CharField(max_length=100,null=True,blank=True)
+
+	new_leave		    = models.BooleanField(default=True)
+	reply			    = models.BooleanField(default=False)
+
+	days 				= models.CharField(max_length=50,null=True,blank=True)
+
+	def __str__(self):
+		return self.from_user.account.fullname
+
+	def update_message(self,message):
+		self.message = message
+		self.save()
+	
+	def update_status(self,status):
+		self.status = status
+		self.save()

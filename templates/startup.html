@@ -70,6 +70,8 @@
                     <th scope="col">EMPLOYEE ID</th>
                     <th scope="col">EMAIL</th>
                     <th scope="col">CONTACT</th>
+                    <th scope="col">CL</th>
+                    <th scope="col">SL</th>
                     <th scope="col">PROFILE</th>
                     {% if user.is_superadmin %}
                     <th scope="col">EDIT/DELETE</th>
@@ -86,6 +88,8 @@
                     <td><span id="employee_id{{evalue.pk}}" >{{evalue.employee_id}}</span></td>
                     <td><span id="email{{evalue.pk}}" >{{evalue.email}}</span></td>
                     <td><span id="contact_no{{evalue.pk}}" >{{evalue.contact_no}}</span></td>
+                    <td><span id="cl{{evalue.pk}}" >{{evalue.cl}}</span></td>
+                    <td><span id="sl{{evalue.pk}}" >{{evalue.sl}}</span></td>
                     <td><span id="profile{{evalue.pk}}"><img class="rounded-circle" src="{{evalue.admin_img.url}}" width="50" height="50" alt=""></span></td>
                     {% if user.is_superadmin %}
                     <td>
@@ -132,7 +136,17 @@
                     <div class="form-group">
                         <label for="inputContactNo4">Contact No.</label>
                         <input type="text" name="contact" class="form-control"  id="inputContactNo4" placeholder="Contact No.">
-                    </div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCl">CL</label>
+                        <input type="text" name="cl" class="form-control" id="inputCl" placeholder="cl"
+                          required>
+                      </div>
+                      <div class="form-group">
+                        <label for="inputSl">SL</label>
+                        <input type="text" name="sl" class="form-control" id="inputSl" placeholder="sl"
+                          required>
+                      </div> 
                 </div>
             
             <div class="modal-footer">
@@ -185,14 +199,23 @@ $('.delete_btn').on('click', function(){
         pk = id.slice(4,);
         des_id = "#designation" + pk;
         designation = $(des_id).text();
-        
         $("#inputDesignation4").val(designation);
+        
         email_id = "#email" + pk;
         email = $(email_id).text();
         $("#inputEmp4").val(email);
+        
         contact_id = "#contact_no" + pk;
         contact = $(contact_id).text();
         $("#inputContactNo4").val(contact);
+
+        cl_id = "#cl" + pk;
+        cl = $(cl_id).text();
+        $("#inputCl").val(cl);
+
+        sl_id = "#sl" + pk;
+        sl = $(sl_id).text();
+        $("#inputSl").val(sl);
 
         $("#pk_val").val(pk);
         

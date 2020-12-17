@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Account,Admin,StartUp,TeamMembers,MonitorSheet,TractionSheet,WorkGenerator,Forward,Return,MoM,BlogPost,Query,Gallery
+from .models import Account,Admin,StartUp,TeamMembers,MonitorSheet,TractionSheet,WorkGenerator,Forward,Return,MoM,BlogPost,Query,Gallery,LeaveApplication
 # Register your models here.
 admin.site.register(Account)
 admin.site.register(Admin)
@@ -14,3 +14,4 @@ admin.site.register(MoM)
 admin.site.register(BlogPost)
 admin.site.register(Query)
 admin.site.register(Gallery)
+admin.site.register(LeaveApplication)

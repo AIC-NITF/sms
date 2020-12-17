@@ -1,6 +1,6 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.http import HttpResponse,Http404,JsonResponse
-from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Return,TractionSheet,MoM,BlogPost,Query
+from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Return,TractionSheet,MoM,BlogPost,Query,LeaveApplication
 from .forms import StartUpForm,MonitorSheetEditForm,TractionSheetEditForm
 
 from django.contrib.auth.models import auth
@@ -36,11 +36,16 @@ def dashboard(request):
             
             forward_notifications = value.forward_set.filter(new_forward=True).order_by('-date_of_forward')
             return_notifications = Return.objects.filter(to=value,new_return=True).order_by('-return_date')
-            total_notifications =  len(forward_notifications) + len(return_notifications)
+            
+            leave_notifications = LeaveApplication.objects.filter(new_leave=True).order_by('-applied_date')
+
+            total_notifications =  len(forward_notifications) + len(return_notifications) + len(leave_notifications)
             
             return_obj = Return.objects.filter(to=value).order_by('-return_date')
-            
-            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'ford_status':ford_status,'pending_status':pending_status,'completed_status':completed_status,'return_obj':return_obj,'forward_notifications':forward_notifications,'return_notifications':return_notifications,'total_notifications':total_notifications})
+
+            leave_obj = LeaveApplication.objects.all().order_by('-applied_date')
+
+            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'ford_status':ford_status,'pending_status':pending_status,'completed_status':completed_status,'return_obj':return_obj,'forward_notifications':forward_notifications,'return_notifications':return_notifications,'total_notifications':total_notifications,'leave_obj':leave_obj,'leave_notifications':leave_notifications})
         else:
             admin_obj = user.admin_set.all()[0]
             works = admin_obj.workgenerator_set.all().order_by('-date_of_creation')
@@ -65,9 +70,14 @@ def dashboard(request):
             work_notifications = admin_obj.workgenerator_set.filter(new_work=True).order_by('-date_of_creation')
             forward_notifications = admin_obj.forward_set.filter(new_forward=True).order_by('-date_of_forward')
             return_notifications = Return.objects.filter(to=value,new_return=True).order_by('-return_date')
-            total_notifications = len(work_notifications) + len(forward_notifications) + len(return_notifications)
+            leave_noti = LeaveApplication.objects.filter(reply=True).order_by('-applied_date')
+            total_notifications = len(work_notifications) + len(forward_notifications) + len(return_notifications) + len(leave_noti)
+
+            obj = request.user
+            leave_obj = LeaveApplication.objects.filter(from_user_name=obj.fullname).order_by('-applied_date')
             
-            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'pending_status':pending_status,'assign_pending_status':assign_pending_status,'completed_status':completed_status,'assign_completed_status':assign_completed_status,'return_obj':return_obj,'work_notifications':work_notifications,'forward_notifications':forward_notifications,'return_notifications':return_notifications,'total_notifications':total_notifications})        
+            
+            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'pending_status':pending_status,'assign_pending_status':assign_pending_status,'completed_status':completed_status,'assign_completed_status':assign_completed_status,'return_obj':return_obj,'work_notifications':work_notifications,'forward_notifications':forward_notifications,'return_notifications':return_notifications,'total_notifications':total_notifications,'leave_obj':leave_obj,'leave_noti':leave_noti})        
         
     else:
         user = request.user
@@ -152,6 +162,8 @@ def edit_emp_form(request):
         designation = request.POST['designation']
         email = request.POST['email']
         contact = request.POST['contact']
+        cl = request.POST['cl']
+        sl = request.POST['sl']
 
         account = Admin.objects.get(pk=pk)
 
@@ -170,7 +182,17 @@ def edit_emp_form(request):
         else:
             contact = ' '
 
-        account.update_admin(email = email,designation = designation,contact_no = contact)
+        if cl:
+            cl = cl
+        else:
+            cl = ' '
+
+        if sl:
+            sl = sl
+        else:
+            sl = ' '
+
+        account.update_admin(email = email,designation = designation,contact_no = contact,cl=cl,sl=sl)
         messages.add_message(request, messages.INFO, 'Edited successfully.')
     return redirect('dashboard')
     
@@ -831,6 +853,20 @@ def return_work_clicked(request):
     }
     return JsonResponse(data)
 
+@login_required
+def leave_app_clicked(request):
+    pk = request.GET.get('pk',None)
+    leave = LeaveApplication.objects.get(pk=pk)
+    
+    leave.new_leave = False
+    leave.reply = False
+    leave.save()
+    data = {
+        'new_leave':leave.new_leave,
+        'reply':leave.reply
+    }
+    return JsonResponse(data)
+
 def return_work_status(request):
     pk = request.GET.get('pk',None)
     work = Return.objects.get(pk=pk)
@@ -854,6 +890,15 @@ def forward_work_status(request):
     data = {
         'new_work':work.new_forward,
         'alert':work.alert
+    }
+    return JsonResponse(data)
+
+def leave_app_status(request):
+    pk = request.GET.get('pk',None)
+    leave = LeaveApplication.objects.get(pk=pk)
+    data = {
+        'new_leave':leave.new_leave,
+        'reply':leave.reply,
     }
     return JsonResponse(data)
 
@@ -982,3 +1027,53 @@ def set_password(request):
     return JsonResponse(data)
 
 
+def apply_leave(request):
+    if request.method == 'POST':
+        subject = request.POST['subject']
+        body = request.POST['body']
+        from_user_pk = request.POST['from_value']
+        cl_or_sl = request.POST['cl_or_sl']
+        days = request.POST['days']
+        
+        from_user_obj = get_object_or_404(Account,pk=from_user_pk)
+        from_user = from_user_obj.admin_set.all()[0]
+        to_obj = Account.objects.filter(is_adminstrator = True)[0]
+        to = to_obj.fullname
+        cl_or_sl = request.POST['cl_or_sl']
+        leave_obj = LeaveApplication.objects.create(from_user=from_user,from_user_name=from_user.account.fullname,to=to,subject=subject,body=body,status="pending",cl_or_sl=cl_or_sl,days=days) 
+        leave_obj.save()
+
+        user_obj = request.user
+        user = user_obj.admin_set.all()[0]
+        if leave_obj.cl_or_sl == "CL":
+            user.cl = int(user.cl) - int(days)
+            user.save()
+        else:
+            user.sl = int(user.sl) - int(days)
+            user.save()
+        messages.add_message(request, messages.INFO, 'Successfully sended.')
+        return redirect(dashboard)
+
+def accept_or_reject(request):
+    if request.method == 'POST':
+        message = request.POST['message']
+        leave_pk = request.POST['leave_pk']
+        status_value = request.POST['status_value']
+
+        obj = LeaveApplication.objects.get(pk=int(leave_pk))
+        obj.reply = True
+        if status_value == "Accepted":
+            obj.update_message(message)
+            obj.update_status(status_value)
+        else:
+            obj.update_message(message)
+            obj.update_status(status_value)
+            if obj.cl_or_sl == "CL":
+                obj.from_user.cl = int(obj.from_user.cl) + int(obj.days)
+                obj.from_user.save()
+            else:
+                obj.from_user.sl = int(obj.from_user.sl) + int(obj.days)
+                obj.from_user.save()
+        messages.add_message(request, messages.INFO, 'Successfully sended.')
+
+        return redirect(dashboard)

@@ -45,11 +45,13 @@ def admin_register(request):
         employee_id = request.POST['employee_id']
         contact_no = request.POST['contact']
         identity_proof = request.POST['identity']
+        cl = request.POST['cl']
+        sl = request.POST['sl']
 
         admin_img = request.FILES['admin_img']
         
 
-        admin = Admin.objects.create(account=user,designation=designation,email=email,employee_id=employee_id,contact_no=contact_no,identity_proof=identity_proof,admin_img=admin_img) 
+        admin = Admin.objects.create(account=user,designation=designation,email=email,employee_id=employee_id,contact_no=contact_no,identity_proof=identity_proof,cl=cl,sl=sl,admin_img=admin_img) 
         admin.save()
         messages.add_message(request, messages.INFO, 'Employee created successfully.')
 

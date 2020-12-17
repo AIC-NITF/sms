@@ -100,6 +100,10 @@
                         role="tab" aria-controls="v-pills-monitor" aria-selected="false"><i
                             class="fas fa-fw fa-briefcase"></i> Work
                         Status</a>
+
+                    <a class="nav-link" id="v-pills-leave-tab" data-toggle="pill" href="#v-pills-leave" role="tab"
+                        aria-controls="v-pills-leave" aria-selected="false"><i class="fas fa-fw fa-diagnoses"></i>Leave
+                        Application</a>
                 </div>
             </li>
             <!-- Sidebar Toggler (Sidebar) -->
@@ -137,7 +141,8 @@
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
                                 {% if total_notifications %}
-                                <span id="total_notification" class="badge badge-danger badge-counter">{{total_notifications}}</span>
+                                <span id="total_notification"
+                                    class="badge badge-danger badge-counter">{{total_notifications}}</span>
                                 {% endif %}
                             </a>
                             <!-- Dropdown - Alerts -->
@@ -178,7 +183,8 @@
                                     </div>
                                     <div id="forward_text{{notification.pk}}">
                                         <a class="ford_work_link {{notification.pk}}" id="work2{{notification.pk}}"
-                                            href="" data-toggle="modal" data-workpk="{{notification.forward_work.pk}}" data-target="#DisplayMode2{{notification.pk}}"
+                                            href="" data-toggle="modal" data-workpk="{{notification.forward_work.pk}}"
+                                            data-target="#DisplayMode2{{notification.pk}}"
                                             style="text-decoration: none; color: #6f6f70; font-weight: bold;">
                                             <div class="small text-gray-500">{{notification.date_of_forward}}</div>
                                             <span class="font-weight-bold">{{notification.forward_work.title}}</span>
@@ -196,12 +202,55 @@
                                         </div>
                                     </div>
                                     <a class="return_work_link" id="work8{{notification.pk}}" href=""
-                                        data-toggle="modal" data-pk="{{notification.work.pk}}" data-target="#ReturnModel{{notification.pk}}"
+                                        data-toggle="modal" data-pk="{{notification.work.pk}}"
+                                        data-target="#ReturnModel{{notification.pk}}"
                                         style="text-decoration: none; color: #6f6f70; font-weight: bold;">
                                         <div id="return_text{{notification.pk}}">
                                             <div class="small text-gray-500">{{notification.return_date}}</div>
                                             <span class="font-weight-bold">{{notification.work.title}}</span>
                                             <div class="small text-gray-500">status:- returned</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                {% endfor %}
+
+                                {% if leave_notifications %} <h6
+                                    style="font-weight: bold;color: gray;margin-left:10px;">Leave Application</h6>
+                                {% endif %}
+                                {% for notification in leave_notifications %}
+                                <div class="dropdown-item d-flex align-items-center">
+                                    <div class="mr-3" id="leave_circle{{notification.pk}}">
+                                        <div class="icon-circle bg-dark">
+                                            <i class="fas fa-diagnoses text-white"></i>
+                                        </div>
+                                    </div>
+                                    <a class="leave_app leave_app1" id="leaveapp{{notification.pk}}" href="" data-toggle="modal"
+                                        data-pk="{{notification.pk}}"
+                                        data-target="#applydisplayLeave{{notification.pk}}"
+                                        style="text-decoration: none; color: #9191b6; font-weight: bold;">
+                                        <div id="leave_text{{notification.pk}}">
+                                            <div class="small text-gray-500">{{notification.applied_date}}</div>
+                                            <span class="font-weight-bold">{{notification.subject}}</span>
+                                            <div class="small text-gray-500">status:-{{notification.status}}</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                {% endfor %}
+                                {% for notification in leave_noti %}
+                                <div class="dropdown-item d-flex align-items-center">
+                                    <div class="mr-3" id="leave_circle1{{notification.pk}}">
+                                        <div class="icon-circle bg-dark">
+                                            <i class="fas fa-diagnoses text-white"></i>
+                                        </div>
+                                    </div>
+                                    <a class="leave_app1" id="leaveapx{{notification.pk}}" href="" data-toggle="modal"
+                                        data-pk="{{notification.pk}}"
+                                        data-target="#applydisplayLeave{{notification.pk}}"
+                                        style="text-decoration: none; color: #9191b6; font-weight: bold;">
+                                        <div id="leave_text1{{notification.pk}}">
+                                            <div class="small text-gray-500">{{notification.applied_date}}</div>
+                                            <span class="font-weight-bold">{{notification.subject}}</span>
+                                            <div class="small text-gray-500">status:-{{notification.status}}</div>
                                         </div>
                                     </a>
                                 </div>
@@ -301,6 +350,8 @@
                                                         <li><span>Employee ID : </span>{{value.employee_id}}</li>
                                                         <li><span>E-mail : </span>{{value.email}}</li>
                                                         <li><span>Phone : </span>{{value.contact_no}}</li>
+                                                        <li><span>CL : </span>{{value.cl}}</li>
+                                                        <li><span>SL : </span>{{value.sl}}</li>
                                                         <li><span>AdharCard/PAN Card : </span>{{value.identity_proof}}
                                                         </li>
                                                     </ul>
@@ -313,7 +364,7 @@
                                 <!-- Resume section start -->
                             </div>
                         </div>
-                        <!--monitor sheet -->
+                        <!--work status sheet -->
                         <div class="tab-pane fade show active" id="v-pills-monitor" role="tabpanel"
                             aria-labelledby="v-pills-monitor-tab">
                             {% for message in messages %}
@@ -403,15 +454,17 @@
                                                             {% endif %}
                                                             {% if work.alert %}{% if not user.is_adminstrator %}
                                                             <span id="reminder{{work.pk}}"><b style="color: red;"
-                                                                class="glow"> Alert<i style="margin-left: 10px;" class="fas fa-stopwatch fa-lg"></i></b></span>
+                                                                    class="glow"> Alert<i style="margin-left: 10px;"
+                                                                        class="fas fa-stopwatch fa-lg"></i></b></span>
                                                             {% endif %}{% endif %}
                                                         </a>
                                                     </td>
                                                     {% else %}
-                                                    <td><a href="" data-toggle="modal" data-target="#DisplayModel{{work.pk}}"
-                                                        style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{work.title}}
-                                                    </a>
-                                                </td>
+                                                    <td><a href="" data-toggle="modal"
+                                                            data-target="#DisplayModel{{work.pk}}"
+                                                            style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{work.title}}
+                                                        </a>
+                                                    </td>
                                                     {% endif %}
                                                     {% if user.is_adminstrator %}
                                                     <td>{{user.fullname}}</td>
@@ -617,8 +670,8 @@
                                                 <tr>
                                                     <th scope="row">{{forloop.counter}}</th>
                                                     <td>
-                                                        <a class="return_work_link"
-                                                            id="work8{{ret_obj.pk}}" href="" data-pk="{{ret_obj.work.pk}}" data-toggle="modal"
+                                                        <a class="return_work_link" id="work8{{ret_obj.pk}}" href=""
+                                                            data-pk="{{ret_obj.work.pk}}" data-toggle="modal"
                                                             data-target="#ReturnModel{{ret_obj.pk}}"
                                                             style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{ret_obj.work.title}}
                                                             {% if ret_obj.new_return %}<span
@@ -655,20 +708,21 @@
                                                 <tr>
                                                     <th scope="row">{{forloop.counter}}</th>
                                                     <td><a class="ford_work_link {{assigned_msg.pk}}"
-                                                            id="work2{{assigned_msg.pk}}" href=""
-                                                            data-toggle="modal" data-workpk="{{assigned_msg.forward_work.pk}}"
+                                                            id="work2{{assigned_msg.pk}}" href="" data-toggle="modal"
+                                                            data-workpk="{{assigned_msg.forward_work.pk}}"
                                                             data-target="#DisplayMode2{{assigned_msg.pk}}"
                                                             style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{assigned_msg.forward_work.title}}
                                                             {% if assigned_msg.new_forward %}<span
                                                                 id="new_assigned{{assigned_msg.pk}}"><b
                                                                     style="color: red;" class="glow">
                                                                     New</b></span>{% endif %}
-                                                            
+
                                                             {% if assigned_msg.alert %}<span
-                                                                    id="reminder1{{assigned_msg.pk}}"><b
-                                                                        style="color: red;" class="glow">
-                                                                         Alert<i style="margin-left: 10px;" class="fas fa-stopwatch fa-lg"></i></b></span>{% endif %}
-                                                                </a>
+                                                                id="reminder1{{assigned_msg.pk}}"><b style="color: red;"
+                                                                    class="glow">
+                                                                    Alert<i style="margin-left: 10px;"
+                                                                        class="fas fa-stopwatch fa-lg"></i></b></span>{% endif %}
+                                                        </a>
                                                     </td>
                                                     <td>{{assigned_msg.from_user}}</td>
                                                     <td>{{assigned_msg.to.account.fullname}}</td>
@@ -725,7 +779,67 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Monitor Sheet End -->
+                        <!-- workstatus Sheet End -->
+                        <!--leave application -->
+                        <div class="tab-pane fade show" id="v-pills-leave" role="tabpanel"
+                            aria-labelledby="v-pills-leave-tab">
+                            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                <h1>Leave Application</h1>
+                                {% if user.is_adminstrator != True %}
+                                <a href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
+                                    data-toggle="modal" data-target="#applyLeave"><i
+                                        class="fas fa-download fa-sm text-white-50"></i> Apply Leave </a>
+                                {% endif %}
+                            </div>
+                            <div class="table-responsive-lg">
+                                <table class="table">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col">#SLNO</th>
+                                            <th scope="col">Subject</th>
+                                            <th scope="col">From</th>
+                                            <th scope="col">To</th>
+                                            <th scope="col">Date</th>
+                                            <th scope="col">Statue</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for leaves in leave_obj %}
+                                        <tr>
+                                            <th scope="row">{{forloop.counter}}</th>
+                                            <td>
+                                                {% if user.is_adminstrator %}
+                                                <a class="leave_app" id="leaveape{{leaves.pk}}" href="" data-toggle="modal"
+                                                    data-target="#applydisplayLeave{{leaves.pk}}"
+                                                    style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{leaves.subject}}
+                                                    {% if leaves.new_leave %}
+                                                    <span id="new_leaveapp{{leaves.pk}}"><b style="color: red;" class="glow">
+                                                            New</b></span>
+                                                    {% endif %}
+                                                </a>
+                                                {% else %}
+                                                <a class="leave_app1" id="leaveapa{{leaves.pk}}" href="" data-toggle="modal"
+                                                    data-target="#applydisplayLeave{{leaves.pk}}"
+                                                    style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{leaves.subject}}
+                                                    {% if leaves.reply %}
+                                                    <span id="new_leaveapp1{{leaves.pk}}"><b style="color: red;" class="glow">
+                                                            {{leaves.status}}</b></span>
+                                                    {% endif %}
+                                                </a>
+                                                {% endif %}
+                                                
+                                            </td>
+                                            <td>{{leaves.from_user_name}}</td>
+                                            <td>{{leaves.to}}</td>
+                                            <td>{{leaves.applied_date}}</td>
+                                            <td>{{leaves.status}}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!--leave application end -->
                     </div>
 
                 </div>
@@ -740,6 +854,167 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
+
+    <!-- leave application Modal -->
+    <div class="modal fade" id="applyLeave" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="display: inline-block; padding-bottom: 0; ">
+                    <h5 class="modal-title" style="margin-bottom: 0; font-weight:bold;color:tomato;"
+                        id="exampleModalLabel">Leave Application</h5>
+                    <h6 class="mb-2" style="margin-bottom: 0;">cl = {{value.cl}} and sl = {{value.sl}}</h6>
+                    
+                    <button type="button" style="position: absolute; top: 15px; right: 15px;" class="close"
+                        data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{% url 'apply_leave' %}" method="POST">{% csrf_token %}
+                    <div class="modal-body">
+                        <input type="hidden" id="from_value" name="from_value" value="{{user.pk}}">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="cl_or_sl" id="inlineRadio1" value="CL" required>
+                            <label class="form-check-label" for="inlineRadio1">CL</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="cl_or_sl" id="inlineRadio2" value="SL">
+                            <label class="form-check-label" for="inlineRadio2">SL</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject123">Subject</label>
+                            <input required type="text" name="subject" class="form-control" id="subject123"
+                                aria-describedby="emailHelp">
+                        </div>
+                        <div class="form-group">
+                            <label for="body123">Body</label>
+                            <textarea required class="form-control" name="body" id="body123" rows="12"></textarea>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="basic-addon1">Day/s</span>
+                            </div>
+                            <input required type="text" id="leavedays" name="days" class="form-control" placeholder="No. of Days" title="Enter number of days according to your CL or SL" aria-label="Days" aria-describedby="basic-addon1">
+                          </div>
+                          <div id="showError"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button id="leavebtn" type="submit" class="btn btn-primary">Apply</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- leave application display Modal -->
+    {% for leaves in leave_obj %}
+    <div class="modal fade" id="applydisplayLeave{{leaves.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Leave Application</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form>
+                    <div class="modal-body">
+                        <input type="hidden" id="from_value" name="from_value" value="{{user.pk}}">
+                        <div class="form-group">
+                            <label for="subject123">Subject</label>
+                            <input disabled type="text" name="subject" class="form-control" id="subject123"
+                                aria-describedby="emailHelp" value="{{leaves.subject}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="body123">Body</label>
+                            <textarea disabled class="form-control" name="body" id="body123"
+                                rows="12">{{leaves.body}}</textarea>
+                        </div>
+                        {% if user.is_admin == True %}
+                        {% if leaves.message %}
+                        <div class="form-group">
+                            <label for="body123">Message by Administrator</label>
+                            <textarea disabled class="form-control" name="body" id="body123"
+                                rows="3">{{leaves.message}}</textarea>
+                        </div>
+                        {% endif %}
+                        {% endif %}
+                    </div>
+                    <div class="modal-footer">
+                        {% if user.is_adminstrator == True %}
+                        {% if leaves.status == "pending" %}
+                        <a href="" id="accepted{{leaves.pk}}" class="btn btn-success leavestatus1" data-toggle="modal"
+                            data-target="#accept">Accept</a>
+                        <a href="" id="rejected{{leaves.pk}}" class="btn btn-danger leavestatus2" data-toggle="modal"
+                            data-target="#reject">Reject</a>
+                        {% endif %}
+                        {% endif %}
+
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!--Accept-->
+    <div class="modal fade" id="accept" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Accept</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" action="{% url 'accept_or_reject' %}">{% csrf_token %}
+                    <div class="modal-body">
+                        <input type="hidden" id="leave_pk" name="leave_pk" value="{{user.pk}}">
+                        <input type="hidden" id="status_value" name="status_value" value="Accepted">
+                        <div class="form-group">
+                            <label for="message12">Message</label>
+                            <textarea class="form-control" name="message" id="message12" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Accept</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--reject-->
+    <div class="modal fade" id="reject" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Reject</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" action="{% url 'accept_or_reject' %}">{% csrf_token %}
+                    <div class="modal-body">
+                        <input type="hidden" id="leave_pk1" name="leave_pk" value="{{user.pk}}">
+                        <input type="hidden" id="status_value1" name="status_value" value="Rejected">
+                        <div class="form-group">
+                            <label for="message12">Message</label>
+                            <textarea class="form-control" name="message" id="message12" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger">Reject</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
@@ -845,17 +1120,18 @@
                     <div class="col-md-5 float-right">
                         {% if work.status != "completed" %}
                         {% if work.to != None and work.alert == False %}
-                        <a href="{% url 'alert' pk=work.pk %}" style="color: tomato;" class="float-right work_edit"><i class="fas fa-business-time fa-lg"></i></a>
+                        <a href="{% url 'alert' pk=work.pk %}" style="color: tomato;" class="float-right work_edit"><i
+                                class="fas fa-business-time fa-lg"></i></a>
                         {% endif %}
                         {% endif %}
 
                         {% if work.status != "pending..." and work.status != "completed" and work.status != "forwarded->" and work.status != "returned" %}
-                    
-                        <a href="#" style="margin-right: 15px;" class="float-right work_edit" data-toggle="modal" data-target="#EditModel"
-                            id="work{{work.pk}}"><i class="fas fa-edit fa-lg"></i></a>
+
+                        <a href="#" style="margin-right: 15px;" class="float-right work_edit" data-toggle="modal"
+                            data-target="#EditModel" id="work{{work.pk}}"><i class="fas fa-edit fa-lg"></i></a>
                         {% endif %}
                     </div>
-                    
+
                     {% endif %}
                     <div class="form-group">
                         <label for="inputTitle4">Work Title</label>
@@ -1063,7 +1339,8 @@
                     {% if from_work.forward_work.status != "completed" %}
                     {% if from_work.alert == False %}
                     <div class="col-md-5 float-right">
-                        <a href="{% url 'forward_alert' pk=from_work.pk %}" style="color: tomato;" class="float-right work_edit"><i class="fas fa-business-time fa-lg"></i></a>
+                        <a href="{% url 'forward_alert' pk=from_work.pk %}" style="color: tomato;"
+                            class="float-right work_edit"><i class="fas fa-business-time fa-lg"></i></a>
                     </div>
                     {% endif %}
                     {% endif %}
@@ -2047,7 +2324,7 @@
                             }
                         })
                     }
-                    if (data.alert){
+                    if (data.alert) {
                         $.ajax({
                             url: '{% url "new_work_clicked" %}',
                             data: {
@@ -2141,7 +2418,7 @@
 
 
         $(".ford_work_link").on("click", function () {
-            console.log('Clicking here');
+            
 
 
             id = this.id;
@@ -2236,7 +2513,7 @@
 
             // pk = id.slice(5,);
             var pk = $(this).data('pk');
-            
+
 
             $("#work_id").val(pk);
             $("#pk_val1").val(pk);
@@ -2249,6 +2526,192 @@
 
             $("#return_id").val(pk);
         });
+
+        $('.leavestatus1').on('click', function () {
+
+            id = this.id;
+            pk = id.slice(8,);
+
+            $("#leave_pk").val(pk);
+
+        });
+
+        $('.leavestatus2').on('click', function () {
+
+            id = this.id;
+            pk = id.slice(8,);
+
+            $("#leave_pk1").val(pk);
+
+        });
+
+        $('.leave_app').on('click',function () {
+
+            id = this.id;
+            pk = id.slice(8,);
+
+            $.ajax({
+                url: '{% url "leave_app_status" %}',
+                data: {
+                    'pk': pk
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.new_leave) {
+                        $.ajax({
+                            url: '{% url "leave_app_clicked" %}',
+                            data: {
+                                'pk': pk
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.new_leave) {
+                                    console.log('I am clicked.. pk');
+                                }
+                                else {
+                                    id = '#new_leaveapp' + pk;
+                                    leave_circle = '#leave_circle' + pk;
+                                    leave_text = '#leave_text' + pk;
+                                    $(id).hide();
+                                    $(leave_circle).hide();
+                                    $(leave_text).hide();
+                                    total = document.getElementById('total_notification').innerText;
+
+                                    new_total = parseInt(total) - 1;
+                                    if (new_total < 0) {
+                                        new_total = 0
+                                    }
+
+                                    document.getElementById('total_notification').innerText = new_total;
+                                }
+                            }
+                        })
+                    }
+                }
+            })
+        });
+
+
+        $('.leave_app1').on('click',function () {
+
+            id = this.id;
+            pk = id.slice(8,);
+
+            $.ajax({
+                url: '{% url "leave_app_status" %}',
+                data: {
+                    'pk': pk
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.reply) {
+                        $.ajax({
+                            url: '{% url "leave_app_clicked" %}',
+                            data: {
+                                'pk': pk
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.reply) {
+                                    console.log('I am clicked.. pk');
+                                }
+                                else {
+                                    id = '#new_leaveapp1' + pk;
+                                    leave_circle = '#leave_circle1' + pk;
+                                    leave_text = '#leave_text1' + pk;
+                                    $(id).hide();
+                                    $(leave_circle).hide();
+                                    $(leave_text).hide();
+                                    total = document.getElementById('total_notification').innerText;
+
+                                    new_total = parseInt(total) - 1;
+                                    if (new_total < 0) {
+                                        new_total = 0
+                                    }
+
+                                    document.getElementById('total_notification').innerText = new_total;
+                                }
+                            }
+                        })
+                    }
+                }
+            })
+        });
+
+        $(function(){
+            var cl_val = "{{value.cl}}";
+            var sl_val = "{{value.sl}}";
+            if ( parseInt(cl_val) <= 0 && parseInt(sl_val) <=0 ){
+                $('#leavebtn').prop('disabled', true);
+            }
+            else if(parseInt(cl_val) <= 0){
+                $('#inlineRadio1').prop('disabled', true);
+                
+            }
+            else if(parseInt(sl_val) <= 0){
+                $('#inlineRadio2').prop('disabled', true);
+            }
+        $('input[type="radio"]').click(function(){
+            
+        if ($(this).is(':checked'))
+        {
+            var abc = $(this).val();
+            
+            $('#leavedays').keyup(function(){
+
+                var day_val = $('#leavedays').val()
+                if (abc === "CL"){
+                    if (parseInt(day_val) > parseInt(cl_val)){
+                        $('#showError').html('you have to enter with in the range.');
+                        $('#showError').css('color','red');
+                        $('#leavebtn').prop('disabled', true);
+                        return false;
+                    }
+                    else if (parseInt(day_val) === 0){
+                        $('#showError').html('Correct your entry.');
+                        $('#showError').css('color','red');
+                        $('#leavebtn').prop('disabled', true);
+                        return false;
+                    }
+                    else{
+                        $('#showError').html('');
+                        $('#leavebtn').prop('disabled', false);
+                        return true;
+                    }
+                    
+                }
+                else if (abc === "SL"){
+
+                    if (parseInt(day_val) > parseInt(sl_val)){
+                        $('#showError').html('you have to enter with in the range.');
+                        $('#showError').css('color','red');
+                        $('#leavebtn').prop('disabled', true);
+                        return false;
+                    }
+                    else if (parseInt(day_val) === 0){
+                        $('#showError').html('Correct your entry.');
+                        $('#showError').css('color','red');
+                        $('#leavebtn').prop('disabled', true);
+                        return false;
+                    }
+                    else{
+                        $('#showError').html('');
+                        $('#leavebtn').prop('disabled', false);
+                        return true;
+                    }
+
+
+                }
+                
+
+            });
+            
+
+            
+        }
+        
+    });
+    });
 
     </script>
 
