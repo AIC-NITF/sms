@@ -89,11 +89,12 @@ def startup_register(request):
         msme_registered = request.POST['msme_registered']
         dspp_registered = request.POST['dspp_registered']
         legal_entity_register = request.POST['registrationdate']          
+        start_date_incubation = request.POST['joindate']          
 
         startup_img = request.FILES['startup_img']
         founder_img = request.FILES['founder_img']  
 
-        startup = StartUp.objects.create(account=user,startup_name=startup_name,email=email,legal_entity=legal_entity,founders_designation=founders_designation,city=city,website=website,sector=sector,team_members=team_members,location=location,contact_no=contact_no,comp_identification_no=comp_identification_no,inubatee_level=inubatee_level,operational_model=operational_model,type_of_incubatee=type_of_incubatee,women_led_startup=women_led_startup,gov_program=gov_program,msme_registered=msme_registered,dspp_registered=dspp_registered,legal_entity_register=legal_entity_register,founder_img=founder_img,startup_img=startup_img) 
+        startup = StartUp.objects.create(account=user,startup_name=startup_name,email=email,legal_entity=legal_entity,founders_designation=founders_designation,city=city,website=website,sector=sector,team_members=team_members,location=location,contact_no=contact_no,comp_identification_no=comp_identification_no,inubatee_level=inubatee_level,operational_model=operational_model,type_of_incubatee=type_of_incubatee,women_led_startup=women_led_startup,gov_program=gov_program,msme_registered=msme_registered,dspp_registered=dspp_registered,legal_entity_register=legal_entity_register,start_date_incubation=start_date_incubation,founder_img=founder_img,startup_img=startup_img,team_head=full_name) 
         startup.save()
         messages.add_message(request, messages.INFO, 'Startup created successfully.')
 

@@ -8,6 +8,47 @@ class StartUpForm(forms.ModelForm):
         model = StartUp
         exclude = ['account']
         fields = ('__all__')
+        CHOICES = [
+            ('Yes','Yes'),
+            ('No','No'),
+        ]
+
+        INCUBATEE = [
+            ('Physical','Physical'),
+            ('Virtual','Virtual'),
+        ]
+
+        INCUBATEELEBEL = [
+            ('Idation','Idation'),
+            ('POC','POC'),
+            ('Prototype','Prototype'),
+            ('Minimum Vaiable Product','Minimum Vaiable Product'),
+            ('Commercialized','Commercialized'),
+        ]
+
+        OPERATIONALMODEL = [
+            ('Product Manufacturing','Product Manufacturing'),
+            ('Service Delivery','Service Delivery'),
+            ('Aggregation Platform','Aggregation Platform'),
+            ('Other','Other'),
+        ]
+
+        SECTOR = [
+            ('Agriculture and Allied Fields','Agriculture and Allied Fields'),
+            ('Electricity, New and Renewable energy and Environment sustainability','Electricity, New and Renewable energy and Environment sustainability'),
+            ('Education','Education'),
+            ('Health and Pharmaceuticals','Health and Pharmaceuticals'),
+            ('Water Sanitation and Solid waste management','Water Sanitation and Solid waste management'),
+        ]
+
+        GOVERNMENT = [
+            ('Women Empowerment ','Women Empowerment '),
+            ('Make In India','Make In India'),
+            ('Swachh Bharat ','Swachh Bharat '),
+            ('Startup India','Startup India'),
+            ('Beti Bachao Beti padhao','Beti Bachao Beti padhao'),
+            ('None the above','None the above'),
+        ]
 
         widgets = {
             'email'                     : forms.EmailInput(attrs={'class':'form-control'}),
@@ -16,10 +57,24 @@ class StartUpForm(forms.ModelForm):
             'founders_designation'	    : forms.TextInput(attrs={'class':'form-control'}),
             'website'					: forms.TextInput(attrs={'class':'form-control'}),
             'city'					    : forms.TextInput(attrs={'class':'form-control'}),
-            'sector'					: forms.TextInput(attrs={'class':'form-control'}),
+            'sector'					: forms.Select(choices=SECTOR,attrs={'class':'form-control'}),
             'team_members'			    : forms.TextInput(attrs={'class':'form-control'}),
             'location'				    : forms.TextInput(attrs={'class':'form-control'}),
             'contact_no'				: forms.TextInput(attrs={'class':'form-control'}),
+            'team_head'				    : forms.TextInput(attrs={'class':'form-control'}),
+
+            'comp_identification_no'	: forms.TextInput(attrs={'class':'form-control'}),
+            'inubatee_level'			: forms.Select(choices=INCUBATEELEBEL,attrs={'class':'form-control'}),
+            'operational_model'		    : forms.Select(choices=OPERATIONALMODEL,attrs={'class':'form-control'}),
+            'type_of_incubatee'		    : forms.Select(choices=INCUBATEE,attrs={'class':'form-control'}),
+            'women_led_startup'		    : forms.Select(choices=CHOICES,attrs={'class':'form-control'}),
+            'gov_program'				: forms.Select(choices=GOVERNMENT,attrs={'class':'form-control'}),
+            'msme_registered'		    : forms.Select(choices=CHOICES,attrs={'class':'form-control'}),
+            'dspp_registered'		    : forms.Select(choices=CHOICES,attrs={'class':'form-control'}),
+            'legal_entity_register'		: forms.DateInput(attrs={'type': 'date','class':'form-control'}),
+            'start_date_incubation'		: forms.DateInput(attrs={'type': 'date','class':'form-control'}),
+            # 'startup_img'				: forms.FileInput(),
+            # 'founder_img'				: forms.FileInput(),	
         }
 
 

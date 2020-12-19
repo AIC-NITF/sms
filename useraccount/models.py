@@ -101,6 +101,7 @@ class StartUp(models.Model):
 	team_members			= models.CharField(max_length=100,null=True,blank=True)
 	location				= models.CharField(max_length=100,null=True,blank=True)
 	contact_no				= models.CharField(max_length=100,null=True,blank=True)
+	team_head				= models.CharField(max_length=100,null=True,blank=True)
 
 	comp_identification_no  = models.CharField(max_length=100,null=True,blank=True)
 	inubatee_level			= models.CharField(max_length=100,null=True,blank=True)
@@ -111,6 +112,8 @@ class StartUp(models.Model):
 	msme_registered			= models.CharField(max_length=10,null=True,blank=True)
 	dspp_registered			= models.CharField(max_length=10,null=True,blank=True)
 	legal_entity_register   = models.CharField(max_length=100,null=True,blank=True)
+	start_date_incubation   = models.CharField(max_length=100,null=True,blank=True)
+
 	startup_img				= models.ImageField(upload_to='images/',null=True,blank=True)
 	founder_img				= models.ImageField(upload_to='images/',null=True,blank=True)
 
