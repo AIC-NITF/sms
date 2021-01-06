@@ -78,4 +78,10 @@ urlpatterns = [
 
     path('leave_app_status',views.leave_app_status,name='leave_app_status'),
     path('leave_app_clicked',views.leave_app_clicked,name='leave_app_clicked'),
+
+    path('timein',views.timein,name='timein'),
+    path('timeout/<int:pk>',views.timeout,name='timeout'),
+
+    path('employee_message',views.employee_message,name='employee_message'),
+    path('timeoutall',views.timeoutall,name='timeoutall'),
 ]

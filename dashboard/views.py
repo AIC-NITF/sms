@@ -1,13 +1,13 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.http import HttpResponse,Http404,JsonResponse
-from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Return,TractionSheet,MoM,BlogPost,Query,LeaveApplication
+from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Return,TractionSheet,MoM,BlogPost,Query,LeaveApplication,Attendence,EmpMessage
 from .forms import StartUpForm,MonitorSheetEditForm,TractionSheetEditForm
 
 from django.contrib.auth.models import auth
 import random
 from django.core.mail import send_mail
 from django.contrib import messages
-
+from datetime import date
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -44,8 +44,23 @@ def dashboard(request):
             return_obj = Return.objects.filter(to=value).order_by('-return_date')
 
             leave_obj = LeaveApplication.objects.all().order_by('-applied_date')
+            emp_messages = EmpMessage.objects.all().order_by('-created_date')
 
-            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'ford_status':ford_status,'pending_status':pending_status,'completed_status':completed_status,'return_obj':return_obj,'forward_notifications':forward_notifications,'return_notifications':return_notifications,'total_notifications':total_notifications,'leave_obj':leave_obj,'leave_notifications':leave_notifications})
+            admin_val = Admin.objects.all()
+            admin_lists = list(admin_val)
+            
+            lis = []
+            for admin_list in admin_lists:
+                if admin_list.account.is_superadmin == False and admin_list.account.is_adminstrator == False:
+                    lis.append(admin_list)
+            
+            for l in lis:
+                abc=l.attendence_set.all().order_by('-date')
+
+            today = date.today()
+            attendence_obj = Attendence.objects.filter(timeout=None,date=today)
+
+            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'ford_status':ford_status,'pending_status':pending_status,'completed_status':completed_status,'return_obj':return_obj,'forward_notifications':forward_notifications,'return_notifications':return_notifications,'total_notifications':total_notifications,'leave_obj':leave_obj,'leave_notifications':leave_notifications,'admin_lis':lis,'emp_messages':emp_messages,'attendence_obj':attendence_obj})
         else:
             admin_obj = user.admin_set.all()[0]
             works = admin_obj.workgenerator_set.all().order_by('-date_of_creation')
@@ -70,14 +85,25 @@ def dashboard(request):
             work_notifications = admin_obj.workgenerator_set.filter(new_work=True).order_by('-date_of_creation')
             forward_notifications = admin_obj.forward_set.filter(new_forward=True).order_by('-date_of_forward')
             return_notifications = Return.objects.filter(to=value,new_return=True).order_by('-return_date')
-            leave_noti = LeaveApplication.objects.filter(reply=True).order_by('-applied_date')
+            leave_noti = LeaveApplication.objects.filter(reply=True,from_user=admin_obj).order_by('-applied_date')
             total_notifications = len(work_notifications) + len(forward_notifications) + len(return_notifications) + len(leave_noti)
 
             obj = request.user
             leave_obj = LeaveApplication.objects.filter(from_user_name=obj.fullname).order_by('-applied_date')
+
+            emp_messages = EmpMessage.objects.all().order_by('-created_date')
+
+            timeout_val=None
+            timeobj = Attendence.objects.filter(employee=admin_obj)
+            today = date.today()
+            if timeobj:
+                timeout_val = Attendence.objects.filter(employee=admin_obj).order_by('-date')[0]
+                if today == timeout_val.date:
+                    timeout_val = timeout_val
+                else:
+                    timeout_val = None
             
-            
-            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'pending_status':pending_status,'assign_pending_status':assign_pending_status,'completed_status':completed_status,'assign_completed_status':assign_completed_status,'return_obj':return_obj,'work_notifications':work_notifications,'forward_notifications':forward_notifications,'return_notifications':return_notifications,'total_notifications':total_notifications,'leave_obj':leave_obj,'leave_noti':leave_noti})        
+            return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'pending_status':pending_status,'assign_pending_status':assign_pending_status,'completed_status':completed_status,'assign_completed_status':assign_completed_status,'return_obj':return_obj,'work_notifications':work_notifications,'forward_notifications':forward_notifications,'return_notifications':return_notifications,'total_notifications':total_notifications,'leave_obj':leave_obj,'leave_noti':leave_noti,'timeout_val':timeout_val,'emp_messages':emp_messages,'today':today})        
         
     else:
         user = request.user
@@ -1029,7 +1055,7 @@ def set_password(request):
 
 def apply_leave(request):
     if request.method == 'POST':
-        subject = request.POST['subject']
+        # subject = request.POST['subject']
         body = request.POST['body']
         from_user_pk = request.POST['from_value']
         cl_or_sl = request.POST['cl_or_sl']
@@ -1039,16 +1065,19 @@ def apply_leave(request):
         from_user = from_user_obj.admin_set.all()[0]
         to_obj = Account.objects.filter(is_adminstrator = True)[0]
         to = to_obj.fullname
-        cl_or_sl = request.POST['cl_or_sl']
-        leave_obj = LeaveApplication.objects.create(from_user=from_user,from_user_name=from_user.account.fullname,to=to,subject=subject,body=body,status="pending",cl_or_sl=cl_or_sl,days=days) 
+        leave_obj = LeaveApplication.objects.create(from_user=from_user,from_user_name=from_user.account.fullname,to=to,body=body,status="pending",cl_or_sl=cl_or_sl,days=days) 
         leave_obj.save()
 
         user_obj = request.user
         user = user_obj.admin_set.all()[0]
         if leave_obj.cl_or_sl == "CL":
+            leave_obj.subject = "CASUAL LEAVE"
+            leave_obj.save()
             user.cl = int(user.cl) - int(days)
             user.save()
         else:
+            leave_obj.subject = "SICK LEAVE"
+            leave_obj.save()
             user.sl = int(user.sl) - int(days)
             user.save()
         messages.add_message(request, messages.INFO, 'Successfully sended.')
@@ -1077,3 +1106,110 @@ def accept_or_reject(request):
         messages.add_message(request, messages.INFO, 'Successfully sended.')
 
         return redirect(dashboard)
+
+
+def timein(request):
+    user_obj = request.user
+    user = user_obj.admin_set.all()[0]
+    time = Attendence.objects.create(employee=user)
+    time.time_status = False
+    time.save()
+    messages.add_message(request, messages.INFO, 'Time IN')
+    return redirect(dashboard)
+
+def timeout(request,pk):
+    obj = get_object_or_404(Attendence,pk=int(pk))
+    obj.update_timeout()
+    h1 = int(obj.timein.strftime("%H"))
+    m1 = int(obj.timein.strftime("%M"))
+    s1 = int(obj.timein.strftime("%S"))
+
+
+    h2 = int(obj.timeout.strftime("%H"))
+    m2 = int(obj.timeout.strftime("%M"))
+    s2 = int(obj.timeout.strftime("%S"))
+
+    H = M = S = 0
+
+    if s2>=s1:
+        S = s2 - s1
+    else:
+        S = (60+s2) - s1
+        m2 = m2 - 1
+    if m2>=m1:
+        M = m2 - m1
+    else:
+        M = (60+m2) - m1
+        h2 = h2 - 1
+
+    if h2>=h1:
+        H = h2 - h1
+    else:
+        H = 0
+    total = str(H) +":" +str(M) +":" +str(S)
+
+    obj.update_total_time(total)             
+    messages.add_message(request, messages.INFO, 'Time OUT')
+    return redirect(dashboard)
+
+
+def timeoutall(request):
+    today = date.today()
+    obj_list = Attendence.objects.filter(timeout=None,date=today)
+   
+    for lis in obj_list:
+        lis.update_timeout()
+        h1 = int(lis.timein.strftime("%H"))
+        m1 = int(lis.timein.strftime("%M"))
+        s1 = int(lis.timein.strftime("%S"))
+
+        h2 = int(lis.timeout.strftime("%H"))
+        m2 = int(lis.timeout.strftime("%M"))
+        s2 = int(lis.timeout.strftime("%S"))
+
+        H = M = S = 0
+        if s2>=s1:
+            S = s2 - s1
+        else:
+            S = (60+s2) - s1
+            m2 = m2 - 1
+        if m2>=m1:
+            M = m2 - m1
+        else:
+            M = (60+m2) - m1
+            h2 = h2 - 1
+
+        if h2>=h1:
+            H = h2 - h1
+        else:
+            H = 0
+        total1 = str(H) +":" +str(M) +":" +str(S)
+
+        lis.update_total_time(total1)
+    messages.add_message(request, messages.INFO, 'All Employees Time OUT')
+    return redirect(dashboard)
+
+
+def employee_message(request):
+    if request.method == 'POST':
+        message = request.POST['message']
+
+        mess = EmpMessage.objects.create(message=message)
+
+        admin_val = Admin.objects.all()
+        
+        lis = []
+        for admin_list in admin_val:
+            if admin_list.account.is_superadmin == False and admin_list.account.is_adminstrator == False:
+                lis.append(admin_list.email)
+
+        send_mail(
+                'Message From Administrator',
+                message,
+                'support@aicnalanda.com',
+                lis,
+                fail_silently=False,
+            )
+    messages.add_message(request, messages.INFO, 'Message sended to all Employees')
+    return redirect(dashboard)
+    

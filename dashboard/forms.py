@@ -22,7 +22,7 @@ class StartUpForm(forms.ModelForm):
             ('Idation','Idation'),
             ('POC','POC'),
             ('Prototype','Prototype'),
-            ('Minimum Vaiable Product','Minimum Vaiable Product'),
+            ('Minimum Vaiable Product','Minimum Viable Product'),
             ('Commercialized','Commercialized'),
         ]
 

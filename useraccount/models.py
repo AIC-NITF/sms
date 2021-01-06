@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.utils import timezone
-
+from datetime import datetime
 
 class MyAccountManager(BaseUserManager):
 	def create_user(self, username, password=None,**kwargs):
@@ -440,3 +440,28 @@ class LeaveApplication(models.Model):
 	def update_status(self,status):
 		self.status = status
 		self.save()
+
+class Attendence(models.Model):
+	employee			= models.ForeignKey(Admin,null=True,blank=True, on_delete=models.CASCADE)
+	date				= models.DateField(verbose_name='date', auto_now_add=True,null=True,blank=True)
+	timein				= models.TimeField(verbose_name='timein', auto_now_add=True,null=True,blank=True)
+	timeout				= models.TimeField(verbose_name='timeout',null=True,blank=True)
+	total_time			= models.CharField(max_length=50,null=True,blank=True)
+
+	time_status		    = models.BooleanField(default=True)
+
+	def update_timeout(self):
+		self.timeout = datetime.now()
+		self.time_status = True
+		self.save()
+	
+	def update_total_time(self,total):
+		self.total_time = total
+		self.save()
+
+class EmpMessage(models.Model):
+	message 			= models.CharField(max_length=1500,null=True,blank=True)
+	created_date		= models.DateTimeField(verbose_name='created date', auto_now_add=True,null=True,blank=True)
+
+	def __str__(self):
+		return self.created_date

@@ -52,6 +52,63 @@
                 text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
             }
         }
+        .emp_message{
+            position: relative;
+            left: 370px;
+        }
+        #timein{
+            position: relative;
+            left: 400px;
+        }
+        @media only screen and (min-width: 900px) {
+            .emp_message{
+            position: relative;
+            left: 135px;
+            }
+            #timein{
+            position: relative;
+            left: 155px;
+            }
+        }
+        @media only screen and (min-width: 1200px) {
+            .emp_message{
+            position: relative;
+            left: 250px;
+            }
+            #timein{
+            position: relative;
+            left: 250px;
+            }
+        }
+        @media only screen and (min-width: 1350px) {
+            .emp_message{
+            position: relative;
+            left: 315px;
+
+            }
+            #timein{
+            position: relative;
+            left: 375px;
+            }
+        }
+        @media only screen and (max-width: 768px) {
+            .newround{
+            width: 40px; 
+            height: 30px;
+            }
+            .emp_message{
+                margin-top:10px ;
+                position: relative;
+                left: 0;
+            }
+            #generatework{
+                margin-top:10px ;
+            }
+            #timein{
+            position: relative;
+            left: 0;
+            }
+        }
     </style>
 
 </head>
@@ -104,6 +161,13 @@
                     <a class="nav-link" id="v-pills-leave-tab" data-toggle="pill" href="#v-pills-leave" role="tab"
                         aria-controls="v-pills-leave" aria-selected="false"><i class="fas fa-fw fa-diagnoses"></i>Leave
                         Application</a>
+                    <a class="nav-link" id="v-pills-message-tab" data-toggle="pill" href="#v-pills-message" role="tab"
+                        aria-controls="v-pills-message" aria-selected="false"><i class="fas fa-fw fa-envelope-open-text"></i>Message</a>
+
+                    {% if user.is_adminstrator %}
+                    <a class="nav-link" id="v-pills-attendence-tab" data-toggle="pill" href="#v-pills-attendence" role="tab"
+                        aria-controls="v-pills-attendence" aria-selected="false"><i class="fas fa-fw fa-address-book"></i>Attendance</a>
+                    {% endif %}
                 </div>
             </li>
             <!-- Sidebar Toggler (Sidebar) -->
@@ -380,9 +444,62 @@
                             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                                 <h1>Work Status</h1>
                                 {% if user.is_adminstrator %}
-                                <a href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
+
+                                <a href="#" id="message_emp" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm emp_message"
+                                    data-toggle="modal" data-target="#employee_message"><i
+                                        class="fas fa-paper-plane fa-sm text-white-50 pr-1"></i>Message</a>
+
+                                <a href="#" id="generatework" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
                                     data-toggle="modal" data-target="#staticBackdrop"><i
                                         class="fas fa-download fa-sm text-white-50"></i> Generate Work/Job</a>
+                                
+                                {% else %}
+                                    {% if timeout_val == None %}
+                                    <button type="button" class="btn" id="timeinid">
+                                    <a href="{% url 'timein' %}" id="timein" class="btn btn-sm btn-primary shadow-sm"
+                                        ><i
+                                            class="fas fa-download fa-sm text-white-50"></i> Time IN</a>
+                                    </button>
+                                    <button disabled type="button" class="btn" id="timeoutid">
+                                        <a href="#" id="timeout" disabled class="btn btn-sm btn-primary shadow-sm" style="pointer-events: none;"
+                                                ><i
+                                                    class="fas fa-download fa-sm text-white-50"></i> Time Out</a>
+                                    </button>
+                                    {% else %}
+                                        {% if timeout_val.date == today and timeout_val.time_status == True %}
+                                            <button disabled type="button" class="btn" id="timeinid">
+                                                <a href="#" id="timein" style="pointer-events: none;" class="btn btn-sm btn-primary shadow-sm"
+                                                    ><i
+                                                        class="fas fa-download fa-sm text-white-50"></i> Time IN</a>
+                                            <button disabled type="button" class="btn" id="timeoutid">
+                                                <a href="#" id="timeout" disabled class="btn btn-sm btn-primary shadow-sm" style="pointer-events: none;"
+                                                    ><i
+                                                        class="fas fa-download fa-sm text-white-50"></i> Time Out</a>
+                                    
+                                        {% elif timeout_val.time_status %}
+                                        <button type="button" class="btn" id="timeinid">
+                                            <a href="{% url 'timein' %}" id="timein" class="btn btn-sm btn-primary shadow-sm"
+                                                ><i
+                                                    class="fas fa-download fa-sm text-white-50"></i> Time IN</a>
+                                        </button>
+                                        <button disabled type="button" class="btn" id="timeoutid">
+                                            <a href="#" id="timeout" class="btn btn-sm btn-primary shadow-sm" style="pointer-events: none;"
+                                                    ><i
+                                                        class="fas fa-download fa-sm text-white-50"></i> Time Out</a>
+                                        </button>
+                                        {% else %}
+                                        <button disabled type="button" class="btn" id="timeinid">
+                                            <a href="#" id="timein" style="pointer-events: none;" class="btn btn-sm btn-primary shadow-sm"
+                                                ><i
+                                                    class="fas fa-download fa-sm text-white-50"></i> Time IN</a>
+                                        </button>
+                                        <button type="button" class="btn" id="timeoutid">
+                                            <a href="{% url 'timeout' pk=timeout_val.pk %}" id="timeout" disabled class="btn btn-sm btn-primary shadow-sm"
+                                                    ><i
+                                                        class="fas fa-download fa-sm text-white-50"></i> Time Out</a>
+                                        </button>
+                                        {% endif %}
+                                    {% endif %}
                                 {% endif %}
                             </div>
                             <!-- content -->
@@ -647,9 +764,9 @@
 
 
 
-                                <div class="tab-pane fade" id="action2" role="tabpanel" aria-labelledby="action2-tab">
+                                <!-- <div class="tab-pane fade" id="action2" role="tabpanel" aria-labelledby="action2-tab">
                                     <h1>action2</h1>
-                                </div>
+                                </div> -->
 
                                 <div class="tab-pane fade" id="pills-returned" role="tabpanel"
                                     aria-labelledby="pills-returned-tab">
@@ -840,6 +957,93 @@
                             </div>
                         </div>
                         <!--leave application end -->
+                        <!--Attendence -->
+                        <div class="tab-pane fade show" id="v-pills-attendence" role="tabpanel"
+                            aria-labelledby="v-pills-attendence-tab">
+                            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                <h1>Attendance</h1>
+                                {% if attendence_obj %}
+                                <a href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#timeout_all_emp"><i
+                                        class="fas fa-download fa-sm text-white-50"></i> Time Out All </a>
+                                {% else %}
+                                <button disabled type="button" class="btn">
+                                    <a href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="pointer-events: none;"><i
+                                        class="fas fa-download fa-sm text-white-50"></i> Time Out All </a>
+                                </button>
+                                {% endif %}
+                            </div>
+                            <div class="table-responsive-lg">
+                                <table class="table">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col">#SLNO</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Date</th>
+                                            <th scope="col">Today's Time-IN</th>
+                                            <th scope="col">Today's Time-OUT</th>
+                                            <th scope="col">Total Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for admin in admin_lis %}
+                                        <tr>
+                                            <th scope="row">{{forloop.counter}}</th>
+                                            <td>
+                                                <a class="attendence_app" href="" data-toggle="modal"
+                                                    data-target="#attendence{{admin.pk}}"
+                                                    style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{admin.account.fullname}}
+                                                </a>
+                                            </td>
+                                            {% for val in admin.attendence_set.all|dictsortreversed:"date"|slice:":1" %}
+                                                <td>{{val.date}}</td>
+                                                <td>{{val.timein}}</td>
+                                                <td>{{val.timeout}}</td>
+                                                <td>{{val.total_time}}</td>
+                                            {% endfor %}
+                                            <!--<td><span><img class="rounded-circle newround" src="{{admin.admin_img.url}}" width="50" height="50" alt=""></span></td>
+                                             <td>{{leaves.status}}</td> -->
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!--end Attendence -->
+
+                        <!--Emp Message -->
+                        <div class="tab-pane fade show" id="v-pills-message" role="tabpanel"
+                            aria-labelledby="v-pills-message-tab">
+                            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                <h1>Message</h1>
+                            </div>
+                            <div class="table-responsive-lg">
+                                <table class="table">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col">#SLNO</th>
+                                            <th scope="col">Message</th>
+                                            <th scope="col">Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for message in emp_messages %}
+                                        <tr>
+                                            <th scope="row">{{forloop.counter}}</th>
+                                            <td>
+                                                <a class="emp_message_app" href="" data-toggle="modal"
+                                                    data-target="#emp_message{{message.pk}}"
+                                                    style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{message.message|slice:":10"}}...
+                                                </a>
+                                            </td>
+                                            <td>{{message.created_date}}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!--end message -->
+
                     </div>
 
                 </div>
@@ -854,6 +1058,100 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
+
+    <!--Time out all Employees-->
+    <div class="modal fade" id="timeout_all_emp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Time Out All Employees</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    <div class="modal-body">
+                        <p>DO YOU WANT TO TIME-OUT ALL EMPLOYEES??</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{% url 'timeoutall' %}" class="btn btn-primary">Time Out All </a>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Employee Message-->
+    <div class="modal fade" id="employee_message" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Employee Message</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" action="{% url 'employee_message' %}">{% csrf_token %}
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="empmessage12">Message</label>
+                            <textarea class="form-control" name="message" id="empmessage12" rows="12"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Send</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--Attendence display-->
+    {% for lis in admin_lis %}
+    <div class="modal fade" id="attendence{{lis.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Attendance</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    <div class="modal-body">
+                        <div class="table-responsive-lg">
+                            <table class="table">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">#SLNO</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Time IN</th>
+                                        <th scope="col">Time OUT</th>
+                                        <th scope="col">Total Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for val in lis.attendence_set.all|dictsortreversed:"date" %}
+                                    <tr>
+                                        <th scope="row">{{forloop.counter}}</th>
+                                        <td>{{val.date}}</td>
+                                        <td>{{val.timein}}</td>
+                                        <td>{{val.timeout}}</td>
+                                        <td>{{val.total_time}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
 
     <!-- leave application Modal -->
     <div class="modal fade" id="applyLeave" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -880,11 +1178,11 @@
                             <input class="form-check-input" type="radio" name="cl_or_sl" id="inlineRadio2" value="SL">
                             <label class="form-check-label" for="inlineRadio2">SL</label>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="subject123">Subject</label>
                             <input required type="text" name="subject" class="form-control" id="subject123"
                                 aria-describedby="emailHelp">
-                        </div>
+                        </div> -->
                         <div class="form-group">
                             <label for="body123">Body</label>
                             <textarea required class="form-control" name="body" id="body123" rows="12"></textarea>
@@ -906,6 +1204,35 @@
             </div>
         </div>
     </div>
+
+    <!-- Emp Message display Modal -->
+    {% for message in emp_messages %}
+    <div class="modal fade" id="emp_message{{message.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Message</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form>
+                    <div class="modal-body">
+                        Date:-{{message.created_date}}
+                        <div class="form-group">
+                            <label for="subject123">Message</label>
+                            <textarea disabled class="form-control" name="body" id="empmessage123" rows="12">{{message.message}}</textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 
     <!-- leave application display Modal -->
     {% for leaves in leave_obj %}
@@ -2711,6 +3038,14 @@
         }
         
     });
+    });
+
+    $('#timeinid').on('click', function(){
+        $('#timeinid').prop('disabled', true);
+        $('#timein').css('pointer-events','none');
+        console.log("hello")
+
+        $('#timeoutid').prop('disabled', false);
     });
 
     </script>
