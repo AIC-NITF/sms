@@ -171,9 +171,9 @@
                     <a class="nav-link" id="v-pills-monitor-tab" data-toggle="pill" href="#v-pills-monitor" role="tab"
                         aria-controls="v-pills-monitor" aria-selected="false"><i class="fas fa-fw fa-paste"></i> Monitor
                         Sheet</a>
-                    <a class="nav-link" id="v-pills-traction-tab" data-toggle="pill" href="#v-pills-traction" role="tab"
+                    <!-- <a class="nav-link" id="v-pills-traction-tab" data-toggle="pill" href="#v-pills-traction" role="tab"
                         aria-controls="v-pills-traction" aria-selected="false"><i class="fas fa-fw fa-sticky-note"></i>
-                        Traction Sheet</a>
+                        Traction Sheet</a> -->
                     <a class="nav-link" id="v-pills-minute-tab" data-toggle="pill" href="#v-pills-minute" role="tab"
                         aria-controls="v-pills-minute" aria-selected="false"><i class="fas fa-fw fa-handshake"></i>
                         Minute Of Meeting</a>
@@ -579,10 +579,10 @@
                             <div class="courses-container">
                                 <div class="course">
                                     <div class="course-preview">
-                                        <h2>Month {{ forloop.counter }}</h2>
+                                        <h2>Month {{ forloop.revcounter }}</h2>
                                     </div>
                                     <div class="course-info">
-                                        <h2>Monitor Sheet{{ forloop.counter }}</h2>
+                                        <h2>Monitor Sheet{{ forloop.revcounter }}</h2>
                                         <h6>{{value.date_of_filling}}</h6>
                                         <a href="{% url 'monitor_report' pk=value.pk %}" class="btn1">View Report</a>
                                     </div>
@@ -591,39 +591,13 @@
                             {% endfor %}
                         </div>
                         <!-- Monitor Sheet End -->
-                        <!-- TRACTION REPORT -->
-                        <div class="tab-pane fade" id="v-pills-traction" role="tabpanel"
-                            aria-labelledby="v-pills-traction-tab">
-                            <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                                <h3>Traction sheet</h3>
-                                {% if user.is_startup %}
-                                <a href="{% url 'traction_form' %}"
-                                    class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                        class="fas fa-download fa-sm text-white-50"></i> Generate Traction Report</a>
-                                {% endif %}
-                            </div>
-                            {% for value in traction_values %}
-                            <div class="courses-container">
-                                <div class="course">
-                                    <div class="course-preview">
-                                        <h2>Month {{ forloop.counter }}</h2>
-                                    </div>
-                                    <div class="course-info">
-                                        <h2>Traction Sheet{{ forloop.counter }}</h2>
-                                        <h6>{{value.generated_date}}</h6>
-                                        <a href="{% url 'traction_report' pk=value.pk %}" class="btn1">View Report</a>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-
+                        
                         <div class="tab-pane fade" id="v-pills-minute" role="tabpanel"
                             aria-labelledby="v-pills-minute-tab">
                             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                                 <h3>Minute Of Meeting</h3>
                                 {% if user.is_superadmin == True or user.is_startup %}
-                                <a href="{% url 'traction_form' %}"
+                                <a href="#"
                                     class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
                                     data-target="#sendMoM"><i class="fas fa-download fa-sm text-white-50"></i> Send
                                     MoM</a>

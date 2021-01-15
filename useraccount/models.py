@@ -142,66 +142,44 @@ class TeamMembers(models.Model):
 
 
 
-class MonitorSheet(models.Model):
+
+class MonitorSheetReport(models.Model):
 	connect_startup			      	= models.ForeignKey(StartUp, on_delete=models.CASCADE)
-	company_name					= models.CharField(max_length=100,null=True,blank=True)
-	lead_entreprenure				= models.CharField(max_length=100,null=True,blank=True)
-	designation 					= models.CharField(max_length=100,null=True,blank=True)
-	address 						= models.CharField(max_length=2000,null=True,blank=True)
-	website 						= models.CharField(max_length=100,null=True,blank=True)
-	email							= models.CharField(max_length=100,null=True,blank=True)
-	contact_no						= models.CharField(max_length=20,null=True,blank=True)
-	product_service					= models.CharField(max_length=200,null=True,blank=True)
-	industry						= models.CharField(max_length=200,null=True,blank=True)
-	competitors						= models.CharField(max_length=200,null=True,blank=True)
-	incubation_period				= models.CharField(max_length=200,null=True,blank=True)
-	chef_monitor					= models.CharField(max_length=200,null=True,blank=True)
-	share_holder_pattern			= models.CharField(max_length=200,null=True,blank=True)
-	authorized_capital_amount		= models.CharField(max_length=200,null=True,blank=True)
-	paid_up_capital_amount			= models.CharField(max_length=200,null=True,blank=True)
-	date_of_filling					= models.DateTimeField(verbose_name='date of filling', auto_now_add=True,null=True,blank=True)
+
+	ips_till_date					= models.CharField(max_length=100,null=True,blank=True)
+	recognisation_till_date			= models.CharField(max_length=100,null=True,blank=True)
+	funds_till_date					= models.CharField(max_length=100,null=True,blank=True)
+	jobs_created_till_date 			= models.CharField(max_length=100,null=True,blank=True)
+	sales_till_date					= models.CharField(max_length=100,null=True,blank=True)
+	revenew_till_date				= models.CharField(max_length=100,null=True,blank=True)
+	expendicture_till_date			= models.CharField(max_length=100,null=True,blank=True)
+
+	ips_last_month					= models.CharField(max_length=100,null=True,blank=True)
+	recognisation_last_month		= models.CharField(max_length=100,null=True,blank=True)
+	funds_last_month				= models.CharField(max_length=100,null=True,blank=True)
+	jobs_created_last_month 		= models.CharField(max_length=100,null=True,blank=True)
+	sales_last_month				= models.CharField(max_length=100,null=True,blank=True)
+	revenew_last_month				= models.CharField(max_length=100,null=True,blank=True)
+	expendicture_last_month			= models.CharField(max_length=100,null=True,blank=True)
+
+	problems						= models.CharField(max_length=2000,null=True,blank=True)
+	oppertunities					= models.CharField(max_length=2000,null=True,blank=True)
+	out_reach						= models.CharField(max_length=2000,null=True,blank=True)
+	intervention 					= models.CharField(max_length=2000,null=True,blank=True)
+	partnership_mou					= models.CharField(max_length=1000,null=True,blank=True)
 	
-	mou								= models.CharField(max_length=200,null=True,blank=True)
-	incubation_fees					= models.CharField(max_length=200,null=True,blank=True)
-	chef_monitor_assign				= models.CharField(max_length=200,null=True,blank=True)
-	ssha_signed						= models.CharField(max_length=20,null=True,blank=True)
-	share_transferred				= models.CharField(max_length=200,null=True,blank=True)
-	share_certificates				= models.CharField(max_length=200,null=True,blank=True)
-	no_of_seats_taken				= models.CharField(max_length=200,null=True,blank=True)
-	rent_of_seats					= models.CharField(max_length=200,null=True,blank=True)
-	capital_invested				= models.CharField(max_length=200,null=True,blank=True)
-	status_of_registration			= models.CharField(max_length=200,null=True,blank=True)
-	current_traction				= models.CharField(max_length=200,null=True,blank=True)
-	status_of_product_service 		= models.CharField(max_length=200,null=True,blank=True)
-	status_of_operations 			= models.CharField(max_length=200,null=True,blank=True)
-	current_team_member 			= models.CharField(max_length=200,null=True,blank=True)
-	mou_date 						= models.CharField(max_length=50,null=True,blank=True)
-	ssha_date 						= models.CharField(max_length=50,null=True,blank=True)
-	
-	ipr_status 						= models.CharField(max_length=200,null=True,blank=True)
-	sales 							= models.CharField(max_length=200,null=True,blank=True)
-	revenue 						= models.CharField(max_length=200,null=True,blank=True)
-	pipeline 						= models.CharField(max_length=200,null=True,blank=True)
-	current_client 					= models.CharField(max_length=200,null=True,blank=True)
-	profit_earned 					= models.CharField(max_length=200,null=True,blank=True)
-	new_team_member 				= models.CharField(max_length=200,null=True,blank=True)
-	no_of_employees 				= models.CharField(max_length=200,null=True,blank=True)
-	problem_faced 					= models.CharField(max_length=200,null=True,blank=True)
-	option 							= models.CharField(max_length=200,null=True,blank=True)
-	marketing 						= models.CharField(max_length=2000,null=True,blank=True)
-	helped 							= models.CharField(max_length=2000,null=True,blank=True)
-	remarks 						= models.CharField(max_length=2000,null=True,blank=True)
-	
-	name_date 						= models.CharField(max_length=200,null=True,blank=True)
-	feture_plan 					= models.CharField(max_length=2000,null=True,blank=True)
-	action 							= models.CharField(max_length=2000,null=True,blank=True)
-	required_help 					= models.CharField(max_length=2000,null=True,blank=True)
+	monitor_meeting					= models.CharField(max_length=1000,null=True,blank=True)
+	action_plan						= models.CharField(max_length=2000,null=True,blank=True)
+	help_required					= models.CharField(max_length=2000,null=True,blank=True)
+
+	first_atempt					= models.BooleanField(default=True)
 
 	allow_edit 						= models.BooleanField(default=False)
+	date_of_filling					= models.DateTimeField(verbose_name='report date_of_filling', auto_now_add=True)
 
 
 	def __str__(self):
-		return self.company_name
+		return self.connect_startup.startup_name
 
 	def allow_edit_option(self):
 		self.allow_edit = True
@@ -214,40 +192,12 @@ class MonitorSheet(models.Model):
 	def update_date(self):
 		self.date_of_filling = timezone.now()
 		self.save()
-
-
-class TractionSheet(models.Model):
-	connect_startup			      	= models.ForeignKey(StartUp, on_delete=models.CASCADE)
-	total_order						= models.CharField(max_length=200,null=True,blank=True)
-	average_packet_size				= models.CharField(max_length=200,null=True,blank=True)
-	total_revenue_of_month			= models.CharField(max_length=200,null=True,blank=True)
-	total_customers_served			= models.CharField(max_length=200,null=True,blank=True)
-	total_expense					= models.CharField(max_length=200,null=True,blank=True)
-	market_outreach					= models.CharField(max_length=200,null=True,blank=True)
-	repeate_customers				= models.CharField(max_length=200,null=True,blank=True)
-	total_revenue					= models.CharField(max_length=200,null=True,blank=True)
-	direct_job_created				= models.CharField(max_length=200,null=True,blank=True)
-	indirect_job_created			= models.CharField(max_length=200,null=True,blank=True)
-	profit							= models.CharField(max_length=200,null=True,blank=True)
-
-	allow_edit 						= models.BooleanField(default=False)
-	generated_date					= models.DateTimeField(verbose_name='report generated date', auto_now_add=True)
-
-
-	def __str__(self):
-		return self.connect_startup.startup_name
-
-	def allow_edit_option(self):
-		self.allow_edit = True
+	def update_first_attempt(self):
+		self.first_atempt = False
 		self.save()
 
-	def not_allow_edit_option(self):
-		self.allow_edit = False
-		self.save()
 
-	def update_date(self):
-		self.generated_date = timezone.now()
-		self.save()
+
 
 
 

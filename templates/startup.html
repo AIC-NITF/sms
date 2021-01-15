@@ -36,7 +36,7 @@
                     <div class="card-body">
                         {% for val in account.startup_set.all %}
                         <img src="{{val.startup_img.url}}" alt="#"
-                            class="img-fluid rounded-circle mb-3 startup-image">
+                            class="img-fluid mb-3 startup-image">
                         <h3>{{val.startup_name}}</h3>
                         {% endfor %}
                         <div class="d-flex flex-row justify-content-center">

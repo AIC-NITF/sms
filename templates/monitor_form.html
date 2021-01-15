@@ -22,288 +22,129 @@
     </style>
 </head>
 <body>
-    <h1>Monitor Form</h1>
+    <h1>Monitor Sheet</h1>
     <div class="container-fluid container">
-        <div class="heading">
-            <p class="font-weight-bold">Monitor sheet</p>
-        </div>
         <form method="POST" action="{% url 'monitor_form' %}">{% csrf_token %}
+            {% if empty_or_not == '0' %}
+            <div class="heading">
+                <p class="font-weight-bold">Past History</p>
+            </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="inputComp">Name of Company</label>
-                    <input type="text" class="form-control" name="company_name" id="inputComp" placeholder="company name">
+                    <label for="inputips_till_date">Total Numbers of IPs filled/obtained till date</label>
+                    <input type="text" class="form-control" name="ips_till_date" id="inputips_till_date" placeholder="Total Numbers of IPs filled/obtained till date">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="inputentrepreneur">Name of Lead Entrepreneur</label>
-                    <input type="text" class="form-control" name="lead_entreprenure" id="inputentrepreneur"
+                    <label for="inputrecognisation_till_date">Any special recognition/awarded till date</label>
+                    <input type="text" class="form-control" name="recognisation_till_date" id="inputrecognisation_till_date"
                         placeholder="lead entrepreneur">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="inputDesignation">Designation</label>
-                    <input type="text" class="form-control" name="designation" id="inputDesignation" placeholder="designation">
+                    <label for="inputfunds_till_date">Any funds/grands receved till date</label>
+                    <input type="text" class="form-control" name="funds_till_date" id="inputfunds_till_date" placeholder="Any funds/grands receved till date">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="inputurl">Website address</label>
-                    <input type="text" class="form-control" name="website" id="inputurl" placeholder="web address">
+                    <label for="inputjobs_created_till_date">Number of Jobs created till date</label>
+                    <input type="text" class="form-control" name="jobs_created_till_date" id="inputjobs_created_till_date" placeholder="Number of Jobs created till date">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="inputEmail4">Email</label>
-                    <input type="email" class="form-control" name="email" id="inputEmail4" placeholder="Email">
+                    <label for="inputsales_till_date">Sales(units) till date in FY (2021)</label>
+                    <input type="text" class="form-control" name="sales_till_date" id="inputsales_till_date" placeholder="Sales(units) till date in FY (2021)">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="inputphoneno">Phone nos.</label>
-                    <input type="text" class="form-control" name="contact_no" id="inputphoneno" placeholder="contact no">
+                    <label for="inputrevenew_till_date">Revenue(INR) till date during FY 2021</label>
+                    <input type="text" class="form-control" name="revenew_till_date" id="inputrevenew_till_date" placeholder="Revenue(INR) till date during FY 2021">
                 </div>
         
-                <div class="form-group col-md-12">
-                    <label for="inputAddress">Address(Write both if registered and communication addresses are
-                        different)</label>
-                    <textarea class="form-control" name="address" id="inputAddress" rows="3"
-                        placeholder="1234 Main St"></textarea>
-                </div>
                 <div class="form-group col-md-6">
-                    <label for="inputprod">Product / Service offering</label>
-                    <input type="text" class="form-control" name="product_service" id="inputprod"
-                        placeholder="Product / Service offering">
+                    <label for="inputexpendicture_till_date">Expendecture(INR) during FY 2021</label>
+                    <input type="text" class="form-control" name="expendicture_till_date" id="inputexpendicture_till_date" placeholder="Expendecture(INR) during FY 2021">
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="inputIndustry">Industry</label>
-                    <input type="text" class="form-control" name="industry" id="inputIndustry" placeholder="industry">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="inputCompetitors">Competitors</label>
-                    <input type="text" class="form-control" name="competitors" id="inputCompetitors" placeholder="Competitors">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="inputIncubationPeriod">Incubation Period (no. of months, starting date)</label>
-                    <input type="text" class="form-control" name="incubation_period" id="inputIncubationPeriod"
-                        placeholder="Incubation Period">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="inputChiefMentor">Chief Mentor</label>
-                    <input type="text" class="form-control" name="chef_monitor" id="inputChiefMentor"
-                        placeholder="Chief Mentor">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="inputShareHolderPattern">Share-holding pattern</label>
-                    <input type="text" class="form-control" name="share_holder_pattern" id="inputShareHolderPattern"
-                        placeholder="Share-holding pattern">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="inputAuthorisedCapitalAmount">Authorised capital amount</label>
-                    <input type="text" class="form-control" name="authorized_capital_amount" id="inputAuthorisedCapitalAmount"
-                        placeholder="Authorised capital amount">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="inputCapitalAmount">Paid-up capital amount</label>
-                    <input type="text" class="form-control" name="paid_up_capital_amount" id="inputCapitalAmount"
-                        placeholder="Paid-up capital amount">
-                </div>
-                <!-- <div class="form-group col-md-6">
-                    <label for="inputFillingDate">Date of filling this information</label>
-                    <input type="date" class="form-control" name="date_of_filling" id="inputFillingDate">
-                </div> -->
-        
-        
+            </div>
+            {% endif %}
+
                 <div class="heading">
-                    <p class="font-weight-bold">General INFO</p>
+                    <p class="font-weight-bold">Monthly Review Sheet</p>
                 </div>
+                
         
                 <div class="form-row">
-                    <div class="form-group col-md-3">
-                        <label for="inputMOU">MoU with AIC Nalanda signed</label>
-                        <select id="inputMOU" name="mou" class="form-control">
-                            <option selected>Choose...</option>
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="inputMouDate">Date</label>
-                        <input type="date" class="form-control" name="mou_date" id="inputMouDate">
+                    <div class="form-group col-md-6">
+                        <label for="inputips_last_month">Total Numbers of IPs filled/obtained last month</label>
+                        <input type="text" class="form-control" name="ips_last_month" id="inputips_last_month" placeholder="Total Numbers of IPs filled/obtained last month">
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="inputIncubationFees">Incubation Fees paid Rs. (from date to date)</label>
-                        <input type="text" class="form-control" name="incubation_fees" id="inputIncubationFees"
-                            placeholder="Incubation Fees paid">
+                        <label for="inputrecognisation_last_month">Any special recognition/awarded last month</label>
+                        <input type="text" class="form-control" name="recognisation_last_month" id="inputrecognisation_last_month"
+                            placeholder="Any special recognition/awarded last month">
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="inputChiefMentorAssign">Chief Mentor assigned</label>
-                        <input type="text" class="form-control" name="chef_monitor_assign" id="inputChiefMentorAssign"
-                            placeholder="Chief Mentor assigned">
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="inputSSHA">SSHA Signed</label>
-                        <select id="inputSSHA" name="ssha_signed" class="form-control">
-                            <option selected>Choose...</option>
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="inputSSHADate">Date</label>
-                        <input type="date" class="form-control" name="ssha_date" id="inputSSHADate">
+                        <label for="inputfunds_last_month">Any funds/grands receved last month</label>
+                        <input type="text" class="form-control" name="funds_last_month" id="inputfunds_last_month" placeholder="Any funds/grands receved last month">
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="inputSharesTransferred">Shares transferred to Incubator</label>
-                        <select id="inputSharesTransferred" name="share_transferred" class="form-control">
-                            <option selected>Choose...</option>
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                        </select>
+                        <label for="inputjobs_created_last_month">Number of Jobs created last month</label>
+                        <input type="text" class="form-control" name="jobs_created_last_month" id="inputjobs_created_last_month" placeholder="Number of Jobs created last month">
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="inputShareCertificate">Share certificates received by Incubator</label>
-                        <select id="ShareCertificate" name="share_certificates" class="form-control">
-                            <option selected>Choose...</option>
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                        </select>
+                        <label for="inputsales_last_month">Sales(units) of last month</label>
+                        <input type="text" class="form-control" name="sales_last_month" id="inputsales_last_month" placeholder="Sales(units) of last month">
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="inputNoSeats">No. of seats taken at the Incubator (Current month)</label>
-                        <input type="text" class="form-control" name="no_of_seats_taken" id="inputNoSeats"
-                            placeholder="No. of seats taken at the Incubator">
+                        <label for="inputrevenew_last_month">revenue(INR) of last month</label>
+                        <input type="text" class="form-control" name="revenew_last_month" id="inputrevenew_last_month" placeholder="Revenue(INR) of last month">
                     </div>
+            
                     <div class="form-group col-md-6">
-                        <label for="inputRentForSeats">Rent for seats paid Rs. (from date to date) if any</label>
-                        <input type="text" class="form-control" name="rent_of_seats" id="inputRentForSeats"
-                            placeholder="Rent for seats paid">
+                        <label for="inputexpendicture_last_month">Expendecture(INR) of last month</label>
+                        <input type="text" class="form-control" name="expendicture_last_month" id="inputexpendicture_last_month" placeholder="Expendecture(INR) of last month">
                     </div>
-        
-                    <div class="form-group col-md-6">
-                        <label for="inputCapitalInvested">Capital invested so far</label>
-                        <input type="text" class="form-control" name="capital_invested" id="inputCapitalInvested"
-                            placeholder="Capital invested">
-                    </div>
-        
-                    <div class="form-group col-md-6">
-                        <label for="inputRegistrationCompany">Status of Registration of the Company</label>
-                        <select id="inputRegistrationCompany" name="status_of_registration" class="form-control">
-                            <option selected>Choose...</option>
-                            <option value="Company">Company</option>
-                            <option value="Non-Company">Non-Company</option>
-                        </select>
-                    </div>
-        
-                    <div class="form-group col-md-6">
-                        <label for="inputStatusOfCurrentTraction">Status of Current traction at the time of joining
-                            Incubation</label>
-                        <input type="text" class="form-control" name="current_traction" id="inputStatusOfCurrentTraction"
-                            placeholder="Status of Current traction at the time of joining Incubation">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputStatusOfProduct">Status of Product / Service at the time of joining Incubation</label>
-                        <input type="text" class="form-control" name="status_of_product_service" id="inputStatusOfProduct"
-                            placeholder="Status of Product / Service at the time of joining Incubation">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputStatusOfOperations">Status of operations</label>
-                        <input type="text" class="form-control" name="status_of_operations" id="inputStatusOfOperations"
-                            placeholder="Status of operations">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputCurrentTeam">Current team members and roles</label>
-                        <input type="text" class="form-control" name="current_team_member" id="inputCurrentTeam"
-                            placeholder="Current team members and roles">
-                    </div>
-                </div>
-        
-        
-                <div class="heading">
-                    <p class="font-weight-bold">Specific
-                        Information month by month</p>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputIPRStatus">IPR Status</label>
-                        <input type="text" class="form-control" name="ipr_status" id="inputIPRStatus" placeholder="IPR Status">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputSales">Sales (units)</label>
-                        <input type="text" class="form-control" name="sales" id="inputSales" placeholder="Sales (units) ">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputRevenue">Revenue (Rs. ) </label>
-                        <input type="text" class="form-control" name="revenue" id="inputRevenue" placeholder="Revenue (Rs. ) ">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPipeline">Pipeline Deals / Other potential clients</label>
-                        <input type="text" class="form-control" name="pipeline" id="inputPipeline"
-                            placeholder="Pipeline Deals / Other potential clients">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputCurrentClients">Current clients</label>
-                        <input type="text" class="form-control" name="current_client" id="inputCurrentClients"
-                            placeholder="Current clients">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputProfitLoss">Profit earned / Loss</label>
-                        <input type="text" class="form-control" name="profit_earned" id="inputProfitLoss"
-                            placeholder="Profit earned / Loss">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputNewTeamMember">New Team members (Hiring, consultants, interns, contractual employees,
-                            if any)</label>
-                        <input type="text" class="form-control" name="new_team_member" id="inputNewTeamMember"
-                            placeholder="New Team members">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputNoOfEmployees">No. of employees (Including part time, consultants, etc)</label>
-                        <input type="text" class="form-control" name="no_of_employees" id="inputNoOfEmployees"
-                            placeholder="No. of employees">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputProblemsFaced">Problems faced (Describe any opportunity you may have missed)</label>
-                        <input type="text" class="form-control" name="problem_faced" id="inputProblemsFaced"
-                            placeholder="Problems faced (Describe any opportunity you may have missed)">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputOptions">Special gains / Opportunities gained / New connects made</label>
-                        <input type="text" class="form-control" name="option" id="inputOptions"
-                            placeholder="Special gains / Opportunities gained / New connects made">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputMarketing">Special / New Marketing efforts made (including exhibitions /
-                            events)</label>
-                        <input type="text" class="form-control" id="inputMarketing" name="marketing"
-                            placeholder="Special / New Marketing efforts made (including exhibitions /  events)">
+
+                    <div class="form-group col-md-12">
+                        <label for="inputAction">Problems faced last month</label>
+                        <textarea class="form-control" name="problems" id="inputAction" rows="3"
+                            placeholder="Problems faced last month"></textarea>
                     </div>
                     <div class="form-group col-md-12">
-                        <label for="inputHelpped">How the incubator has helped?</label>
-                        <textarea class="form-control" name="helped" id="inputHelpped" rows="3"
-                            placeholder="How the incubator has helped?"></textarea>
+                        <label for="inputFuturePlan">Any special gain or Opportunities or connection last month</label>
+                        <textarea class="form-control" name="oppertunities" id="inputFuturePlan" rows="3"
+                            placeholder="Any special gain or Opportunities or connection last month"></textarea>
                     </div>
                     <div class="form-group col-md-12">
-                        <label for="inputRemarks">Any other Remarks by the Incubator team</label>
-                        <textarea class="form-control" name="remarks" id="inputRemarks" rows="3"
-                            placeholder="Any other Remarks by the Incubator team"></textarea>
+                        <label for="inputAction">Any new outreach efforts made last month</label>
+                        <textarea class="form-control" name="out_reach" id="inputAction" rows="3"
+                            placeholder="Any new outreach efforts made last month"></textarea>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="inputRequiredHelp">Any partnership or MOU signed last month</label>
+                        <textarea class="form-control" name="partnership_mou" id="inputRequiredHelp" rows="3"
+                            placeholder="Any partnership or MOU signed last month"></textarea>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="inputRequiredHelp">Special interventions from incubator made last month</label>
+                        <textarea class="form-control" name="intervention" id="inputRequiredHelp" rows="3"
+                            placeholder="Special interventions from incubator made last month"></textarea>
                     </div>
                 </div>
+        
                 <div class="heading">
                     <p class="font-weight-bold">Mentor Meetings</p>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-12">
-                        <label for="inputNameDate">Name and Date of last mentor meeting</label>
-                        <input type="text" class="form-control" id="inputNameDate" name="name_date"
-                            placeholder="eg: Roshan Kumar 01-01-2020">
+                        <label for="inputAction">Number of mentor meetings held last month</label>
+                        <textarea class="form-control" name="monitor_meeting" id="inputAction" rows="3"
+                            placeholder="Number of mentor meetings held last month"></textarea>
                     </div>
                     <div class="form-group col-md-12">
-                        <label for="inputFuturePlan">Future plan</label>
-                        <textarea class="form-control" name="feture_plan" id="inputFuturePlan" rows="3"
-                            placeholder="How the incubator has helped?"></textarea>
+                        <label for="inputRequiredHelp">Action Plan for next month</label>
+                        <textarea class="form-control" name="action_plan" id="inputRequiredHelp" rows="3"
+                            placeholder="Action Plan for next month"></textarea>
                     </div>
                     <div class="form-group col-md-12">
-                        <label for="inputAction">Course of action for next month</label>
-                        <textarea class="form-control" name="action" id="inputAction" rows="3"
-                            placeholder="Course of action for next month"></textarea>
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label for="inputRequiredHelp">Help required from the Incubator for next month (Connects / Resources
-                            etc.)</label>
-                        <textarea class="form-control" name="required_help" id="inputRequiredHelp" rows="3"
-                            placeholder="Help required from the Incubator for next month (Connects / Resources etc.)"></textarea>
+                        <label for="inputRequiredHelp">Any help required from incubator for next month</label>
+                        <textarea class="form-control" name="help_required" id="inputRequiredHelp" rows="3"
+                            placeholder="Any help required from incubator for next month"></textarea>
                     </div>
                 </div>
         

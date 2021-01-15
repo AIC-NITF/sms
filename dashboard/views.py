@@ -1,7 +1,7 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.http import HttpResponse,Http404,JsonResponse
-from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheet,WorkGenerator,Forward,Return,TractionSheet,MoM,BlogPost,Query,LeaveApplication,Attendence,EmpMessage
-from .forms import StartUpForm,MonitorSheetEditForm,TractionSheetEditForm
+from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheetReport,WorkGenerator,Forward,Return,MoM,BlogPost,Query,LeaveApplication,Attendence,EmpMessage
+from .forms import StartUpForm,MonitorSheetEditForm
 
 from django.contrib.auth.models import auth
 import random
@@ -109,14 +109,14 @@ def dashboard(request):
         user = request.user
         startup_obj = user.startup_set.all()[0]
         val2 = startup_obj.teammembers_set.all()
-        values = startup_obj.monitorsheet_set.all().order_by('-date_of_filling')
-        traction_values = startup_obj.tractionsheet_set.all().order_by('-generated_date')
+        values = startup_obj.monitorsheetreport_set.all().order_by('-date_of_filling')
+        # traction_values = startup_obj.tractionsheet_set.all().order_by('-generated_date')
         account = Account.objects.filter(is_superadmin=True)[0]
         sendings = MoM.objects.filter(from_user=user.fullname,to=account).order_by('-date_of_creation')
         receving = MoM.objects.filter(from_user=account.fullname,to=user).order_by('-date_of_creation')
         posts = BlogPost.objects.all().order_by('-date_of_creation')
         
-        return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'traction_values':traction_values,'account':account,'sendings':sendings,'receving':receving,'posts':posts})
+        return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'account':account,'sendings':sendings,'receving':receving,'posts':posts})
 
 @login_required
 def visit_startup(request):
@@ -142,12 +142,12 @@ def profile(request,pk):
     details = get_object_or_404(Account, pk=pk)
     startup_obj = details.startup_set.all()[0]
     val2 = startup_obj.teammembers_set.all()
-    values = startup_obj.monitorsheet_set.all()
-    traction_values = startup_obj.tractionsheet_set.all()
+    values = startup_obj.monitorsheetreport_set.order_by('-date_of_filling')
+    # traction_values = startup_obj.tractionsheet_set.all()
     sendings = MoM.objects.filter(from_user=request.user.fullname,to=details).order_by('-date_of_creation')
     receving = MoM.objects.filter(from_user=details.fullname,to=request.user).order_by('-date_of_creation')
 
-    return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'traction_values':traction_values,'sendings':sendings,'receving':receving})
+    return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'sendings':sendings,'receving':receving})
 
 @login_required
 def startup_profile_edit(request,pk):
@@ -289,19 +289,19 @@ def edit_team_member(request):
 
 
 def monitor_report(request,pk):
-    monitor_sheet_obj = MonitorSheet.objects.get(pk=pk)
+    monitor_sheet_obj = MonitorSheetReport.objects.get(pk=pk)
     return render(request,'monitor_report.html',{'monitor_report':monitor_sheet_obj})
 
 @login_required
 def allowedit(request,pk):
-    monitor_report_obj = MonitorSheet.objects.get(pk=pk)
+    monitor_report_obj = MonitorSheetReport.objects.get(pk=pk)
     monitor_report_obj.allow_edit_option()
     return redirect(monitor_report,pk=pk)
 
 
 @login_required
 def monitor_sheet_edit(request,pk):
-    content = get_object_or_404(MonitorSheet,pk=pk)
+    content = get_object_or_404(MonitorSheetReport,pk=pk)
     
     if request.method == 'POST':
         form = MonitorSheetEditForm(request.POST,instance=content)
@@ -316,71 +316,75 @@ def monitor_sheet_edit(request,pk):
     else:
         form = MonitorSheetEditForm(instance=content)
         
-    return render(request,'edit_monitor_sheet.html',{'form':form})
+    return render(request,'edit_monitor_sheet.html',{'form':form,'content':content})
 
 @login_required
 def monitor_form(request):
+    user = request.user
+    startup_obj = user.startup_set.all()[0]
+    empty = len(list(startup_obj.monitorsheetreport_set.all()))
+    empty_or_not = str(empty)
     if request.method == 'POST':
-        user = request.user
-        startup_obj = user.startup_set.all()[0]
 
-        company_name = request.POST['company_name']
-        lead_entreprenure = request.POST['lead_entreprenure']
-        designation = request.POST['designation']
-        website = request.POST['website']
-        email = request.POST['email']
-        contact_no = request.POST['contact_no']
-        address = request.POST['address']
-        product_service = request.POST['product_service']
-        industry = request.POST['industry']
-        competitors = request.POST['competitors']
-        incubation_period = request.POST['incubation_period']
-        chef_monitor = request.POST['chef_monitor']
-        share_holder_pattern = request.POST['share_holder_pattern']
-        authorized_capital_amount = request.POST['authorized_capital_amount']
-        paid_up_capital_amount = request.POST['paid_up_capital_amount']
-        
-        mou = request.POST['mou']
-        
-        mou_date = request.POST['mou_date']
-        incubation_fees = request.POST['incubation_fees']
-        chef_monitor_assign = request.POST['chef_monitor_assign']
-        ssha_signed = request.POST['ssha_signed']
-        ssha_date = request.POST['ssha_date']
-        share_transferred = request.POST['share_transferred']
-        share_certificates = request.POST['share_certificates']
-        no_of_seats_taken = request.POST['no_of_seats_taken']
-        rent_of_seats = request.POST['rent_of_seats']
-        capital_invested = request.POST['capital_invested']
-        status_of_registration = request.POST['status_of_registration']
-        current_traction = request.POST['current_traction']
-        status_of_product_service = request.POST['status_of_product_service']
-        status_of_operations = request.POST['status_of_operations']
-        current_team_member = request.POST['current_team_member']
-        
-        ipr_status = request.POST['ipr_status']
-        sales = request.POST['sales']
-        revenue = request.POST['revenue']
-        pipeline = request.POST['pipeline']
-        current_client = request.POST['current_client']
-        profit_earned = request.POST['profit_earned']
-        new_team_member = request.POST['new_team_member']
-        no_of_employees = request.POST['no_of_employees']
-        problem_faced = request.POST['problem_faced']
-        option = request.POST['option']
-        marketing = request.POST['marketing']
-        helped = request.POST['helped']
-        remarks = request.POST['remarks']
+        if empty >0:
+            ips_last_month = request.POST['ips_last_month']
+            recognisation_last_month = request.POST['recognisation_last_month']
+            funds_last_month = request.POST['funds_last_month']
+            jobs_created_last_month = request.POST['jobs_created_last_month']
+            sales_last_month = request.POST['sales_last_month']
+            revenew_last_month = request.POST['revenew_last_month']
+            expendicture_last_month = request.POST['expendicture_last_month']
+            
+            problems = request.POST['problems']
+            oppertunities = request.POST['oppertunities']
+            out_reach = request.POST['out_reach']
+            partnership_mou = request.POST['partnership_mou']
+            intervention = request.POST['intervention']
+            
+            
+            monitor_meeting = request.POST['monitor_meeting']
+            action_plan = request.POST['action_plan']
+            help_required = request.POST['help_required']
 
-        name_date = request.POST['name_date']
-        feture_plan = request.POST['feture_plan']
-        action = request.POST['action']
-        required_help = request.POST['required_help']
+            monitor_report = MonitorSheetReport.objects.create(connect_startup=startup_obj,ips_last_month=ips_last_month,recognisation_last_month=recognisation_last_month,funds_last_month=funds_last_month,
+                                                            jobs_created_last_month=jobs_created_last_month,sales_last_month=sales_last_month,revenew_last_month=revenew_last_month,
+                                                            expendicture_last_month=expendicture_last_month,problems=problems,oppertunities=oppertunities,out_reach=out_reach,partnership_mou=partnership_mou,
+                                                            intervention=intervention,monitor_meeting=monitor_meeting,action_plan=action_plan,help_required=help_required)
+            monitor_report.update_first_attempt()
+        else:
+            ips_till_date = request.POST['ips_till_date']
+            recognisation_till_date = request.POST['recognisation_till_date']
+            funds_till_date = request.POST['funds_till_date']
+            jobs_created_till_date = request.POST['jobs_created_till_date']
+            sales_till_date = request.POST['sales_till_date']
+            revenew_till_date = request.POST['revenew_till_date']
+            expendicture_till_date = request.POST['expendicture_till_date']
 
-        monitor_report = MonitorSheet.objects.create(connect_startup=startup_obj,company_name=company_name,lead_entreprenure=lead_entreprenure,designation=designation,website=website,email=email,contact_no=contact_no,address=address,product_service=product_service,industry=industry,competitors=competitors,incubation_period=incubation_period,chef_monitor=chef_monitor,share_holder_pattern=share_holder_pattern,authorized_capital_amount=authorized_capital_amount,paid_up_capital_amount=paid_up_capital_amount,
-                                                      mou=mou,mou_date=mou_date,incubation_fees=incubation_fees,chef_monitor_assign=chef_monitor_assign,ssha_signed=ssha_signed,ssha_date=ssha_date,share_transferred=share_transferred,share_certificates=share_certificates,no_of_seats_taken=no_of_seats_taken,rent_of_seats=rent_of_seats,capital_invested=capital_invested,status_of_registration=status_of_registration,current_traction=current_traction,status_of_product_service=status_of_product_service,status_of_operations=status_of_operations,current_team_member=current_team_member,
-                                                      ipr_status=ipr_status,sales=sales,revenue=revenue,pipeline=pipeline,current_client=current_client,profit_earned=profit_earned,new_team_member=new_team_member,no_of_employees=no_of_employees,problem_faced=problem_faced,option=option,marketing=marketing,helped=helped,remarks=remarks,
-                                                       name_date=name_date,feture_plan=feture_plan,action=action,required_help=required_help)
+            ips_last_month = request.POST['ips_last_month']
+            recognisation_last_month = request.POST['recognisation_last_month']
+            funds_last_month = request.POST['funds_last_month']
+            jobs_created_last_month = request.POST['jobs_created_last_month']
+            sales_last_month = request.POST['sales_last_month']
+            revenew_last_month = request.POST['revenew_last_month']
+            expendicture_last_month = request.POST['expendicture_last_month']
+            
+            problems = request.POST['problems']
+            oppertunities = request.POST['oppertunities']
+            out_reach = request.POST['out_reach']
+            partnership_mou = request.POST['partnership_mou']
+            intervention = request.POST['intervention']
+            
+            
+            monitor_meeting = request.POST['monitor_meeting']
+            action_plan = request.POST['action_plan']
+            help_required = request.POST['help_required']
+
+            monitor_report = MonitorSheetReport.objects.create(connect_startup=startup_obj,ips_till_date=ips_till_date,recognisation_till_date=recognisation_till_date,funds_till_date=funds_till_date,
+                                                            jobs_created_till_date=jobs_created_till_date,sales_till_date=sales_till_date,revenew_till_date=revenew_till_date,
+                                                            expendicture_till_date=expendicture_till_date,ips_last_month=ips_last_month,recognisation_last_month=recognisation_last_month,funds_last_month=funds_last_month,
+                                                            jobs_created_last_month=jobs_created_last_month,sales_last_month=sales_last_month,revenew_last_month=revenew_last_month,
+                                                            expendicture_last_month=expendicture_last_month,problems=problems,oppertunities=oppertunities,out_reach=out_reach,partnership_mou=partnership_mou,
+                                                            intervention=intervention,monitor_meeting=monitor_meeting,action_plan=action_plan,help_required=help_required)
         monitor_report.save()
         super_admin = Account.objects.filter(is_superadmin=True)[0]
         obj = super_admin.admin_set.all()[0]
@@ -394,7 +398,7 @@ def monitor_form(request):
         messages.add_message(request, messages.INFO, 'Monitor Form submitted successfully.')
         return redirect('dashboard')
     else:
-        return render(request,'monitor_form.html')
+        return render(request,'monitor_form.html',{'empty_or_not':empty_or_not})
 
 @login_required
 def send_mom(request):
@@ -425,7 +429,7 @@ def send_mom(request):
                 [obj.email],
                 fail_silently=False,
             )
-            messages.add_message(request, messages.INFO, 'MoM send successfully.')
+            messages.add_message(request, messages.INFO, 'M-o-M sended successfully.')
             return redirect(profile,int(to))
         else:
             name = from_obj.startup_set.all()[0]
@@ -437,7 +441,7 @@ def send_mom(request):
                 [obj.email],
                 fail_silently=False,
             )
-            messages.add_message(request, messages.INFO, 'MoM send successfully.')
+            messages.add_message(request, messages.INFO, 'M-o-M sended successfully.')
             return redirect(dashboard)
     else:
         if request.user.is_superadmin:
@@ -445,71 +449,71 @@ def send_mom(request):
         else:
             return redirect(dashboard)
 
-@login_required
-def traction_form(request):
-    if request.method == 'POST':
-        user = request.user
-        startup_obj = user.startup_set.all()[0]
+# @login_required
+# def traction_form(request):
+#     if request.method == 'POST':
+#         user = request.user
+#         startup_obj = user.startup_set.all()[0]
 
-        total_order     = request.POST['total_order']
-        average_packet_size   = request.POST['average_packet_size']
-        total_revenue_of_month  = request.POST['total_revenue_of_month']
-        total_customers_served  = request.POST['total_customers_served']
-        total_expense     = request.POST['total_expense']
-        market_outreach   = request.POST['market_outreach']
-        repeate_customers    = request.POST['repeate_customers']
-        total_revenue     = request.POST['total_revenue']
-        direct_job_created   = request.POST['direct_job_created']
-        indirect_job_created   = request.POST['indirect_job_created']
-        profit = request.POST['profit']
+#         total_order     = request.POST['total_order']
+#         average_packet_size   = request.POST['average_packet_size']
+#         total_revenue_of_month  = request.POST['total_revenue_of_month']
+#         total_customers_served  = request.POST['total_customers_served']
+#         total_expense     = request.POST['total_expense']
+#         market_outreach   = request.POST['market_outreach']
+#         repeate_customers    = request.POST['repeate_customers']
+#         total_revenue     = request.POST['total_revenue']
+#         direct_job_created   = request.POST['direct_job_created']
+#         indirect_job_created   = request.POST['indirect_job_created']
+#         profit = request.POST['profit']
 
-        traction_report = TractionSheet.objects.create(connect_startup=startup_obj,total_order=total_order,average_packet_size=average_packet_size,total_revenue_of_month=total_revenue_of_month,total_customers_served=total_customers_served,total_expense=total_expense,market_outreach=market_outreach,repeate_customers=repeate_customers,total_revenue=total_revenue,direct_job_created=direct_job_created,indirect_job_created=indirect_job_created,profit=profit)
-        super_admin = Account.objects.filter(is_superadmin=True)[0]
-        obj = super_admin.admin_set.all()[0]
-        send_mail(
-                'Traction Report',
-                'Traction report submitted by '+startup_obj.startup_name,
-                'support@aicnalanda.com',
-                [obj.email],
-                fail_silently=False,
-            )
-        messages.add_message(request, messages.INFO, 'Traction form submitted successfully.')
-        return redirect('dashboard')
+#         traction_report = TractionSheet.objects.create(connect_startup=startup_obj,total_order=total_order,average_packet_size=average_packet_size,total_revenue_of_month=total_revenue_of_month,total_customers_served=total_customers_served,total_expense=total_expense,market_outreach=market_outreach,repeate_customers=repeate_customers,total_revenue=total_revenue,direct_job_created=direct_job_created,indirect_job_created=indirect_job_created,profit=profit)
+#         super_admin = Account.objects.filter(is_superadmin=True)[0]
+#         obj = super_admin.admin_set.all()[0]
+#         send_mail(
+#                 'Traction Report',
+#                 'Traction report submitted by '+startup_obj.startup_name,
+#                 'support@aicnalanda.com',
+#                 [obj.email],
+#                 fail_silently=False,
+#             )
+#         messages.add_message(request, messages.INFO, 'Traction form submitted successfully.')
+#         return redirect('dashboard')
     
-    else:
-        return render(request,'traction_form.html')
+#     else:
+#         return render(request,'traction_form.html')
 
 
-def traction_report(request,pk):
-    traction_sheet_obj = TractionSheet.objects.get(pk=pk)
+# def traction_report(request,pk):
+#     traction_sheet_obj = TractionSheet.objects.get(pk=pk)
     
-    return render(request,'traction_report.html',{'traction_report':traction_sheet_obj})
+#     return render(request,'traction_report.html',{'traction_report':traction_sheet_obj})
+
+# @login_required
+# def allow_traction_edit(request,pk):
+#     traction_report_obj = TractionSheet.objects.get(pk=pk)
+#     traction_report_obj.allow_edit_option()
+#     return redirect(traction_report,pk=pk)
+
 
 @login_required
-def allow_traction_edit(request,pk):
-    traction_report_obj = TractionSheet.objects.get(pk=pk)
-    traction_report_obj.allow_edit_option()
-    return redirect(traction_report,pk=pk)
-
-
-@login_required
-def edit_traction_sheet(request,pk):
-    content = get_object_or_404(TractionSheet,pk=pk)
+# def edit_traction_sheet(request,pk):
+#     content = get_object_or_404(TractionSheet,pk=pk)
     
-    if request.method == 'POST':
-        form = TractionSheetEditForm(request.POST,instance=content)
+#     if request.method == 'POST':
+#         form = TractionSheetEditForm(request.POST,instance=content)
         
-        if form.is_valid():
-            content = form.save(commit=False)
-            content.not_allow_edit_option()
-            content.update_date()
-            content.save()
-            messages.add_message(request, messages.INFO, 'Traction report edited successfully.')
-            return redirect(dashboard)
-    else:
-        form = TractionSheetEditForm(instance=content)
+#         if form.is_valid():
+#             content = form.save(commit=False)
+#             content.not_allow_edit_option()
+#             content.update_date()
+#             content.save()
+#             messages.add_message(request, messages.INFO, 'Traction report edited successfully.')
+#             return redirect(dashboard)
+#     else:
+#         form = TractionSheetEditForm(instance=content)
         
-    return render(request,'edit_traction_sheet.html',{'form':form})
+#     return render(request,'edit_traction_sheet.html',{'form':form})
 
 
 def blogPost(request):
@@ -1210,6 +1214,6 @@ def employee_message(request):
                 lis,
                 fail_silently=False,
             )
-    messages.add_message(request, messages.INFO, 'Message sended to all Employees')
+    messages.add_message(request, messages.INFO, 'Message send to all Employees')
     return redirect(dashboard)
     

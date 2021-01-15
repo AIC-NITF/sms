@@ -1,5 +1,5 @@
 from django import forms
-from useraccount.models import StartUp,Admin,MonitorSheet,TractionSheet,BlogPost
+from useraccount.models import StartUp,Admin,MonitorSheetReport,BlogPost
 
 class StartUpForm(forms.ModelForm):
 
@@ -82,95 +82,62 @@ class MonitorSheetEditForm(forms.ModelForm):
 
             
     class Meta:
-        model = MonitorSheet
-        exclude = ['connect_startup','allow_edit']
-        fields = ('__all__')
-        CHOICES = [
-            ('Yes','Yes'),
-            ('No','No'),
-        ]
-        mou = forms.ChoiceField(widget=forms.Select(choices=CHOICES))
-
-        widgets = {
-
-            'company_name'					: forms.TextInput(attrs={'class':'form-control'}),
-            'lead_entreprenure'				: forms.TextInput(attrs={'class':'form-control'}),
-            'designation' 					: forms.TextInput(attrs={'class':'form-control'}),
-            'address' 						: forms.Textarea(attrs={'class':'form-control','rows':"3"}),
-            'website' 						: forms.TextInput(attrs={'class':'form-control'}),
-            'email'							: forms.EmailInput(attrs={'class':'form-control'}),
-            'contact_no'					: forms.TextInput(attrs={'class':'form-control'}),
-            'product_service'				: forms.TextInput(attrs={'class':'form-control'}),
-            'industry'						: forms.TextInput(attrs={'class':'form-control'}),
-            'competitors'					: forms.TextInput(attrs={'class':'form-control'}),
-            'incubation_period'				: forms.TextInput(attrs={'class':'form-control'}),
-            'chef_monitor'					: forms.TextInput(attrs={'class':'form-control'}),
-            'share_holder_pattern'			: forms.TextInput(attrs={'class':'form-control'}),
-            'authorized_capital_amount'		: forms.TextInput(attrs={'class':'form-control'}),
-            'paid_up_capital_amount'		: forms.TextInput(attrs={'class':'form-control'}),
-            'date_of_filling'               : forms.DateInput(attrs={'type': 'date','class':'form-control'}),
-            
-            'mou'                           : forms.Select(choices=CHOICES,attrs={'class':'form-control'}),
-            'mou_date'                      : forms.DateInput(attrs={'type': 'date','class':'form-control'}),
-            'incubation_fees'				: forms.TextInput(attrs={'class':'form-control'}),
-            'chef_monitor_assign'			: forms.TextInput(attrs={'class':'form-control'}),
-            'ssha_signed'                   : forms.Select(choices=CHOICES,attrs={'class':'form-control'}),
-            'ssha_date'                     : forms.DateInput(attrs={'type': 'date','class':'form-control'}),
-            
-            'share_transferred'             : forms.Select(choices=CHOICES,attrs={'class':'form-control'}),
-            'share_certificates'            : forms.Select(choices=CHOICES,attrs={'class':'form-control'}),
-            'no_of_seats_taken'				: forms.TextInput(attrs={'class':'form-control'}),
-            'rent_of_seats'					: forms.TextInput(attrs={'class':'form-control'}),
-            'capital_invested'				: forms.TextInput(attrs={'class':'form-control'}),
-            'status_of_registration'		: forms.TextInput(attrs={'class':'form-control'}),
-            'current_traction'				: forms.TextInput(attrs={'class':'form-control'}),
-            'status_of_product_service' 	: forms.TextInput(attrs={'class':'form-control'}),
-            'status_of_operations' 			: forms.TextInput(attrs={'class':'form-control'}),
-            'current_team_member' 			: forms.TextInput(attrs={'class':'form-control'}),
-           
-            
-            'ipr_status' 					: forms.TextInput(attrs={'class':'form-control'}),
-            'sales' 						: forms.TextInput(attrs={'class':'form-control'}),
-            'revenue' 						: forms.TextInput(attrs={'class':'form-control'}),
-            'pipeline' 						: forms.TextInput(attrs={'class':'form-control'}),
-            'current_client' 				: forms.TextInput(attrs={'class':'form-control'}),
-            'profit_earned' 				: forms.TextInput(attrs={'class':'form-control'}),
-            'new_team_member' 				: forms.TextInput(attrs={'class':'form-control'}),
-            'no_of_employees' 				: forms.TextInput(attrs={'class':'form-control'}),
-            'problem_faced' 				: forms.TextInput(attrs={'class':'form-control'}),
-            'option' 						: forms.TextInput(attrs={'class':'form-control'}),
-            'marketing' 					: forms.TextInput(attrs={'class':'form-control'}),
-            'helped' 						: forms.Textarea(attrs={'class':'form-control','rows':"3"}),
-            'remarks' 						: forms.Textarea(attrs={'class':'form-control','rows':"3"}),
-            
-            'name_date' 					: forms.Textarea(attrs={'class':'form-control','rows':"3"}),
-            'feture_plan' 					: forms.Textarea(attrs={'class':'form-control','rows':"3"}),
-            'action' 						: forms.Textarea(attrs={'class':'form-control','rows':"3"}),
-            'required_help' 				: forms.Textarea(attrs={'class':'form-control','rows':"3"}),
-        }
-
-
-class TractionSheetEditForm(forms.ModelForm):
-
-            
-    class Meta:
-        model = TractionSheet
+        model = MonitorSheetReport
         exclude = ['connect_startup','allow_edit']
         fields = ('__all__')
 
         widgets = {
-            'total_order'                       : forms.TextInput(attrs={'class':'form-control'}),
-            'average_packet_size'			    : forms.TextInput(attrs={'class':'form-control'}),
-            'total_revenue_of_month'			: forms.TextInput(attrs={'class':'form-control'}),
-            'total_customers_served'	        : forms.TextInput(attrs={'class':'form-control'}),
-            'total_expense'					    : forms.TextInput(attrs={'class':'form-control'}),
-            'market_outreach'					: forms.TextInput(attrs={'class':'form-control'}),
-            'repeate_customers'					: forms.TextInput(attrs={'class':'form-control'}),
-            'total_revenue'			            : forms.TextInput(attrs={'class':'form-control'}),
-            'direct_job_created'				: forms.TextInput(attrs={'class':'form-control'}),
-            'indirect_job_created'				: forms.TextInput(attrs={'class':'form-control'}),
-            'profit'                            : forms.TextInput(attrs={'class':'form-control'}),
+
+            'ips_till_date'					        : forms.TextInput(attrs={'class':'form-control'}),
+            'recognisation_till_date'				: forms.TextInput(attrs={'class':'form-control'}),
+            'funds_till_date' 					    : forms.TextInput(attrs={'class':'form-control'}),
+            'jobs_created_till_date' 				: forms.TextInput(attrs={'class':'form-control'}),
+            'sales_till_date' 						: forms.TextInput(attrs={'class':'form-control'}),
+            'revenew_till_date'						: forms.TextInput(attrs={'class':'form-control'}),
+            'expendicture_till_date'				: forms.TextInput(attrs={'class':'form-control'}),
+            
+            'ips_last_month'				        : forms.TextInput(attrs={'class':'form-control'}),
+            'recognisation_last_month'				: forms.TextInput(attrs={'class':'form-control'}),
+            'funds_last_month'					    : forms.TextInput(attrs={'class':'form-control'}),
+            'jobs_created_last_month'				: forms.TextInput(attrs={'class':'form-control'}),
+            'sales_last_month'					    : forms.TextInput(attrs={'class':'form-control'}),
+            'revenew_last_month'			        : forms.TextInput(attrs={'class':'form-control'}),
+            'expendicture_last_month'		        : forms.TextInput(attrs={'class':'form-control'}),
+            
+            'problems'  		                    : forms.Textarea(attrs={'class':'form-control','rows':"3"}),
+            'oppertunities'                         : forms.Textarea(attrs={'class':'form-control','rows':"3"}),
+            'out_reach'                             : forms.Textarea(attrs={'class':'form-control','rows':"3"}),
+            'partnership_mou'                       : forms.Textarea(attrs={'class':'form-control','rows':"3"}),
+            'intervention'				            : forms.Textarea(attrs={'class':'form-control','rows':"3"}),
+            
+            'monitor_meeting'			            : forms.Textarea(attrs={'class':'form-control','rows':"3"}),
+            'action_plan'                           : forms.Textarea(attrs={'class':'form-control','rows':"3"}),
+            'help_required'                         : forms.Textarea(attrs={'class':'form-control','rows':"3"}),
+             
         }
+
+
+# class TractionSheetEditForm(forms.ModelForm):
+
+            
+#     class Meta:
+#         model = TractionSheet
+#         exclude = ['connect_startup','allow_edit']
+#         fields = ('__all__')
+
+#         widgets = {
+#             'total_order'                       : forms.TextInput(attrs={'class':'form-control'}),
+#             'average_packet_size'			    : forms.TextInput(attrs={'class':'form-control'}),
+#             'total_revenue_of_month'			: forms.TextInput(attrs={'class':'form-control'}),
+#             'total_customers_served'	        : forms.TextInput(attrs={'class':'form-control'}),
+#             'total_expense'					    : forms.TextInput(attrs={'class':'form-control'}),
+#             'market_outreach'					: forms.TextInput(attrs={'class':'form-control'}),
+#             'repeate_customers'					: forms.TextInput(attrs={'class':'form-control'}),
+#             'total_revenue'			            : forms.TextInput(attrs={'class':'form-control'}),
+#             'direct_job_created'				: forms.TextInput(attrs={'class':'form-control'}),
+#             'indirect_job_created'				: forms.TextInput(attrs={'class':'form-control'}),
+#             'profit'                            : forms.TextInput(attrs={'class':'form-control'}),
+#         }
 
 
 class BlogPostForm(forms.ModelForm):
