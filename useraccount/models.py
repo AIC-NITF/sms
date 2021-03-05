@@ -43,6 +43,7 @@ class Account(AbstractBaseUser):
 	is_superadmin 			= models.BooleanField(default=False)
 	is_startup 				= models.BooleanField(default=False)
 	is_adminstrator			= models.BooleanField(default=False)
+	rank					= models.CharField(max_length=100,null=True,blank=True)
 	
 
 
@@ -75,6 +76,7 @@ class Admin(models.Model):
 	cl						= models.CharField(max_length=100,null=True,blank=True)
 	sl						= models.CharField(max_length=100,null=True,blank=True)
 	admin_img				= models.ImageField(upload_to='images/',null=True,blank=True)
+	ranks					= models.CharField(max_length=100,null=True,blank=True)
 
 	
 

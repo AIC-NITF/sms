@@ -18,7 +18,7 @@ def dashboard(request):
     admins = Admin.objects.all()
     if user.is_superadmin:
         lis = []
-        lists = Account.objects.filter(is_admin=True)
+        lists = Account.objects.filter(is_admin=True).order_by('rank')
         lists = list(lists)
         for account in lists:
             if account.is_superadmin == False and account.is_adminstrator == False:
@@ -122,7 +122,7 @@ def dashboard(request):
 def visit_startup(request):
     accounts = Account.objects.all()
     lis = []
-    lists = Account.objects.filter(is_admin=True)
+    lists = Account.objects.filter(is_admin=True).order_by('rank')
     lists = list(lists)
     for account in lists:
         if account.is_superadmin == False and account.is_adminstrator == False:

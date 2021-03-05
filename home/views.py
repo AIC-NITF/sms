@@ -4,7 +4,7 @@ from django.contrib import messages
 
 # Create your views here.
 def index(request):
-    values = Account.objects.filter(is_admin=True)
+    values = Account.objects.filter(is_admin=True).order_by('rank')
     imp_values = []
     required_val = values[1:]
     for i in required_val:
