@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse,Http404,JsonResponse
-from .models import Startup_app_form,Enterpreneur_form
+from .models import Startup_app_form,Enterpreneur_form,upload
 from django.contrib import messages
 
 
@@ -8,13 +8,13 @@ def anantya(request):
     return render(request,'application.html')
 
 def startup_form_app(request):
-    return render(request,'startup_application_form.html')
+    down = upload.objects.all()[0]
+    return render(request,'startup_application_form.html',{'down':down})
 
 def entrepreneur_form(request):
     return render(request,'entrepreneur_form.html')
 
 def entrepreneurform(request):
-    print("hello-------------------------------")
     if request.method == "POST":
         name = request.POST['name']
         contact = request.POST['contact']
@@ -33,7 +33,6 @@ def entrepreneurform(request):
         vision = request.POST['vision']
         nomination = request.POST['nomination']
         
-        print(name,"----------------")
         
         post = Enterpreneur_form.objects.create(name=name,contact=contact,email=email,district=district,company_name=company_name,designation=designation,sector=sector,date_incorporation=date_incorporation,location=location,turnover=turnover,journey=journey,achievements=achievements,awards=awards,impact=impact,vision=vision,nomination=nomination)
         post.save()

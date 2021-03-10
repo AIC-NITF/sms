@@ -34,7 +34,7 @@ h3 {
 
 #team img {
     margin-top: -70px;
-    border-radius: 50%;
+    border-radius: 10%;
     width: 50%;
 }
 
@@ -67,6 +67,8 @@ h3 {
 #content > div > section:nth-child(4) > .section-head{
     text-align: center;
 }
+
+
 @media only screen and (max-width: 768px) {
 
     /* For mobile phones: */

@@ -53,3 +53,6 @@ class Enterpreneur_form(models.Model):
 
 	def __str__(self):
 		return self.name
+
+class upload(models.Model):
+	pdf_file			    = models.FileField(upload_to='pitchfile',null=True,blank=True)
