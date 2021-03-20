@@ -9,4 +9,6 @@ urlpatterns = [
     path('startupform/', views.startupform,name='startupform'),
     path('details/', views.details,name='details'),
     path('eligibility/', views.eligibility,name='eligibility'),
+    path('entrepreneur_excel/', views.entrepreneur_excel,name='entrepreneur_excel'),
+    path('startup_excel/', views.startup_excel,name='startup_excel'),
 ]

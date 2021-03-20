@@ -1,11 +1,13 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse,Http404,JsonResponse
-from .models import Startup_app_form,Enterpreneur_form,upload
+from .models import Startup_app_form,Enterpreneur_form,upload,logo
 from django.contrib import messages
-
+import datetime
+import xlwt
 
 def anantya(request):
-    return render(request,'application.html')
+    partners = logo.objects.all()
+    return render(request,'application.html',{'partners':partners})
 
 def startup_form_app(request):
     down = upload.objects.all()[0]
@@ -83,3 +85,57 @@ def details(request):
 
 def eligibility(request):
     return render(request,'eligibility.html')
+
+
+
+def entrepreneur_excel(request):
+    responce = HttpResponse(content_type='application/ms-excel')
+    responce['content-Disposition'] = 'attachment; filename=Enterpreneur_form' + str(datetime.datetime.now()) + '.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Enterpreneur_form')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.bold = True
+    columns = ['name','contact','email','district','company_name','designation','sector','date Of Incorporation','location','turnover','journey','achievemenents','awards','impact','vision','nominations']
+    for col_num in range(len(columns)):
+        ws.write(row_num,col_num,columns[col_num],font_style)
+    
+    font_style = xlwt.XFStyle()
+    
+    rows = Enterpreneur_form.objects.values_list('name','contact','email','district','company_name','designation','sector','date_incorporation','location','turnover','journey','achievements','awards','impact','vision','nomination')
+
+    for row in rows:
+        row_num += 1
+
+        for col_num in range(len(row)):
+            ws.write(row_num,col_num,str(row[col_num]),font_style)
+
+    wb.save(responce)
+    return responce
+
+
+
+def startup_excel(request):
+    responce = HttpResponse(content_type='application/ms-excel')
+    responce['content-Disposition'] = 'attachment; filename=Startup_app_form' + str(datetime.datetime.now()) + '.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Startup_app_form')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.bold = True
+    columns = ['name','contact','email','district','company_name','designation','sector','date Of Incorporation','problem_solving','solution','uniqueness','advantages','operation_stage','revenue','startup_img','vid_link','pitch_startup','folder_file']
+    for col_num in range(len(columns)):
+        ws.write(row_num,col_num,columns[col_num],font_style)
+    
+    font_style = xlwt.XFStyle()
+    
+    rows = Startup_app_form.objects.values_list('name','contact','email','district','company_name','designation','sector','date_incorporation','problem_solving','solution','uniqueness','advantages','operation_stage','revenue','startup_img','vid_link','pitch_startup','folder_file')
+
+    for row in rows:
+        row_num += 1
+
+        for col_num in range(len(row)):
+            ws.write(row_num,col_num,str(row[col_num]),font_style)
+
+    wb.save(responce)
+    return responce

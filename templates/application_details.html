@@ -19,11 +19,13 @@
                         <th scope="row">1</th>
                         <td>Entrepreneur</td>
                         <td>{{ent_len}}</td>
+                        <td><a href="{% url 'entrepreneur_excel' %}" class="btn btn-primary">Download Excel</a></td>
                     </tr>
                     <tr>
                         <th scope="row">2</th>
                         <td>Startup</td>
                         <td>{{str_len}}</td>
+                        <td><a href="{% url 'startup_excel' %}" class="btn btn-primary">Download Excel</a></td>
                     </tr>
                 </tbody>
             </table>

@@ -56,3 +56,7 @@ class Enterpreneur_form(models.Model):
 
 class upload(models.Model):
 	pdf_file			    = models.FileField(upload_to='pitchfile',null=True,blank=True)
+	
+
+class logo(models.Model):
+	logo_img				= models.ImageField(upload_to='logo/',null=True,blank=True)

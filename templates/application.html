@@ -20,7 +20,66 @@
         rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="{% static 'wform/css/styles.css' %}" rel="stylesheet" />
+    <style>
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
 
+            100% {
+                transform: translateX(calc(-250px * 7));
+            }
+        }
+
+        .slider {
+            background: white;
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, .125);
+            height: 100px;
+            margin: auto;
+            overflow: hidden;
+            position: relative;
+            width: 960px;
+        }
+
+        .slider::before,
+        .slider::after {
+            background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+            content: "";
+            height: 100px;
+            position: absolute;
+            width: 200px;
+            z-index: 2;
+        }
+
+        .slider::after {
+            right: 0;
+            top: 0;
+            transform: rotateZ(180deg);
+        }
+
+        .slider::before {
+            left: 0;
+            top: 0;
+        }
+
+        .slider .slide-track {
+            animation: scroll 40s linear infinite;
+            display: flex;
+            width: calc(250px * 14);
+        }
+
+        .slider .slide {
+            height: 100px;
+            width: 250px;
+        }
+
+        .partner{
+            font-size: 1.8rem;
+            font-weight: bold; 
+            font-style: italic;
+            color: #190001;
+        }
+    </style>
 
 </head>
 
@@ -125,6 +184,32 @@
 
         </div>
     </section>
+    <center>
+        <p class="partner"> In Association With</p>
+        <img src="{% static 'wform/assets/img/AIC.jpg' %}" height="100" width="250"
+                        alt="" />
+    </center>
+
+    <section class="client">
+        <p class="partner mt-4" style="text-align: center;"> Partners </p>
+        <div class="slider">
+            
+            <div class="slide-track">
+                {% with ''|center:2 as range %}
+                {% for _ in range %}
+                {% for partner in partners %}
+                <div class="slide">
+                    <img src="{{partner.logo_img.url}}" height="80" width="200"
+                        alt="" />
+                </div>
+                {% endfor %}
+                {% endfor %}
+                {% endwith %}
+                
+                
+            </div>
+        </div>
+    </section>
 
     <footer class="footer bg-black small text-center text-white-50">
         <div class="container">Copyright © OCF 2021</div>
@@ -139,6 +224,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
     <!-- Core theme JS-->
     <script src="{% static 'wform/js/scripts.js' %}"></script>
+    
 </body>
 
 </html>
