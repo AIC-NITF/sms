@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'dashboard',
     'useraccount',
     'formapp',
+    'sanvriddhi',
+    'ideanest',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <title>IdeaNest</title>
+
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'assets/images/favicon.png' %}">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:700|Roboto:400,400i,700&display=swap"
+        rel="stylesheet">
+
+    <!-- FontAwesome JS-->
+    <script defer src="{% static 'sanvriddhi/fontawesome/js/all.min.js' %}"></script>
+
+    <!-- Theme CSS -->
+    <link id="theme-style" rel="stylesheet" href="{% static 'sanvriddhi/css/theme.css' %}">
+
+    <style>
+        body{
+            background-color: #D6F097;
+            color: black;
+        }
+    </style>
+
+</head>
+
+<body>
+    <header class="header">
+        <div class="branding">
+            <div class="container-fluid position-relative py-3">
+                <div class="logo-wrapper">
+                    <div class="site-logo"><a class="navbar-brand" href=""><img id="aic" class="logo-icon mr-2"
+                                src="{% static 'sanvriddhi/images/aic.png' %}" alt="logo" width="200"></a></div>
+                </div>
+                <!--//docs-logo-wrapper-->
+
+            </div>
+            <!--//container-->
+        </div>
+        <!--//branding-->
+    </header>
+    <!--//header-->
+
+    <section class="hero-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-7 pt-2 mb-2 align-self-center">
+                    <div class="promo">
+                        <!-- h1 class="headline" id="sanvriddhi">
+						    sanvriddhi  
+					    </h1> -->
+                        <!--//headline-->
+
+                        <img class="logo-icon pl-4 mr-2" src="{% static 'sanvriddhi/images/ideanest.png' %}" alt="logo"
+                            width="300">
+                        <div class="subheadline pl-2 m-3" style="text-align: justify; font-size: 1rem">
+                            <h4>About IdeaNest</h4>
+                            AIC-NITF announces Pre-Incubation Program for Idea and Early Stage Startups. This program
+                            provides deep-dive learning aimed at empowering a startup beginner with an entrepreneurial
+                            mindset and business skills necessary to create their venture from fundamental level and
+                            develop intrapreneurship skills, and get you started on your venture journey. The scouted
+                            ideas will get help & support from leading corporate, mentors, angel investors, government
+                            agencies, etc. to translate their ideas into a profitable business model.<br>
+                            <div class="mt-2"> The ideation level startups will be provided all possible support by
+                                AIC-NITF in terms of mentorship, networking, lab facilities, and access to domain
+                                expertise to reach to a level where they can validate their product/service. After
+                                validation, the successful ideas that will be able to reach the POC level, will be put
+                                to a next level incubation program of 3 months where they will be provided market
+                                connects & investor connect.</div>
+
+                            <!-- <span id="dots">...</span><span id="more"></span>
+						    <button type="button" class="btn btn-link" onclick="myFunction()" id="myBtn">Read more</button> -->
+
+                            <div>
+                                <h4>Benefits of the Programme</h4>
+                                <ul>
+                                    <li>Idea Validation</li>
+                                    <li>Problem Solution Modeling</li>
+                                    <li>Product Designing</li>
+                                    <li>Rapid Prototyping</li>
+                                    <li>Market Research</li>
+                                    <li>Financial Modeling</li>
+                                    <li>Team Building</li>
+                                    <li>Presentation Skills</li>
+                                    <li>IP and Legal Compliances</li>
+                                    <li>Pitch Perfection</li>
+                                    <li>Demo Day</li>
+                                    
+                                </ul>
+
+                            </div>
+                            <!--//subheading-->
+
+                            <div>
+                                <h4>Who Can Apply?</h4>
+                                <ul>
+                                    <li>Idea and early stage startups aspiring to venture out in any industry sector.</li>
+                                </ul>
+
+                            </div>
+                            <!--//subheading-->
+
+                            <div>
+                                <h4>Duration</h4>
+                                <p>12 Weeks of Experiential Learning Programme starting from May 2021 <br>Last date of application: <b>30th April, 2021</b> </p>
+                            </div>
+                            <!--//subheading-->
+                            <div>
+                                <h4>Program fee</h4>
+                                <p>No course fees applicable. Certificates will be provided on successful completion of the program.</p>
+                            </div>
+                            <!--//subheading-->
+                        </div>
+                        <!--//subheading-->
+
+                    </div>
+                    <!--//promo-->
+                </div>
+                <!--col-->
+                <div class="col-12 col-md-5 mb-5">
+                    <div class="book-cover-holder mt-5">
+                        <div class="cta-holder text-center mb-2">
+                            <a id="apply" class="btn btn-primary mr-lg-2"
+                                style="background-color: #5E4429; color: #F4D242;""
+                               target=" _blank" href="{% url 'ideanest_form_iframe' %}">CLICK TO APPLY</a>
+                        </div>
+                        <!--//cta-holder-->
+                        <img class="img-fluid book-cover mt-4" src="{% static 'sanvriddhi/images/idea.jpeg' %}"
+                            alt="book cover">
+                    </div>
+                    <!--//book-cover-holder-->
+                </div>
+                <!--col-->
+            </div>
+            <!--//row-->
+        </div>
+        <!--//container-->
+    </section>
+    <!--//hero-section-->
+    <!-- <hr>
+    <center>
+        <div class="partner">
+            <p class="patheading">Associate Partner</p>
+            <img src="{% static 'sanvriddhi/images/startupodisha.png' %}" height="100" width="250" alt="" />
+        </div>
+
+        <div class="partner">
+            <p class="patheading">Knowledge Partner</p>
+            <img src="{% static 'sanvriddhi/images/lse.png' %}" height="100" width="250" alt="" />
+        </div>
+    </center>
+    <hr> -->
+
+    <footer class="footer">
+
+        <div class="footer-bottom text-center py-5">
+
+            <!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+            <small class="copyright">© 2020 . All Rights Reserved By <a class="theme-link"
+                    href="http://www.aicnalanda.com" target="_blank">NIT</a></small>
+
+        </div>
+
+    </footer>
+
+    <!-- Javascript -->
+    <script src="{% static 'sanvriddhi/plugins/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'sanvriddhi/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+
+    <script src="{% static 'sanvriddhi/plugins/back-to-top.js' %}"></script>
+
+    <script src="{% static 'sanvriddhi/js/main.js' %}"></script>
+    <!-- <script type="text/javascript">
+        function myFunction() {
+            var dots = document.getElementById("dots");
+            var moreText = document.getElementById("more");
+            var btnText = document.getElementById("myBtn");
+            console.log(dots);
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "Read more";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "Read less";
+                moreText.style.display = "inline";
+            }
+        }
+    </script> -->
+</body>
+
+</html>

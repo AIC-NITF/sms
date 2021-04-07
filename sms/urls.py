@@ -25,5 +25,7 @@ urlpatterns = [
     path('account/',include('useraccount.urls')),
     path('dashboard/',include('dashboard.urls')),
     path('ocf_anantya/',include('formapp.urls')),
+    path('sanvriddhi/',include('sanvriddhi.urls')),
+    path('ideanest/',include('ideanest.urls')),
     url(r'^download/(?P<path>.*)$', serve, {'document root': settings.MEDIA_ROOT}),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
