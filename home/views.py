@@ -35,3 +35,8 @@ def query_message(request):
         messages.add_message(request, messages.INFO, 'Query Submitted.')
         return redirect(index)
     return redirect(index)
+
+
+
+def SWEA(request):
+    return render(request,'SWEA.html')
