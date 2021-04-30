@@ -109,9 +109,12 @@
                                     {% if profile_img_obj.account.is_admin %}
                                     <img class="img-profile rounded-circle im" src="{{profile_img_obj.admin_img.url}}"
                                         width="30">
-                                    {% else %}
+                                    {% elif profile_img_obj.account.is_startup %}
                                     <img class="img-profile rounded-circle im" src="{{profile_img_obj.startup_img.url}}"
                                         width="30">
+                                    {% elif profile_img_obj.account.is_sanvriddhi %}
+                                    <img class="img-profile rounded-circle im" src="{{profile_img_obj.founder_img.url}}"
+                                            width="30">
                                     {% endif %}
                                 </li>
                                 <li><a class="btn btn-sm nav-link active dashboard" style="margin-right:10px;"

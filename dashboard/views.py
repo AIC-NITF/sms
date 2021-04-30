@@ -1,6 +1,6 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.http import HttpResponse,Http404,JsonResponse
-from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheetReport,WorkGenerator,Forward,Return,MoM,BlogPost,Query,LeaveApplication,Attendence,EmpMessage
+from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheetReport,WorkGenerator,Forward,Return,MoM,BlogPost,Query,LeaveApplication,Attendence,EmpMessage,Sanvriddhi,Session,Submission
 from .forms import StartUpForm,MonitorSheetEditForm
 
 from django.contrib.auth.models import auth
@@ -105,7 +105,7 @@ def dashboard(request):
             
             return render(request,'emp_dashboard.html',{'value':value,'accounts':accounts,'works':works,'assigned_work':assigned_work,'from_works':from_works,'pending_status':pending_status,'assign_pending_status':assign_pending_status,'completed_status':completed_status,'assign_completed_status':assign_completed_status,'return_obj':return_obj,'work_notifications':work_notifications,'forward_notifications':forward_notifications,'return_notifications':return_notifications,'total_notifications':total_notifications,'leave_obj':leave_obj,'leave_noti':leave_noti,'timeout_val':timeout_val,'emp_messages':emp_messages,'today':today})        
         
-    else:
+    elif user.is_startup:
         user = request.user
         startup_obj = user.startup_set.all()[0]
         val2 = startup_obj.teammembers_set.all()
@@ -117,6 +117,24 @@ def dashboard(request):
         posts = BlogPost.objects.all().order_by('-date_of_creation')
         
         return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'account':account,'sendings':sendings,'receving':receving,'posts':posts})
+
+    elif user.is_sanvriddhi:
+        if request.user.is_adminstrator or request.user.is_sanvriddhi:
+            sessions = Session.objects.all()
+            if request.user.is_adminstrator:
+                participaints = Account.objects.filter(is_sanvriddhi=True)
+                lis = []
+                for participaint in participaints:
+                    lis.append(participaint.sanvriddhi_set.all()[0])
+                return render(request,'sanvriddhi_dashboard.html',{'sessions':sessions,'participaints':lis})
+            else:
+                account = request.user
+                sanvriddhi_account = account.sanvriddhi_set.all()[0]
+
+                attachements = sanvriddhi_account.submission_set.all()
+                return render(request,'sanvriddhi_dashboard.html',{'sessions':sessions,'attachements':attachements,'sanvriddhi_account':sanvriddhi_account})
+        else:
+            return render(request,'error.html')
 
 @login_required
 def visit_startup(request):
@@ -131,8 +149,11 @@ def visit_startup(request):
 
 @login_required   
 def admin_form(request):
-    return render(request,'admin_form.html')
-
+    if request.user.is_superadmin:
+        return render(request,'admin_form.html')
+    else:
+        return render(request,'error.html')
+        
 @login_required
 def startup_form(request):
     return render(request,'startup_form.html')
@@ -155,7 +176,7 @@ def startup_profile_edit(request,pk):
     content = get_object_or_404(StartUp,pk=pk)
     
     if request.method == 'POST':
-        form = StartUpForm(request.POST,instance=content)
+        form = StartUpForm(request.POST,request.FILES,instance=content)
         
         if form.is_valid():
             content = form.save(commit=False)
@@ -1014,6 +1035,9 @@ def forget_username(request):
         if user.is_startup:
             startup = user.startup_set.first()
             email = startup.email
+        if user.is_sanvriddhi:
+            sanvriddhi = user.sanvriddhi_set.first()
+            email = sanvriddhi.email
     else:
         email = None
     data = {

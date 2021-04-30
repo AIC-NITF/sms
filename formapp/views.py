@@ -43,10 +43,8 @@ def entrepreneurform(request):
     return render(request,'entrepreneur_form.html')
 
 def startupform(request):
-    print("omg===============================")
     if request.method == "POST":
         name = request.POST['name']
-        print(name,"omg===============================")
         contact = request.POST['contact']
         email = request.POST['email']
         district = request.POST['district']
@@ -67,7 +65,6 @@ def startupform(request):
         vid_link = request.POST['vid_link']
         pitch_startup = request.POST['pitch_startup']
 
-        print(startup_img,"============================================")
 
         if pitch_startup == 'Yes':
             folder_file = request.FILES['folder_file']

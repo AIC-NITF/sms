@@ -73,8 +73,8 @@ class StartUpForm(forms.ModelForm):
             'dspp_registered'		    : forms.Select(choices=CHOICES,attrs={'class':'form-control'}),
             'legal_entity_register'		: forms.DateInput(attrs={'type': 'date','class':'form-control'}),
             'start_date_incubation'		: forms.DateInput(attrs={'type': 'date','class':'form-control'}),
-            # 'startup_img'				: forms.FileInput(),
-            # 'founder_img'				: forms.FileInput(),	
+            'startup_img'				: forms.FileInput(),
+            'founder_img'				: forms.FileInput(),	
         }
 
 

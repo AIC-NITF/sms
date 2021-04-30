@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from useraccount.models import Account,Admin,StartUp,Query,Gallery,Admin,StartUp
+from useraccount.models import Account,Admin,StartUp,Query,Gallery,Admin,StartUp,Sanvriddhi
 from django.contrib import messages
 
 # Create your views here.
@@ -15,8 +15,10 @@ def index(request):
     if request.user.is_authenticated:
         if user.is_admin:
             profile_img_obj = user.admin_set.all()[0]
-        else:
+        elif user.is_startup:
             profile_img_obj = user.startup_set.all()[0]
+        elif user.is_sanvriddhi:
+            profile_img_obj = user.sanvriddhi_set.all()[0]
     else:
         profile_img_obj = None
         

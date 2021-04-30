@@ -43,6 +43,7 @@ class Account(AbstractBaseUser):
 	is_superadmin 			= models.BooleanField(default=False)
 	is_startup 				= models.BooleanField(default=False)
 	is_adminstrator			= models.BooleanField(default=False)
+	is_sanvriddhi			= models.BooleanField(default=False)
 	rank					= models.CharField(max_length=100,null=True,blank=True)
 	
 
@@ -417,3 +418,58 @@ class EmpMessage(models.Model):
 
 	def __str__(self):
 		return self.created_date
+
+
+class Sanvriddhi(models.Model):
+	account 				= models.ForeignKey(Account, on_delete=models.CASCADE)
+	email 					= models.EmailField(verbose_name="email", max_length=60,null=True,blank=True)
+	startup_name			= models.CharField(max_length=100,null=True,blank=True)
+	legal_entity			= models.CharField(max_length=100,null=True,blank=True)
+	founders_designation	= models.CharField(max_length=2000,null=True,blank=True)
+	website					= models.CharField(max_length=100,null=True,blank=True)
+	city					= models.CharField(max_length=100,null=True,blank=True)
+	sector					= models.CharField(max_length=100,null=True,blank=True)
+	team_members			= models.CharField(max_length=100,null=True,blank=True)
+	location				= models.CharField(max_length=100,null=True,blank=True)
+	contact_no				= models.CharField(max_length=100,null=True,blank=True)
+	team_head				= models.CharField(max_length=100,null=True,blank=True)
+
+	comp_identification_no  = models.CharField(max_length=100,null=True,blank=True)
+	inubatee_level			= models.CharField(max_length=100,null=True,blank=True)
+	operational_model		= models.CharField(max_length=100,null=True,blank=True)
+	type_of_incubatee      	= models.CharField(max_length=50,null=True,blank=True)
+	women_led_startup 		= models.CharField(max_length=10,null=True,blank=True)
+	gov_program 			= models.CharField(max_length=100,null=True,blank=True)
+	msme_registered			= models.CharField(max_length=10,null=True,blank=True)
+	dspp_registered			= models.CharField(max_length=10,null=True,blank=True)
+	legal_entity_register   = models.CharField(max_length=100,null=True,blank=True)
+	start_date_incubation   = models.CharField(max_length=100,null=True,blank=True)
+
+	startup_img				= models.ImageField(upload_to='images/',null=True,blank=True)
+	founder_img				= models.ImageField(upload_to='images/',null=True,blank=True)
+	# ranks					= models.CharField(max_length=100,null=True,blank=True)
+
+	
+
+	def __str__(self):
+		return self.email
+
+
+class Session(models.Model):
+	session_name		= models.CharField(max_length=100,null=True,blank=True)
+	session_details     = models.CharField(max_length=1000,null=True,blank=True)
+	session_date		= models.DateTimeField(verbose_name='date')
+	time				= models.CharField(max_length=20,null=True,blank=True)
+	meeting_link		= models.CharField(max_length=1000,null=True,blank=True)
+	pre_read			= models.FileField(upload_to='files',null=True,blank=True)
+	submission_link		= models.CharField(max_length=1000,null=True,blank=True)
+
+	def __str__(self):
+		return self.session_name
+
+
+class Submission(models.Model):
+	connect_sanvriddhi	= models.ForeignKey(Sanvriddhi, on_delete=models.CASCADE)
+	session_topic		= models.CharField(max_length=100,null=True,blank=True)
+	attachment			= models.FileField(upload_to='files',null=True,blank=True)
+	submitted_date		= models.DateTimeField(verbose_name='date submitted', auto_now_add=True)
