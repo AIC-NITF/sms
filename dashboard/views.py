@@ -1,6 +1,6 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.http import HttpResponse,Http404,JsonResponse
-from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheetReport,WorkGenerator,Forward,Return,MoM,BlogPost,Query,LeaveApplication,Attendence,EmpMessage,Sanvriddhi,Session,Submission
+from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheetReport,WorkGenerator,Forward,Return,MoM,BlogPost,Query,LeaveApplication,Attendence,EmpMessage,Sanvriddhi,Session,Submission,Viewer
 from .forms import StartUpForm,MonitorSheetEditForm
 
 from django.contrib.auth.models import auth
@@ -118,10 +118,10 @@ def dashboard(request):
         
         return render(request,'demo_startup_page.html',{'value':startup_obj,'members':val2,'values':values,'account':account,'sendings':sendings,'receving':receving,'posts':posts})
 
-    elif user.is_sanvriddhi:
-        if request.user.is_adminstrator or request.user.is_sanvriddhi:
+    elif user.is_sanvriddhi or user.is_viewer:
+        if request.user.is_adminstrator or request.user.is_sanvriddhi or request.user.is_viewer:
             sessions = Session.objects.all()
-            if request.user.is_adminstrator:
+            if request.user.is_adminstrator or request.user.is_viewer:
                 participaints = Account.objects.filter(is_sanvriddhi=True)
                 lis = []
                 for participaint in participaints:
@@ -1038,6 +1038,9 @@ def forget_username(request):
         if user.is_sanvriddhi:
             sanvriddhi = user.sanvriddhi_set.first()
             email = sanvriddhi.email
+        if user.is_viewer:
+            viewer = user.viewer_set.first()
+            email = viewer.email
     else:
         email = None
     data = {

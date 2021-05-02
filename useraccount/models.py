@@ -44,6 +44,7 @@ class Account(AbstractBaseUser):
 	is_startup 				= models.BooleanField(default=False)
 	is_adminstrator			= models.BooleanField(default=False)
 	is_sanvriddhi			= models.BooleanField(default=False)
+	is_viewer				= models.BooleanField(default=False)
 	rank					= models.CharField(max_length=100,null=True,blank=True)
 	
 
@@ -460,9 +461,14 @@ class Session(models.Model):
 	session_details     = models.CharField(max_length=1000,null=True,blank=True)
 	session_date		= models.DateTimeField(verbose_name='date')
 	time				= models.CharField(max_length=20,null=True,blank=True)
+	time_out			= models.CharField(max_length=20,null=True,blank=True)
+	pm_am1				= models.CharField(max_length=20,null=True,blank=True)
+	pm_am2				= models.CharField(max_length=20,null=True,blank=True)
 	meeting_link		= models.CharField(max_length=1000,null=True,blank=True)
 	pre_read			= models.FileField(upload_to='files',null=True,blank=True)
 	submission_link		= models.CharField(max_length=1000,null=True,blank=True)
+	#completed			= models.BooleanField(default=Falsese)
+	completed			= models.BooleanField(default=False)
 
 	def __str__(self):
 		return self.session_name
@@ -473,3 +479,13 @@ class Submission(models.Model):
 	session_topic		= models.CharField(max_length=100,null=True,blank=True)
 	attachment			= models.FileField(upload_to='files',null=True,blank=True)
 	submitted_date		= models.DateTimeField(verbose_name='date submitted', auto_now_add=True)
+
+
+class Viewer(models.Model):
+	account 				= models.ForeignKey(Account, on_delete=models.CASCADE)
+	email 					= models.EmailField(verbose_name="email", max_length=60,null=True,blank=True)
+	contact_no				= models.CharField(max_length=100,null=True,blank=True)
+	viewer_img				= models.ImageField(upload_to='images/',null=True,blank=True)
+
+	def __str__(self):
+		return self.email

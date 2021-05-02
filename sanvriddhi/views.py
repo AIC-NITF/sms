@@ -7,7 +7,7 @@ from datetime import date
 from django.contrib.auth.decorators import login_required
 
 from django.http import HttpResponse,Http404,JsonResponse
-from useraccount.models import Session,Sanvriddhi,Account,Submission
+from useraccount.models import Session,Sanvriddhi,Account,Submission,Viewer
 from .forms import SanvriddhiEditForm
 
 # Create your views here.
@@ -22,9 +22,9 @@ def sanvriddhi_nomination(request):
     return render(request,'sanvriddhi_nomination.html')
 
 def sanvriddhi_dashboard(request):
-    if request.user.is_adminstrator or request.user.is_sanvriddhi:
+    if request.user.is_adminstrator or request.user.is_sanvriddhi or request.user.is_viewer:
         sessions = Session.objects.all()
-        if request.user.is_adminstrator:
+        if request.user.is_adminstrator or request.user.is_viewer:
             participaints = Account.objects.filter(is_sanvriddhi=True)
             lis = []
             for participaint in participaints:
@@ -45,6 +45,9 @@ def create_session(request):
         session_details = request.POST['session_details']
         session_date = request.POST['session_date']
         time = request.POST['time']
+        time_out = request.POST['time_out']
+        pm_am1 = request.POST['pm_am1']
+        pm_am2 = request.POST['pm_am2']
         meeting_link = request.POST['meeting_link']
         submission_link = request.POST['submission_link']
         if len(request.FILES) != 0:
@@ -53,7 +56,7 @@ def create_session(request):
             pre_read = None
 
 
-        session_obj = Session.objects.create(session_name=session_name,session_details=session_details,session_date=session_date,time=time,meeting_link=meeting_link,pre_read=pre_read,submission_link=submission_link)
+        session_obj = Session.objects.create(session_name=session_name,session_details=session_details,session_date=session_date,time=time,time_out=time_out,pm_am1=pm_am1,pm_am2=pm_am2,meeting_link=meeting_link,pre_read=pre_read,submission_link=submission_link)
         messages.add_message(request, messages.INFO, 'Session Created Successfully')
         return redirect(sanvriddhi_dashboard)
 
