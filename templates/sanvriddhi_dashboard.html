@@ -335,7 +335,7 @@
                                                     <span><a href="{{session.pre_read.url}}"
                                                             download><input disabled style="cursor: pointer; color:blue;" value="{{session.pre_read}}" class="form-control"></a></span>
                                                     {% else %}
-                                                    <span><a href="#"><input disabled style="color:#000;" value="No-Reading Material" class="form-control"></a></span>
+                                                    <span><a href="#"><input disabled style="color:#000;" value="-----" class="form-control"></a></span>
                                                     {% endif %}
                                                   </div>
                                                 
@@ -344,6 +344,16 @@
                                                     <a
                                                             href="{{session.meeting_link}}"
                                                             target="_blank"><input disabled style="cursor: pointer; color:blue;" value="{{session.meeting_link}}" class="form-control"></a>
+                                                  </div>
+
+                                                  <div class="col-md-12 mb-3">
+                                                    <label for="inputEmail4" class="form-label"><b>Assignment</b></label>
+                                                    {% if session.assignment %}
+                                                    <span><a href="{{session.assignment.url}}"
+                                                            download><input disabled style="cursor: pointer; color:blue;" value="{{session.assignment}}" class="form-control"></a></span>
+                                                    {% else %}
+                                                    <span><a href="#"><input disabled style="color:#000;" value="No Assignment" class="form-control"></a></span>
+                                                    {% endif %}
                                                   </div>
 
                                                   <div class="col-md-12 mb-3">
@@ -356,6 +366,8 @@
                                                     <a href="#"><input disabled style="color:#000;" value="-----" class="form-control"></a>
                                                     {% endif %}
                                                   </div>
+
+                                                  
                                             </div>
                                         </div>
                                     </div>
@@ -513,6 +525,9 @@
                         <div class="tab-pane fade" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-user-tab">
                             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                                 <h3 style="text-align: center;font-weight: bold;">Users</h3>
+                                <a href="{% url 'sanvriddhi_excel' %}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
+                                        ><i
+                                        class="fas fa-download fa-sm text-white-50"></i>Download Startup Details</a>
                             </div>
 
                             <section>
@@ -666,13 +681,18 @@
                                 </div>
                                 <div class="input-group mb-3">
                                     <label class="input-group-text" for="inputGroupFile01">Pre-Read</label>
-                                    <input type="file" class="form-control" name="pre_read" id="inputGroupFile01">
+                                    <input type="file" class="form-control" value="None" name="pre_read" id="inputGroupFile01">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <label class="input-group-text" for="inputGroupFile01">Assignment</label>
+                                    <input type="file" class="form-control" value="None" name="assignment" id="inputGroupFile01">
                                 </div>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" id="basic-addon4">Submission Link</span>
                                     <input type="text" class="form-control" name="submission_link"
                                         placeholder="Submission Link" aria-label="link" aria-describedby="basic-addon1">
                                 </div>
+                                
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Close</button>
@@ -833,7 +853,7 @@
              {% for participaint in participaints %}
             <div class="modal fade" id="submittedModal{{participaint.pk}}" data-backdrop="static" data-keyboard="false"
         tabindex="-2" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header" style="display: inline-block; padding-bottom: 0;">
                     <h5 style="margin-bottom: 0; font-weight:bold;color:tomato;" id="staticBackdropLabel">Submitted File</h5>

@@ -9,6 +9,8 @@ urlpatterns = [
     path('create_session', views.create_session,name='create_session'),
     path('submission', views.submission,name='submission'),
     path('sanvriddhi_edit_form/<int:pk>/edit_sanvriddhi/', views.sanvriddhi_edit_form,name='sanvriddhi_edit_form'),
+    path('sanvriddhi_excel/', views.sanvriddhi_excel,name='sanvriddhi_excel'),
+
 
 
 ]

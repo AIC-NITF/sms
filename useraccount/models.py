@@ -467,6 +467,7 @@ class Session(models.Model):
 	meeting_link		= models.CharField(max_length=1000,null=True,blank=True)
 	pre_read			= models.FileField(upload_to='files',null=True,blank=True)
 	submission_link		= models.CharField(max_length=1000,null=True,blank=True)
+	assignment			= models.FileField(upload_to='files',null=True,blank=True)
 	#completed			= models.BooleanField(default=Falsese)
 	completed			= models.BooleanField(default=False)
 
