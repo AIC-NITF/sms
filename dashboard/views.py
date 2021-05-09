@@ -1,6 +1,7 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.http import HttpResponse,Http404,JsonResponse
-from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheetReport,WorkGenerator,Forward,Return,MoM,BlogPost,Query,LeaveApplication,Attendence,EmpMessage,Sanvriddhi,Session,Submission,Viewer
+from useraccount.models import Account,Admin,StartUp,TeamMembers,MonitorSheetReport,WorkGenerator,Forward,Return,MoM,BlogPost,Query,LeaveApplication,Attendence,EmpMessage,Sanvriddhi,Session,Submission,Viewer,Ideanestcheck,Sessionideanest,Submissionideanest,Viewerideanest
+#,Ideanest,IdeanestSession,Ideanestsubmission,Ideanestviewer
 from .forms import StartUpForm,MonitorSheetEditForm
 
 from django.contrib.auth.models import auth
@@ -133,6 +134,24 @@ def dashboard(request):
 
                 attachements = sanvriddhi_account.submission_set.all()
                 return render(request,'sanvriddhi_dashboard.html',{'sessions':sessions,'attachements':attachements,'sanvriddhi_account':sanvriddhi_account})
+        else:
+            return render(request,'error.html')
+
+    elif user.is_ideanest_check or user.is_ideanest_viewer:
+        if request.user.is_adminstrator or request.user.is_ideanest_check or request.user.is_ideanest_viewer:
+            sessions = Sessionideanest.objects.all()
+            if request.user.is_adminstrator or request.user.is_ideanest_viewer:
+                participaints = Account.objects.filter(is_ideanest_check=True)
+                lis = []
+                for participaint in participaints:
+                    lis.append(participaint.ideanestcheck_set.all()[0])
+                return render(request,'ideanest_dashboard.html',{'sessions':sessions,'participaints':lis})
+            else:
+                account = request.user
+                ideanest_account = account.ideanestcheck_set.all()[0]
+
+                attachements = ideanest_account.submissionideanest_set.all()
+                return render(request,'ideanest_dashboard.html',{'sessions':sessions,'attachements':attachements,'ideanest_account':ideanest_account})
         else:
             return render(request,'error.html')
 
@@ -1040,6 +1059,12 @@ def forget_username(request):
             email = sanvriddhi.email
         if user.is_viewer:
             viewer = user.viewer_set.first()
+            email = viewer.email
+        if user.is_ideanest_check:
+            ideanest = user.ideanestcheck_set.first()
+            email = ideanest.email
+        if user.is_ideanest_viewer:
+            viewer = user.viewerideanest_set.first()
             email = viewer.email
     else:
         email = None

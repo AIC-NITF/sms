@@ -21,6 +21,10 @@ def index(request):
             profile_img_obj = user.sanvriddhi_set.all()[0]
         elif user.is_viewer:
             profile_img_obj = user.viewer_set.all()[0]
+        elif user.is_ideanest_check:
+            profile_img_obj = user.sanvriddhi_set.all()[0]
+        elif user.is_ideanest_viewer:
+            profile_img_obj = user.viewer_set.all()[0]
     else:
         profile_img_obj = None
         
