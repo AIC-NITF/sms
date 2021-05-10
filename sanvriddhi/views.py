@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from django.http import HttpResponse,Http404,JsonResponse
-from useraccount.models import Session,Sanvriddhi,Account,Submission,Viewer
+from useraccounting.models import Session,Sanvriddhi,Account,Submission,Viewer,Sanvriddhiweek
 from .forms import SanvriddhiEditForm
 import datetime
 import xlwt
@@ -26,23 +26,25 @@ def sanvriddhi_nomination(request):
 def sanvriddhi_dashboard(request):
     if request.user.is_adminstrator or request.user.is_sanvriddhi or request.user.is_viewer:
         sessions = Session.objects.all()
+        weeks = Sanvriddhiweek.objects.all()
         if request.user.is_adminstrator or request.user.is_viewer:
             participaints = Account.objects.filter(is_sanvriddhi=True)
             lis = []
             for participaint in participaints:
                 lis.append(participaint.sanvriddhi_set.all()[0])
-            return render(request,'sanvriddhi_dashboard.html',{'sessions':sessions,'participaints':lis})
+            return render(request,'sanvriddhi_dashboard.html',{'sessions':sessions,'participaints':lis,'weeks':weeks})
         else:
             account = request.user
             sanvriddhi_account = account.sanvriddhi_set.all()[0]
-
             attachements = sanvriddhi_account.submission_set.all()
-            return render(request,'sanvriddhi_dashboard.html',{'sessions':sessions,'attachements':attachements,'sanvriddhi_account':sanvriddhi_account})
+            print(weeks,"=========================")
+            return render(request,'sanvriddhi_dashboard.html',{'sessions':sessions,'attachements':attachements,'sanvriddhi_account':sanvriddhi_account,'weeks':weeks})
     else:
         return render(request,'error.html')
 
 def create_session(request):
     if request.method == 'POST':
+        week = request.POST['weekselect']
         session_name = request.POST['session_name']
         session_details = request.POST['session_details']
         session_date = request.POST['session_date']
@@ -65,8 +67,8 @@ def create_session(request):
             pre_read = None
             assignment = None
 
-
-        session_obj = Session.objects.create(session_name=session_name,session_details=session_details,session_date=session_date,time=time,time_out=time_out,pm_am1=pm_am1,pm_am2=pm_am2,meeting_link=meeting_link,pre_read=pre_read,assignment=assignment,submission_link=submission_link)
+        week = Sanvriddhiweek.objects.filter(week_no=week)[0]
+        session_obj = Session.objects.create(week=week,session_name=session_name,session_details=session_details,session_date=session_date,time=time,time_out=time_out,pm_am1=pm_am1,pm_am2=pm_am2,meeting_link=meeting_link,pre_read=pre_read,assignment=assignment,submission_link=submission_link)
         messages.add_message(request, messages.INFO, 'Session Created Successfully')
         return redirect(sanvriddhi_dashboard)
 

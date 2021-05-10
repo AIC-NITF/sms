@@ -1,5 +1,5 @@
 from django import forms
-from useraccount.models import Sanvriddhi
+from useraccounting.models import Sanvriddhi
 
 class SanvriddhiEditForm(forms.ModelForm):
 

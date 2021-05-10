@@ -301,79 +301,105 @@
                             </div>
 
                             <div>
-                                {% for session in sessions %}
-                                <div class="accordion" id="accordionExample{{session.pk}}">
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="heading{{session.pk}}">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#collapse{{session.pk}}"
-                                                aria-expanded="true" aria-controls="collapse{{session.pk}}">
-                                                SESSION {{forloop.counter}}  :   Date:- {{session.session_date|date:"M d, Y" }} | Time:{{session.time}}{{session.pm_am1}} to {{session.time_out}}{{session.pm_am2}}
-                                                {% if session.completed %}
-                                                <span class="badge rounded-pill bg-success ml-2">Completed</span>
-                                                {% endif %}
-                                            </button>
-                                        </h2>
-                                        <div id="collapse{{session.pk}}" class="accordion-collapse collapse"
-                                            aria-labelledby="heading{{session.pk}}"
-                                            data-bs-parent="#accordionExample{{session.pk}}">
-                                            <div class="accordion-body">
-                                                <div class="col-md-12 mb-3">
-                                                    <label for="inputEmail4" class="form-label"><b>Session Topic</b></label>
-                                                    <input disabled value="{{session.session_name}}" style="color:#000;" class="form-control">
-                                                  </div>
+                                {% for week in weeks %}
+                                <nav class="navbar navbar-expand-lg navbar-dark bg-dark mt-4">
+                                    <div class="container-md">
+                                      <a class="navbar-brand" href="#">{{week.week_no}}</a>
+                                    </div>
+                                  </nav>
+                                    {% for session in week.sessionideanest_set.all %}
+                                    <div class="accordion" id="accordionExample{{session.pk}}">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="heading{{session.pk}}">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#collapse{{session.pk}}"
+                                                    aria-expanded="true" aria-controls="collapse{{session.pk}}">
+                                                    SESSION {{forloop.counter}}  :   Date:- {{session.session_date|date:"M d, Y" }} | Time:{{session.time}}{{session.pm_am1}} to {{session.time_out}}{{session.pm_am2}}
+                                                    {% if session.completed %}
+                                                    <span class="badge rounded-pill bg-success ml-2">Completed</span>
+                                                    {% endif %}
+                                                </button>
+                                            </h2>
+                                            <div id="collapse{{session.pk}}" class="accordion-collapse collapse"
+                                                aria-labelledby="heading{{session.pk}}"
+                                                data-bs-parent="#accordionExample{{session.pk}}">
+                                                <div class="accordion-body">
+                                                    <div class="col-md-12 mb-3">
+                                                        <label for="inputEmail4" class="form-label"><b>Session Topic</b></label>
+                                                        <input disabled value="{{session.session_name}}" style="color:#000;" class="form-control">
+                                                    </div>
 
-                                                  <div class="col-md-12 mb-3">
-                                                    <label for="inputEmail4" class="form-label"><b>Session Details</b></label>
+                                                    <div class="col-md-12 mb-3">
+                                                        <label for="inputEmail4" class="form-label"><b>Session Details</b></label>
+                                                        
+                                                        <textarea disabled class="form-control" style="color:#000;" id="exampleFormControlTextarea1" rows="3">{{session.session_details}}</textarea>
+                                                    </div>
+
+                                                    <div class="col-md-12 mb-3">
+                                                        <label for="inputEmail4" class="form-label"><b>Pre-Read</b></label>
+                                                        {% if session.pre_read %}
+                                                        <span><a href="{{session.pre_read.url}}"
+                                                                download><input disabled style="cursor: pointer; color:blue;" value="{{session.pre_read}}" class="form-control"></a></span>
+                                                        {% else %}
+                                                        <span><a href="#"><input disabled style="color:#000;" value="-----" class="form-control"></a></span>
+                                                        {% endif %}
+                                                    </div>
                                                     
-                                                    <textarea disabled class="form-control" style="color:#000;" id="exampleFormControlTextarea1" rows="3">{{session.session_details}}</textarea>
-                                                  </div>
+                                                    <div class="col-md-12 mb-3">
+                                                        <label for="inputEmail4" class="form-label"><b>Meeting Link</b></label>
+                                                        <a
+                                                                href="{{session.meeting_link}}"
+                                                                target="_blank"><input disabled style="cursor: pointer; color:blue;" value="{{session.meeting_link}}" class="form-control"></a>
+                                                    </div>
 
-                                                  <div class="col-md-12 mb-3">
-                                                    <label for="inputEmail4" class="form-label"><b>Pre-Read</b></label>
-                                                    {% if session.pre_read %}
-                                                    <span><a href="{{session.pre_read.url}}"
-                                                            download><input disabled style="cursor: pointer; color:blue;" value="{{session.pre_read}}" class="form-control"></a></span>
-                                                    {% else %}
-                                                    <span><a href="#"><input disabled style="color:#000;" value="-----" class="form-control"></a></span>
-                                                    {% endif %}
-                                                  </div>
-                                                
-                                                  <div class="col-md-12 mb-3">
-                                                    <label for="inputEmail4" class="form-label"><b>Meeting Link</b></label>
-                                                    <a
-                                                            href="{{session.meeting_link}}"
-                                                            target="_blank"><input disabled style="cursor: pointer; color:blue;" value="{{session.meeting_link}}" class="form-control"></a>
-                                                  </div>
+                                                    <div class="col-md-12 mb-3">
+                                                        <label for="inputEmail4" class="form-label"><b>Assignment</b></label>
+                                                        {% if session.assignment %}
+                                                        <span><a href="{{session.assignment.url}}"
+                                                                download><input disabled style="cursor: pointer; color:blue;" value="{{session.assignment}}" class="form-control"></a></span>
+                                                        {% else %}
+                                                        <span><a href="#"><input disabled style="color:#000;" value="No Assignment" class="form-control"></a></span>
+                                                        {% endif %}
+                                                    </div>
 
-                                                  <div class="col-md-12 mb-3">
-                                                    <label for="inputEmail4" class="form-label"><b>Assignment</b></label>
-                                                    {% if session.assignment %}
-                                                    <span><a href="{{session.assignment.url}}"
-                                                            download><input disabled style="cursor: pointer; color:blue;" value="{{session.assignment}}" class="form-control"></a></span>
-                                                    {% else %}
-                                                    <span><a href="#"><input disabled style="color:#000;" value="No Assignment" class="form-control"></a></span>
-                                                    {% endif %}
-                                                  </div>
+                                                    <div class="col-md-12 mb-3">
+                                                        <label for="inputEmail4" class="form-label"><b>Submission Link</b></label>
+                                                        {% if session.submission_link %}
+                                                        <a href="{{session.submission_link}}" target="_blank">
+                                                        <input disabled style="cursor: pointer; color:blue;" value="{{session.submission_link}}" class="form-control">
+                                                        </a>
+                                                        {% else %}
+                                                        <a href="#"><input disabled style="color:#000;" value="-----" class="form-control"></a>
+                                                        {% endif %}
+                                                    </div>
 
-                                                  <div class="col-md-12 mb-3">
-                                                    <label for="inputEmail4" class="form-label"><b>Submission Link</b></label>
-                                                    {% if session.submission_link %}
-                                                    <a href="{{session.submission_link}}" target="_blank">
-                                                    <input disabled style="cursor: pointer; color:blue;" value="{{session.submission_link}}" class="form-control">
-                                                    </a>
-                                                    {% else %}
-                                                    <a href="#"><input disabled style="color:#000;" value="-----" class="form-control"></a>
-                                                    {% endif %}
-                                                  </div>
-
-                                                  
+                                                    
+                                                </div>
                                             </div>
                                         </div>
+
                                     </div>
-
-                                </div>
-
+                                    {% endfor %}
+                                    {% for fed in week.ideanestfeedback_set.all %}
+                                    <div class="accordion accordion-flush" id="accordionFlushExample">
+                                        <div class="accordion-item">
+                                          <h2 class="accordion-header" id="flush-headingOne">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                              {{week.week_no}} FeedBack Link
+                                            </button>
+                                          </h2>
+                                          <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                            <div class="accordion-body">
+                                                <div class="col-md-12 mb-3">
+                                                    <label for="inputEmail4" class="form-label"><b>Feedback Link</b></label>
+                                                    <a href="{{fed.feedback}}" target="_blank">
+                                                    <input disabled value="{{fed.feedback}}" style="cursor: pointer; color:blue;" class="form-control"></a>
+                                                </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    {% endfor %}
                                 {% endfor %}
                             </div>
                         </div>
@@ -637,6 +663,15 @@
                         <div class="modal-body">
                             <form method="POST" action="{% url 'create_ideanest_session' %}" enctype="multipart/form-data">{% csrf_token %}
                                 <div class="input-group mb-3">
+                                    <span class="input-group-text">Select WEEK</span>
+                                    <select name="weekselect" id="inputSelect" class="form-select">
+                                        <option selected disabled>Choose...</option>
+                                        {% for week in weeks %}
+                                        <option value="{{week.week_no}}">{{week.week_no}}</option>
+                                        {% endfor %}
+                                      </select>
+                                  </div>
+                                <div class="input-group mb-3">
                                     <span class="input-group-text" id="basic-addon4">Session Topic</span>
                                     <input type="text" class="form-control" name="session_name"
                                         placeholder="Session Topic" aria-label="topic" aria-describedby="basic-addon1">
@@ -853,7 +888,7 @@
              {% for participaint in participaints %}
             <div class="modal fade" id="submittedModal{{participaint.pk}}" data-backdrop="static" data-keyboard="false"
         tabindex="-2" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header" style="display: inline-block; padding-bottom: 0;">
                     <h5 style="margin-bottom: 0; font-weight:bold;color:tomato;" id="staticBackdropLabel">Submitted File</h5>

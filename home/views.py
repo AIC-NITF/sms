@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from useraccount.models import Account,Admin,StartUp,Query,Gallery,Admin,StartUp,Sanvriddhi,Viewer
+from useraccounting.models import Account,Admin,StartUp,Query,Gallery,Admin,StartUp,Sanvriddhi,Viewer
 from django.contrib import messages
 
 # Create your views here.

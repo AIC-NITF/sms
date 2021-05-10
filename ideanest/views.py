@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from django.http import HttpResponse,Http404,JsonResponse
-from useraccount.models import Account,Ideanestcheck,Sessionideanest,Submissionideanest,Viewerideanest
+from useraccounting.models import Account,Ideanestcheck,Sessionideanest,Submissionideanest,Viewerideanest,Ideanestweek
 #,Ideanest,IdeanestSession,Ideanestsubmission,Ideanestviewer
 from .forms import IdeanestEditForm
 import datetime
@@ -29,24 +29,26 @@ def ideanest_nomination(request):
 def ideanest_dashboard(request):
     if request.user.is_adminstrator or request.user.is_ideanest_check or request.user.is_ideanest_viewer:
         sessions = Sessionideanest.objects.all()
+        weeks = Ideanestweek.objects.all()
         if request.user.is_adminstrator or request.user.is_ideanest_viewer:
             participaints = Account.objects.filter(is_ideanest_check=True)
             lis = []
             for participaint in participaints:
                 lis.append(participaint.ideanestcheck_set.all()[0])
-            return render(request,'ideanest_dashboard.html',{'sessions':sessions,'participaints':lis})
+            return render(request,'ideanest_dashboard.html',{'sessions':sessions,'participaints':lis,'weeks':weeks})
         else:
             account = request.user
             ideanest_account = account.ideanestcheck_set.all()[0]
 
             attachements = ideanest_account.submissionideanest_set.all()
-            return render(request,'ideanest_dashboard.html',{'sessions':sessions,'attachements':attachements,'ideanest_account':ideanest_account})
+            return render(request,'ideanest_dashboard.html',{'sessions':sessions,'attachements':attachements,'ideanest_account':ideanest_account,'weeks':weeks})
     else:
         return render(request,'error.html')
     
 
 def create_ideanest_session(request):
     if request.method == 'POST':
+        week = request.POST['weekselect']
         session_name = request.POST['session_name']
         session_details = request.POST['session_details']
         session_date = request.POST['session_date']
@@ -69,8 +71,9 @@ def create_ideanest_session(request):
             pre_read = None
             assignment = None
 
+        week = Ideanestweek.objects.filter(week_no=week)[0]
 
-        session_obj = Sessionideanest.objects.create(session_name=session_name,session_details=session_details,session_date=session_date,time=time,time_out=time_out,pm_am1=pm_am1,pm_am2=pm_am2,meeting_link=meeting_link,pre_read=pre_read,assignment=assignment,submission_link=submission_link)
+        session_obj = Sessionideanest.objects.create(week=week,session_name=session_name,session_details=session_details,session_date=session_date,time=time,time_out=time_out,pm_am1=pm_am1,pm_am2=pm_am2,meeting_link=meeting_link,pre_read=pre_read,assignment=assignment,submission_link=submission_link)
         messages.add_message(request, messages.INFO, 'Ideanest Created Successfully')
         return redirect(ideanest_dashboard)
 

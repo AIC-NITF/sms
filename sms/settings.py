@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'dashboard',
-    'useraccount',
+    'useraccounting',
     'formapp',
     'sanvriddhi',
     'ideanest',
@@ -73,7 +73,7 @@ TEMPLATES = [
     },
 ]
 
-AUTH_USER_MODEL = 'useraccount.Account'
+AUTH_USER_MODEL = 'useraccounting.Account'
 
 WSGI_APPLICATION = 'sms.wsgi.application'
 
