@@ -295,16 +295,19 @@
                                 <a href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
                                     data-bs-toggle="modal" data-bs-target="#createsubmissionModal"><i
                                         class="fas fa-download fa-sm text-white-50"></i>Create Session</a>
+                                <a href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm "
+                                        data-bs-toggle="modal" data-bs-target="#uploadrecordingsModal"><i
+                                            class="fas fa-download fa-sm text-white-50"></i>Upload Session Recordings</a>
                                 {% endif %}
 
 
                             </div>
 
-                            <div>
+                            <div style="margin-bottom: 100px;">
                                 {% for week in weeks %}
                                 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mt-4">
                                     <div class="container-md">
-                                      <a class="navbar-brand" href="#">{{week.week_no}}</a>
+                                      <a class="navbar-brand" href="#">{{week.sessionideanest_set.all}}</a>
                                     </div>
                                   </nav>
                                     {% for session in week.sessionideanest_set.all %}
@@ -315,6 +318,10 @@
                                                     data-bs-toggle="collapse" data-bs-target="#collapse{{session.pk}}"
                                                     aria-expanded="true" aria-controls="collapse{{session.pk}}">
                                                     SESSION {{forloop.counter}}  :   Date:- {{session.session_date|date:"M d, Y" }} | Time:{{session.time}}{{session.pm_am1}} to {{session.time_out}}{{session.pm_am2}}
+                                                    {% if session.assignment %}
+                                                    <span class="badge rounded-pill bg-primary ml-2">Assignment</span>
+                                                    {% endif %}
+                                                    
                                                     {% if session.completed %}
                                                     <span class="badge rounded-pill bg-success ml-2">Completed</span>
                                                     {% endif %}
@@ -372,6 +379,18 @@
                                                         <a href="#"><input disabled style="color:#000;" value="-----" class="form-control"></a>
                                                         {% endif %}
                                                     </div>
+                                                    {% if session.recording_link %}
+                                                    <div class="col-md-12 mb-3">
+                                                        <label for="inputEmail4" class="form-label"><b>Session Recording</b></label>
+                                                        
+                                                        <span><a href="{{session.recording_link}}"
+                                                                download><input disabled style="cursor: pointer; color:blue;" value="{{session.recording_link}}" class="form-control"></a></span>
+                                                    </div>
+                                                    <div class="col-md-12 mb-3">
+                                                        <label for="inputEmail4" class="form-label"><b>Recording Password</b></label>
+                                                        <input disabled value="{{session.recording_pw}}" style="color:#000;" class="form-control">
+                                                    </div>
+                                                    {% endif %}
 
                                                     
                                                 </div>
@@ -565,6 +584,7 @@
                                                 <th scope="col">SLNO.</th>
                                                 <th scope="col">Startup Name</th>
                                                 <th scope="col">Founder Name</th>
+                                                <th scope="col">Total Uploads</th>
                                                 <th scope="col">Email</th>
                                                 <th scope="col">Contact No</th>
                                                 <th scope="col">IMG</th>
@@ -583,11 +603,13 @@
                                                     </a>
 
                                                 </td>
-                                                <td><span id="ceo{{participaint.pk}}"></span>
-                                                    <a class="pending_link" id="fullname{{participaint.pk}}" href=""
-                                                        data-toggle="modal"
-                                                        data-target="#submittedModal{{participaint.pk}}"
-                                                        style="text-decoration: none; color: #6f6f70; font-weight: bold;">{{participaint.team_head}}
+                                                <td><span id="ceo{{participaint.pk}}">{{participaint.team_head}}</span>
+                                                    
+                                                </td>
+                                                <td><a class="pending_link" id="fullname{{participaint.pk}}" href=""
+                                                    data-toggle="modal"
+                                                    data-target="#submittedModal{{participaint.pk}}"
+                                                    ><span class="badge bg-danger">{{participaint.submissionideanest_set.all|length}}</a></span>
                                                 </td>
                                                 <td><span id="email{{participaint.pk}}">{{participaint.email}}</span>
                                                 </td>
@@ -728,6 +750,52 @@
                                         placeholder="Submission Link" aria-label="link" aria-describedby="basic-addon1">
                                 </div>
                                 
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Create</button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!--upload session recordings-->
+            <div class="modal fade" id="uploadrecordingsModal" tabindex="-1"
+                aria-labelledby="uploadrecordingsModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Upload Session Recordings</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" action="{% url 'ideanest_recording' %}" enctype="multipart/form-data">{% csrf_token %}
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Select WEEK</span>
+                                    <select name="sessionname" id="inputSelect" class="form-select">
+                                        <option selected disabled>Choose...</option>
+                                        {% for week in weeks %}
+                                            {% for session in week.sessionideanest_set.all  %}
+                                            <option value="{{session.pk}}">{{week.week_no}} {{session.session_name}}</option>
+                                            {% endfor %}
+                                        {% endfor %}
+                                      </select>
+                                  </div>
+                                
+                                  <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon4">Session Recording Link</span>
+                                    <input type="text" class="form-control" name="recording_link"
+                                        placeholder="Recording Link" aria-label="topic" aria-describedby="basic-addon1">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon4">Session Recording Password</span>
+                                    <input type="text" class="form-control" name="recording_pw"
+                                        placeholder="Recording Password" aria-label="topic" aria-describedby="basic-addon1">
+                                </div>
+                  
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Close</button>

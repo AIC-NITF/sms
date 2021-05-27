@@ -11,4 +11,5 @@ urlpatterns = [
     path('ideanest_submission', views.ideanest_submission,name='ideanest_submission'),
     path('ideanest_edit_form/<int:pk>/edit_ideanest/', views.ideanest_edit_form,name='ideanest_edit_form'),
     path('ideanest_excel/', views.ideanest_excel,name='ideanest_excel'),
+    path('ideanest_recording/', views.ideanest_recording,name='ideanest_recording'),
 ]

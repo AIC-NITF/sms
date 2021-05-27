@@ -130,3 +130,14 @@ def sanvriddhi_excel(request):
     wb.save(responce)
     return responce
 
+def sanvriddhi_recording(request):
+    if request.method == 'POST':
+        sessionname = request.POST['sessionname']
+        recording_link = request.POST['recording_link']
+        recording_pw = request.POST['recording_pw']
+
+        obj = get_object_or_404(Session,pk=int(sessionname))
+
+        obj.update_session(recording_link=recording_link,recording_pw=recording_pw)
+        return redirect(sanvriddhi_dashboard)
+    return redirect(sanvriddhi_dashboard)

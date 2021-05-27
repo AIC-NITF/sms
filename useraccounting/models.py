@@ -1,3 +1,5 @@
+#useraccoun name changed to useraccounting but in cpanel/server it's same as useraccount
+
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.utils import timezone
@@ -485,9 +487,16 @@ class Session(models.Model):
 	assignment			= models.FileField(upload_to='files',null=True,blank=True)
 	#completed			= models.BooleanField(default=Falsese)
 	completed			= models.BooleanField(default=False)
+	recording_link		= models.CharField(max_length=1000,null=True,blank=True)
+	recording_pw		= models.CharField(max_length=500,null=True,blank=True)
 
 	def __str__(self):
 		return self.session_name
+
+	def update_session(self,recording_link,recording_pw):
+		self.recording_link = recording_link
+		self.recording_pw	= recording_pw
+		self.save()
 
 
 class Submission(models.Model):
@@ -571,9 +580,17 @@ class Sessionideanest(models.Model):
 	assignment			= models.FileField(upload_to='files',null=True,blank=True)
 	#completed			= models.BooleanField(default=Falsese)
 	completed			= models.BooleanField(default=False)
+	recording_link		= models.CharField(max_length=1000,null=True,blank=True)
+	recording_pw		= models.CharField(max_length=500,null=True,blank=True)
+	
 
 	def __str__(self):
 		return self.session_name
+
+	def update_session(self,recording_link,recording_pw):
+		self.recording_link = recording_link
+		self.recording_pw	= recording_pw
+		self.save()
 
 class Submissionideanest(models.Model):
 	connect_sanvriddhi	= models.ForeignKey(Ideanestcheck, on_delete=models.CASCADE)
