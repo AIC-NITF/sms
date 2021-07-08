@@ -5,4 +5,6 @@ urlpatterns = [
     path('', views.index,name='index'),
     path('query_message/', views.query_message,name='query_message'),
     path('SWEA/', views.SWEA,name='SWEA'),
+    path('callForApplications/', views.callForApplication,name='callForApplication'),
+    path('apply_cohort_2/', views.CFA,name='CFA'),
 ]

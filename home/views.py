@@ -48,3 +48,10 @@ def query_message(request):
 
 def SWEA(request):
     return render(request,'SWEA.html')
+
+
+def callForApplication(request):
+    return render(request,'callforapplication.html')
+
+def CFA(request):
+    return render(request,'CFA.html')
